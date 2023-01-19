@@ -14,5 +14,11 @@ export default {
   components: {
     HelloWorld,
   },
+
+  methods: {
+    getUsers () {
+
+    }
+  },
 };
 </script>
