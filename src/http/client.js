@@ -1,14 +1,14 @@
-const axios = require('axios')
-const timeout = 60000
+const axios = require("axios");
+const timeout = 60000;
 const axiosInstance = axios.create({
-    baseURL: process.env.VUE_APP_BASE_URL || '/',
-    timeout
-})
+  baseURL: process.env.VUE_APP_BASE_URL || "/",
+  timeout,
+});
 const client = {
-    get: axiosInstance.get,
-    post: axiosInstance.post,
-    delete: axiosInstance.delete,
-    put: axiosInstance.put
-}
+  get: axiosInstance.get,
+  post: axiosInstance.post,
+  delete: axiosInstance.delete,
+  put: axiosInstance.put,
+};
 
-export default client
+export default client;
