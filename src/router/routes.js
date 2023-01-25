@@ -33,7 +33,7 @@ export default [
       {
         path: "/main",
         name: "main",
-        component: () => import("@/views/HomeView.vue"),
+        component: () => import("@/views/MainView.vue"),
       },
     ],
   },
