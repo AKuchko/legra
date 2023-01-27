@@ -1,9 +1,9 @@
 export default {
-    state: {
-        username: '',
-        posts: []
-    },
-    actions: {},
-    mutations: {},
-    getters: {},
-}
+  state: {
+    username: "",
+    posts: [],
+  },
+  actions: {},
+  mutations: {},
+  getters: {},
+};

@@ -33,13 +33,13 @@ class AuthService {
   }
 
   login({ email = "", password = "" }) {
-    return client.post("/auth/login", { email, password }).then((token) => {
+    return client.post("/api/auth/login", { email, password }).then((token) => {
       this.token = token;
     });
   }
 
   register({ email, password }) {
-    return client.post("/auth/reg", { email, password });
+    return client.post("/api/auth/reg", { email, password });
   }
 
   logout() {
