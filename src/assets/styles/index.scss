@@ -1,0 +1,26 @@
+@import './colors.module.scss';
+@import './utils.module.scss';
+@import './normolize.module.scss';
+
+.title-medium {
+    margin-bottom: 0.5rem;
+    font-size: $font-medium;
+    font-weight: 500;
+    line-height: 31.2px;
+}
+
+.simple-text {
+    font-size: $font-base;
+    font-weight: 400;
+    line-height: 19.2px;
+}
+
+.small-text {
+    font-size: $font-small;
+    font-weight: 400;
+    line-height: 12px;
+}
+
+.base-link {
+    color: $color-accent;
+}

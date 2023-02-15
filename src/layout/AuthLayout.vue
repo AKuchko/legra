@@ -9,12 +9,14 @@
 <style lang="scss">
 .auth-layout {
   width: 100vw;
-  height: 100vh;
-  padding: 10px;
+  background-color: $color-light-bg;
 
   &__wrapper {
     width: 100%;
     height: 100%;
+    margin: 0 auto;
+    max-width: 25.5rem;
+    padding: 100px 25px;
   }
 }
 </style>

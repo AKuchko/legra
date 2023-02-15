@@ -1,8 +1,9 @@
 const axios = require("axios");
 const timeout = 60000;
 const axiosInstance = axios.create({
-  baseURL: process.env.VUE_APP_BASE_URL || "/",
+  baseURL: "http://localhost:3000",
   timeout,
+  withCredentials: true,
 });
 const client = {
   get: axiosInstance.get,

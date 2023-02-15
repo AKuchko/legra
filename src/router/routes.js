@@ -1,4 +1,3 @@
-import authMiddleware from "./middleware/auth.middleware";
 import AuthMiddleware from "./middleware/auth.middleware";
 
 export default [
@@ -26,7 +25,7 @@ export default [
     path: "/",
     component: () => import("@/layout/MainLayout.vue"),
     meta: {
-      middleware: [authMiddleware.checkAuth],
+      middleware: [AuthMiddleware.checkAuth],
     },
     redirect: "main",
     children: [

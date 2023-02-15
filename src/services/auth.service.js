@@ -1,4 +1,12 @@
 import client from "@/http/client";
+import {
+  getStorageItem,
+  setStorageItem,
+  removeStorageItem,
+} from "./storage.service";
+import { getCookie, setCookie, removeCookie } from "./cookie.service";
+
+const APP_TOKEN = "token";
 
 class AuthService {
   _access = null;
@@ -13,7 +21,11 @@ class AuthService {
     this._refresh = token.refresh;
 
     if (token.access) {
-      // Save token in cookie ???
+      setCookie(APP_TOKEN, token.access);
+      setStorageItem(APP_TOKEN, token.refresh);
+    } else {
+      removeCookie(APP_TOKEN);
+      removeStorageItem(APP_TOKEN);
     }
   }
 
@@ -32,14 +44,22 @@ class AuthService {
     };
   }
 
+  restoreAuthToken() {
+    this.token = {
+      access: getCookie(APP_TOKEN),
+      refresh: getStorageItem(APP_TOKEN),
+    };
+  }
+
   login({ email = "", password = "" }) {
-    return client.post("/auth/login", { email, password }).then((token) => {
-      this.token = token;
+    return client.post("/api/auth/login", { email, password }).then((token) => {
+      console.log(token);
+      this.token = token.data;
     });
   }
 
   register({ email, password }) {
-    return client.post("/auth/reg", { email, password });
+    return client.post("/api/auth/reg", { email, password });
   }
 
   logout() {
