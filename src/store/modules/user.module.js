@@ -1,9 +1,13 @@
 export default {
   state: {
-    username: "",
+    user: {},
     posts: [],
   },
   actions: {},
   mutations: {},
-  getters: {},
+  getters: {
+    userInfo(state) {
+      return state.user
+    }
+  },
 };

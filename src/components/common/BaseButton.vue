@@ -29,7 +29,6 @@ export default {
 .base-button {
   width: 100%;
   height: 56px;
-  max-width: 375px;
   border-radius: $border-radius-base;
   color: $color-light;
   background: $color-accent;

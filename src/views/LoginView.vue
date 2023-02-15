@@ -15,22 +15,20 @@
       Enter your email adress and password
     </p>
     <form class="login__form" @submit.prevent="login">
-      <ul class="login__input-group">
-        <li class="login__input">
-          <BaseInput
-            v-model="model.email"
-            type="email"
-            label="Your email adress"
-          />
-        </li>
-        <li class="login__input">
-          <BaseInput
-            v-model="model.password"
-            type="password"
-            label="Your password"
-          />
-        </li>
-      </ul>
+      <div class="login__input-group">
+        <BaseInput
+          v-model="model.email"
+          type="email"
+          label="Your email adress"
+          class="login__input"
+        />
+        <BaseInput
+          v-model="model.password"
+          type="password"
+          label="Your password"
+          class="login__input"
+        />
+      </div>
       <BaseButton type="submit">Test button</BaseButton>
       <p class="login__caption">
         If you donn't have ann account – you can
@@ -58,11 +56,16 @@ export default {
   },
   methods: {
     login() {
-      authService.login(this.model).catch((err) => {
-        console.log(err);
-      });
-      this.model.email = "";
-      this.model.password = "";
+      authService
+        .login(this.model)
+        .then(() => {
+          this.model.email = "";
+          this.model.password = "";
+          this.$router.push({ name: "main" });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
@@ -70,8 +73,6 @@ export default {
 
 <style lang="scss">
 .login {
-  font-size: $font-base;
-
   &__logo {
     margin: 0 auto 15px;
   }

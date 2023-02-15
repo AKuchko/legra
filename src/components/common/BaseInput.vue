@@ -41,9 +41,9 @@ export default {
 .base-input {
   position: relative;
   width: 100%;
-  max-width: 375px;
   height: 54px;
   padding: 15px;
+  margin: auto;
   border: 1px solid $color-dark;
   border-radius: $border-radius-base;
 

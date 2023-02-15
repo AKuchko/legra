@@ -1,33 +1,26 @@
 <template>
-<div class="signup">
-  <svg class="login__logo" height="120" width="120">
-    <circle
-      cx="60"
-      cy="60"
-      r="57"
-      stroke="gray"
-      stroke-width="3"
-      fill="transparent"
-    />
-  </svg>
-  <h1 class="login__title title-medium">Legram</h1>
-  <p class="login__subtitle small-text">
-    Wee need your clothes, your boots and your email adress.
-  </p>
-  <form class="signup__form">
-    <section class="signup__form-section">
-      
-    </section>
-  </form>
-</div>
+  <SignupForm />
 </template>
 
 <script>
-export default {
+// import VerifyCodeForm from "@/components/VerifyCodeForm.vue";
+import SignupForm from "@/components/SignupForm.vue";
 
-}
+export default {
+  components: { SignupForm },
+  data() {
+    return {
+      model: {
+        email: "",
+        password: "",
+        code: "",
+      },
+    };
+  },
+};
 </script>
 
 <style lang="scss">
-
+.signup {
+}
 </style>
