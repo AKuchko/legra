@@ -53,9 +53,12 @@ class AuthService {
 
   login({ email = "", password = "" }) {
     return client.post("/api/auth/login", { email, password }).then((token) => {
-      console.log(token);
       this.token = token.data;
     });
+  }
+
+  fetchUserInfo() {
+    return client.get("/users/me");
   }
 
   register({ email, password }) {
