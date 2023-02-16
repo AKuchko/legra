@@ -1,5 +1,9 @@
 <template>
   <BaseBlock class="sidebar">
+    <div class="sidebar__profile">
+      <img src="#" alt="profile image" class="sidebar__user-image" />
+      <h3 class="sidebar__username">@{{ userInfo.username }}</h3>
+    </div>
     <ul class="sidebar__list">
       <li class="sidebar__item" v-for="item in items" :key="item.id">
         {{ item.name }}
@@ -10,7 +14,8 @@
 
 <script>
 import BaseBlock from "./common/BaseBlock.vue";
-import client from "@/http/client";
+import { mapGetters } from "vuex";
+
 export default {
   name: "MainSidebar",
   components: { BaseBlock },
@@ -20,9 +25,7 @@ export default {
       default: () => [{ id: 1, name: "One" }],
     },
   },
-  mounted() {
-    client.get("/users/me");
-  },
+  computed: mapGetters(["userInfo"]),
 };
 </script>
 

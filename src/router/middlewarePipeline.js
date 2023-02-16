@@ -1,12 +1,19 @@
-const middlewarePipeline = (context, middleware, index) => {
-  const nextMiddleware = middleware[index];
+function createMiddlewarePipeline(context, middleware) {
+  const nextMiddleware = middleware[0];
+  const restMiddleware = middleware.slice(1);
 
-  if (!nextMiddleware) return context.next;
+  if (!nextMiddleware) {
+    return context.next;
+  }
 
-  return () => {
-    const nextPipeline = middlewarePipeline(context, middleware, index + 1);
-    nextMiddleware({ ...context, next: nextPipeline });
+  return (nextRoute) => {
+    if (nextRoute !== undefined) {
+      context.next(nextRoute);
+    } else {
+      const nextPipeline = createMiddlewarePipeline(context, restMiddleware);
+      nextMiddleware({ ...context, next: nextPipeline });
+    }
   };
-};
+}
 
-export default middlewarePipeline;
+export default createMiddlewarePipeline;

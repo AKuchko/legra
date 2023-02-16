@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import routes from "./routes";
 import store from "@/store";
-import middlewarePipeline from "./middlewarePipeline";
+import createMiddlewarePipeline from "./middlewarePipeline";
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -9,16 +9,15 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (!to.meta.middleware) return next();
-
   const middleware = to.meta.middleware;
 
-  const context = { to, from, next, store };
+  if (!middleware[0]) {
+    next();
+    return;
+  }
 
-  return middleware[0]({
-    ...context,
-    next: middlewarePipeline(context, middleware, 1),
-  });
+  const context = { to, from, next, store };
+  createMiddlewarePipeline(context, middleware)();
 });
 
 export default router;
