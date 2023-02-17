@@ -7,7 +7,6 @@ export default {
   actions: {
     fetchUserInfo(context) {
       return authService.fetchUserInfo().then((userInfo) => {
-        console.log(userInfo.data);
         context.commit("setUser", userInfo.data);
       });
     },

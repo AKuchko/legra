@@ -3,7 +3,6 @@
 </template>
 
 <script>
-// import VerifyCodeForm from "@/components/VerifyCodeForm.vue";
 import SignupForm from "@/components/SignupForm.vue";
 
 export default {
