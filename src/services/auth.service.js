@@ -37,13 +37,6 @@ class AuthService {
     return !!this.token.access;
   }
 
-  removeAuthToken() {
-    this.token = {
-      access: null,
-      refresh: null,
-    };
-  }
-
   restoreAuthToken() {
     this.token = {
       access: getCookie(APP_TOKEN),
@@ -65,8 +58,17 @@ class AuthService {
     return client.post("/api/auth/reg", { email, password });
   }
 
+  refreshToken({ refresh }) {
+    return client.post("/api/auth/refresh", { refresh }).then((token) => {
+      this.token = token.data;
+    });
+  }
+
   logout() {
-    this.removeAuthToken();
+    this.token = {
+      access: null,
+      refresh: null,
+    };
   }
 }
 

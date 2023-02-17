@@ -31,8 +31,22 @@ export default {
 
 <style lang="scss">
 .sidebar {
+  min-height: 300px;
   max-width: 200px;
   padding: 40px 25px;
   transition: $transition-base;
+}
+
+@media (max-width: 600px) {
+  .sidebar {
+    display: flex;
+    min-height: auto;
+    max-width: none;
+    width: 100%;
+    height: 50px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
 }
 </style>
