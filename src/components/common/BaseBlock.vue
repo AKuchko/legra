@@ -15,6 +15,6 @@ export default {
   width: 100%;
   height: 100%;
   border-radius: $border-radius-base;
-  background: $color-light-secondary;
+  background: $color-light-bg;
 }
 </style>

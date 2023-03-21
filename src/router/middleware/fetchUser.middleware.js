@@ -5,6 +5,7 @@ const fetchUser = ({ next, store }) => {
       .dispatch("fetchUserInfo")
       .then(() => next())
       .catch(() => next(false));
+  else next();
 };
 
 export default fetchUser;
