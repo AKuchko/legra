@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <main-sidebar />
+    <main-sidebar class="main__sidebar" />
     <router-view />
   </div>
 </template>
@@ -15,9 +15,16 @@ export default {
 <style lang="scss">
 .main {
   display: flex;
-  max-width: 51rem;
-  height: 100vh;
+  max-width: 40rem;
+  height: 100svh;
   margin: auto;
   padding: 50px;
+
+  &__sidebar {
+    position: fixed;
+    top: 50px;
+    left: 150px;
+    height: calc(100% - 100px);
+  }
 }
 </style>

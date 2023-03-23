@@ -41,6 +41,16 @@ export default [
         name: "user",
         component: () => import("@/views/MeView.vue"),
       },
+      {
+        path: "messages",
+        name: "messages",
+        component: () => import("@/views/MessagesView.vue"),
+      },
+      {
+        path: "settings",
+        name: "settings",
+        component: () => import("@/views/SettingsView.vue"),
+      },
     ],
   },
 ];
