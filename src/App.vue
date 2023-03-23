@@ -11,5 +11,6 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: $color-dark;
+  height: 100%;
 }
 </style>

@@ -1,9 +1,7 @@
 <template>
   <div class="main">
-    <div class="main__wrapper">
-      <main-sidebar />
-      <router-view />
-    </div>
+    <main-sidebar class="main__sidebar" />
+    <router-view />
   </div>
 </template>
 
@@ -16,16 +14,17 @@ export default {
 
 <style lang="scss">
 .main {
-  width: 100vw;
-  height: 100vh;
+  display: flex;
+  max-width: 40rem;
+  height: 100svh;
+  margin: auto;
+  padding: 50px;
 
-  &__wrapper {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    max-width: 51rem;
-    margin: 0 auto;
-    padding: 100px 25px;
+  &__sidebar {
+    position: fixed;
+    top: 50px;
+    left: 150px;
+    height: calc(100% - 100px);
   }
 }
 </style>
