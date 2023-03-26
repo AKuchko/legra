@@ -1,6 +1,6 @@
 <template>
   <BaseBlock class="sidebar">
-    <a href="#/user" class="sidebar__profile">
+    <a href="#/user" class="sidebar__profile" v-if="isUserStored">
       <BaseProfileImage
         class="sidebar__image"
         :size="40"
@@ -8,6 +8,7 @@
       />
       <h3 class="sidebar__username">@{{ userInfo.username }}</h3>
     </a>
+    <BasePreloader v-else />
     <ul class="sidebar__list">
       <li class="sidebar__item" v-for="item in items" :key="item.id">
         <a :href="item.link" class="sidebar__link">
@@ -22,12 +23,13 @@
 <script>
 import BaseBlock from "./common/BaseBlock.vue";
 import BaseProfileImage from "./common/BaseProfileImage.vue";
+import BasePreloader from "./common/BasePreloader.vue";
 import { mapGetters } from "vuex";
 import { Icon } from "@iconify/vue";
 
 export default {
   name: "MainSidebar",
-  components: { BaseBlock, BaseProfileImage, Icon },
+  components: { BaseBlock, BaseProfileImage, Icon, BasePreloader },
   props: {
     items: {
       type: Array,

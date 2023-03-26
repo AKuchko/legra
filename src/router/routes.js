@@ -1,6 +1,6 @@
 import AuthMiddleware from "./middleware/auth.middleware";
 import fetchUser from "./middleware/fetchUser.middleware";
-import fetchPosts from "./middleware/fetchUserPosts.middleware";
+// import fetchPosts from "./middleware/fetchUserPosts.middleware";
 
 export default [
   {
@@ -27,7 +27,7 @@ export default [
     path: "/",
     component: () => import("@/layout/MainLayout.vue"),
     meta: {
-      middleware: [AuthMiddleware.checkAuth, fetchUser, fetchPosts],
+      middleware: [AuthMiddleware.checkAuth, fetchUser],
     },
     redirect: "main",
     children: [
