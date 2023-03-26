@@ -15,7 +15,8 @@
       </div>
     </BaseBlock>
     <div class="me__content">
-      <PostsList :posts="userPosts" />
+      <PostsList :posts="userPosts" v-if="isPostsLoaded" />
+      <BasePreloader v-else />
     </div>
   </div>
 </template>
@@ -24,12 +25,30 @@
 import BaseBlock from "@/components/common/BaseBlock.vue";
 import BaseProfileImage from "@/components/common/BaseProfileImage.vue";
 import PostsList from "@/components/PostsList.vue";
+import BasePreloader from "@/components/common/BasePreloader.vue";
 import { mapGetters } from "vuex";
 
 export default {
   name: "MeView",
-  components: { BaseBlock, BaseProfileImage, PostsList },
-  computed: mapGetters(["userInfo", "userPosts"]),
+  components: { BaseBlock, BaseProfileImage, PostsList, BasePreloader },
+  data() {
+    return {
+      isPostsLoaded: false,
+    };
+  },
+  mounted() {
+    this.isPostsLoaded = false;
+    this.$store
+      .dispatch("fetchUserPosts")
+      .then(() => {
+        this.isPostsLoaded = true;
+        console.log("Done", this.isPostsLoaded);
+      })
+      .catch(() => console.log(this.isPostsLoaded));
+  },
+  computed: {
+    ...mapGetters(["userInfo", "userPosts"]),
+  },
 };
 </script>
 

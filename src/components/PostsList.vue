@@ -36,6 +36,10 @@ export default {
 
 <style lang="scss">
 .posts-list {
+  display: grid;
+  grid-template-columns: minmax(50px, 100%);
+  transition: $transition-base;
+
   &__post {
     margin-bottom: 25px;
   }
