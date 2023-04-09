@@ -1,16 +1,16 @@
 <template>
   <BaseBlock class="sidebar">
-    <a href="#/user" class="sidebar__profile" v-if="isUserStored">
+    <a v-if="isUserStored" href="#/me" class="sidebar__profile">
       <BaseProfileImage
         class="sidebar__image"
         :size="40"
-        :imageData="userInfo.profile_image"
+        :imageData="user.profile_image"
       />
-      <h3 class="sidebar__username">@{{ userInfo.username }}</h3>
+      <h3 class="sidebar__username">@{{ user.profile_name }}</h3>
     </a>
     <BasePreloader v-else />
     <ul class="sidebar__list">
-      <li class="sidebar__item" v-for="item in items" :key="item.id">
+      <li v-for="item in items" :key="item.id" class="sidebar__item">
         <a :href="item.link" class="sidebar__link">
           {{ item.name }}
           <Icon :icon="item.icon" :inline="true" width="20" height="20" />
@@ -46,7 +46,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["userInfo", "isUserStored"]),
+    ...mapGetters({
+      user: "userInfo",
+      isUserStored: "isUserStored",
+    }),
   },
 };
 </script>
@@ -55,7 +58,6 @@ export default {
 .sidebar {
   min-height: 300px;
   max-width: 200px;
-  margin-right: 25px;
   padding: 40px 25px;
   transition: $transition-base;
 

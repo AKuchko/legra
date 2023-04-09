@@ -32,13 +32,18 @@ export default [
     redirect: "main",
     children: [
       {
-        path: "main",
+        path: "/main",
         name: "main",
         component: () => import("@/views/MainView.vue"),
       },
       {
-        path: "user",
+        path: "/user/:id",
         name: "user",
+        component: () => import("@/views/UserView.vue"),
+      },
+      {
+        path: "/me",
+        name: "me",
         component: () => import("@/views/MeView.vue"),
       },
       {

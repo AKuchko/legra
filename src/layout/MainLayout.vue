@@ -15,16 +15,17 @@ export default {
 <style lang="scss">
 .main {
   display: flex;
-  max-width: 40rem;
-  height: 100svh;
+  max-width: 52rem;
   margin: auto;
   padding: 50px;
 
   &__sidebar {
-    position: fixed;
+    position: sticky;
     top: 50px;
-    left: 150px;
+    left: 0;
     height: calc(100% - 100px);
+    max-height: 20rem;
+    margin-right: 25px;
   }
 }
 </style>

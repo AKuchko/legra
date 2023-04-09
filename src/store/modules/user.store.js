@@ -13,7 +13,8 @@ export default {
       });
     },
     fetchUserPosts(context) {
-      return postService.fetchUserPosts().then((userPosts) => {
+      const user_id = context.getters.userInfo.user_id;
+      return postService.fetchUserPosts({ user_id }).then((userPosts) => {
         context.commit("setPosts", userPosts.data);
       });
     },

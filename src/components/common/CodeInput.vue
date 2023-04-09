@@ -3,9 +3,9 @@
     <input
       v-for="(el, index) in [1, 2, 3, 4, 5]"
       :key="el"
+      ref="codeInputs"
       type="text"
       class="code-input__input"
-      ref="codeInputs"
       placeholder="_"
       :value="codeModel[index]"
       :autofocus="index === 0"

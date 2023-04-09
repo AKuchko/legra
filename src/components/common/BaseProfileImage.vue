@@ -1,10 +1,6 @@
 <template>
   <div class="profile-image" :style="imageSize">
-    <img
-      :src="`data:image/jpeg;base64,${imageData}`"
-      alt="Image"
-      class="profile-image__image"
-    />
+    <img :src="imageData" alt="Image" class="profile-image__image" />
   </div>
 </template>
 

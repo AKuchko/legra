@@ -1,41 +1,51 @@
 <template>
-  <BaseBlock class="post" :class="isMiniature ? 'post--mini' : ''">
-    <div class="post__content">
-      <div class="post__image">
-        <img :src="`data:image/jpeg;base64,${image}`" alt="Photo" />
+  <BaseBlock class="post">
+    <div class="post__media">
+      <img
+        v-if="!isMediaMultiple"
+        :src="post.media[0]"
+        alt=""
+        class="post__media-inner"
+      />
+      <BaseMediaSlider
+        v-else
+        :mediaList="post.media"
+        class="post__media-inner"
+      />
+    </div>
+    <div class="post__bottom">
+      <div class="post__actions">
+        <div class="post__button">
+          <Icon icon="ph:heart" width="25" />
+          <p class="post__button-text">{{ post.likes }} likes</p>
+        </div>
+        <div class="post__button">
+          <Icon icon="ph:chat-teardrop" width="25" />
+        </div>
       </div>
-      <div class="post__bottom">
-        <div class="post__actions">
-          <div class="post__action post__likes">
-            <Icon icon="mdi:cards-heart" />
-            {{ likes }}
-          </div>
-          <div class="post__action post__comments">
-            <Icon icon="mdi:comment" :inline="true" color="#fff" />
-            {{ likes }}
-          </div>
-        </div>
-        <div class="post__note" v-if="note">
-          <p class="post__note-text">{{ note }}</p>
-        </div>
+      <div class="post__caption">
+        {{ post.caption }}
       </div>
     </div>
   </BaseBlock>
 </template>
 
 <script>
+/* eslint-disable */
 import BaseBlock from "./common/BaseBlock.vue";
+import BaseMediaSlider from "./common/BaseMediaSlider.vue";
 import { Icon } from "@iconify/vue";
 
 export default {
   name: "PostTemplate",
-  components: { BaseBlock, Icon },
+  components: { BaseBlock, Icon, BaseMediaSlider },
   props: {
-    image: { type: String, default: "" },
-    likes: { type: Number, default: 100 },
-    note: { type: String, default: "" },
-    comments: { type: Array, default: () => [] },
-    isMiniature: { type: Boolean, default: false },
+    post: { type: Object, default: () => {} },
+  },
+  computed: {
+    isMediaMultiple() {
+      return this.post.media.length > 1
+    }
   },
 };
 </script>
@@ -43,65 +53,41 @@ export default {
 <style lang="scss">
 .post {
   padding: 10px;
-  width: 100%;
-  transition: $transition-base; // Проблемы с анимацией
+  font-size: $font-small;
 
-  &__content {
-    height: 100%;
-  }
-
-  &__image {
-    margin-bottom: 10px;
-    overflow: hidden;
-    border-radius: 10px;
-    transition: $transition-base;
-  }
-
-  &__image img {
+  &__media {
     width: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  &__bottom {
+    padding: 10px;
+  }
+
+  &__media-inner {
+    width: 100%;
+    height: 100%;
   }
 
   &__actions {
     display: flex;
+    align-items: center;
+    margin-bottom: 10px;
   }
 
-  &__action {
-    position: relative;
+  &__button {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 7px 10px;
-    margin-right: 10px;
-    border-radius: 27px;
-    background: $color-placeholder;
-    font-size: $font-small;
+    margin-right: 25px;
   }
 
-  &__note {
-    margin-top: 10px;
+  &__button-text {
+    margin-left: 5px;
+  }
+
+  &__caption {
     text-align: left;
-  }
-}
-
-.post--mini {
-  padding: 0;
-
-  .post__bottom {
-    visibility: hidden;
-    position: absolute;
-    width: 0;
-    height: 0;
-  }
-
-  .post__image {
-    height: 100%;
-    border-radius: 0;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
   }
 }
 </style>

@@ -1,14 +1,15 @@
 <template>
   <div class="base-input">
     <input
+      ref="input"
       class="base-input__input"
       :value="modelValue"
       :type="type"
       @input="$emit('update:modelValue', $event.target.value)"
     />
-    <label class="base-input__placeholder" :class="placeholderState">{{
-      label
-    }}</label>
+    <label class="base-input__placeholder" :class="placeholderState">
+      {{ label }}
+    </label>
   </div>
 </template>
 

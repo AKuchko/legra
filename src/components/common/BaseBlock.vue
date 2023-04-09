@@ -14,7 +14,7 @@ export default {
 .block {
   width: 100%;
   height: 100%;
-  border-radius: $border-radius-base;
+  border-radius: 32px;
   background: $color-light-bg;
 }
 </style>
