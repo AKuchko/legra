@@ -1,13 +1,18 @@
 <template>
   <div class="me">
     <CreateModal :modalVisibility="modalActive" @close-popup="hidePopup" />
-    <ProfileBar class="me__header" :user="userInfo">
+    <ProfileBar
+      class="me__header"
+      :user="userInfo"
+      @click="showWindow = !showWindow"
+    >
       <!-- <UserStats :user_id="userInfo.id" /> -->
     </ProfileBar>
     <BaseButton class="me__create" @click="showPopup">New post +</BaseButton>
     <div class="me__content">
       <PostsList :posts="userPosts" :status="postPreloaderState" />
     </div>
+    <AdditionalWindow :visible="showWindow" />
   </div>
 </template>
 
@@ -20,14 +25,17 @@
   import CreateModal from "@/components/CreateModal.vue";
   import { mapGetters, mapActions } from "vuex";
   import preloaderUtil from "@/utils/preloader.util";
+  import AdditionalWindow from "@/components/AdditionalWindow.vue";
   
   export default {
     name: "MeView",
-    components: { PostsList, ProfileBar, UserStats, BaseButton, CreateModal },
+    components: { PostsList, ProfileBar, UserStats, BaseButton, CreateModal, 
+     },
     data() {
       return {
         postPreloaderState: preloaderUtil,
         modalActive: false,
+        showWindow: false,
       }
     },
     mounted() {
@@ -44,11 +52,11 @@
       }),
       showPopup() {
         this.modalActive = true;
-        document.querySelector('body').classList.toggle('no-scroll');
+        document.querySelector('body').classList.add('no-scroll');
       },
       hidePopup() {
         this.modalActive = false;
-        document.querySelector('body').classList.toggle('no-scroll');
+        document.querySelector('body').classList.remove('no-scroll');
       }
     },
   };
@@ -56,6 +64,8 @@
   
   <style lang="scss">
   .me {
+    position: relative;
+    
     &__header {
         margin-bottom: 25px;
     }
