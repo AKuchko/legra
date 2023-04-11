@@ -1,14 +1,19 @@
 <template>
   <div class="main">
     <main-sidebar class="main__sidebar" />
-    <router-view />
+    <router-view v-slot="{ Component }">
+      <FadeTransition>
+        <component :is="Component" />
+      </FadeTransition>
+    </router-view>
   </div>
 </template>
 
 <script>
 import MainSidebar from "@/components/MainSidebar.vue";
+import FadeTransition from "@/components/FadeTransition.vue";
 export default {
-  components: { MainSidebar },
+  components: { MainSidebar, FadeTransition },
 };
 </script>
 
