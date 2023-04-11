@@ -19,9 +19,13 @@ export default {
 
 <style lang="scss">
 .main {
-  display: flex;
-  max-width: 52rem;
-  margin: auto;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 100%;
+  grid-column-gap: 10px;
+  width: 100vw;
+  height: 100svh;
+  overflow: hidden;
   padding: 50px;
 
   &__sidebar {
@@ -30,7 +34,6 @@ export default {
     left: 0;
     height: calc(100% - 100px);
     max-height: 20rem;
-    margin-right: 25px;
   }
 }
 </style>
