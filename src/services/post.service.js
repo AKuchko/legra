@@ -4,7 +4,7 @@ import store from "@/store";
 
 class PostService {
   fetchUserPosts({ user_id }) {
-    return client.get(`/posts/user/${user_id}`);
+    return client.get(`/api/posts/user/${user_id}`);
   }
 
   createPost({ post_media, post_cropper, post_caption = "" }) {
@@ -16,7 +16,7 @@ class PostService {
     formData.append('post_cropper', JSON.stringify(post_cropper));
     formData.append('post_caption', post_caption);
 
-    client.post('/posts/create', formData, 
+    client.post('/api/posts/create', formData, 
     {
       headers: {
           'Content-Type': 'multipart/form-data'

@@ -51,7 +51,7 @@ class AuthService {
   }
 
   fetchUserInfo() {
-    return client.get("/users/me");
+    return client.get("/api/users/me");
   }
 
   register({ email, password }) {
