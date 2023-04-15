@@ -24,7 +24,7 @@ export default {
       return this.userInfo.user_id === this.comment.user_id;
     },
     userLink() {
-      return this.isMyComment ? "me" : `user/${this.comment.user_id}`;
+      return { name: "account", params: { user_id: this.comment.user_id } };
     },
   },
 };
@@ -33,6 +33,7 @@ export default {
 <style lang="scss">
 .comment {
   display: flex;
+  font-size: $font-small;
 
   &__content {
     padding: 10px;

@@ -1,21 +1,35 @@
 <template>
-  <div class="post">{{ post_id }}</div>
+  <div class="comment-view">
+    <!-- <post-template :post="post" /> -->
+    <comment-list :comments="comments" />
+  </div>
 </template>
 
 <script>
-import { ref } from "vue";
+// import PostTemplate from "@/components/PostTemplate.vue";
+import CommentList from "@/components/CommentList.vue";
+
+import commentService from "@/services/comment.service.js";
+import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 export default {
   name: "UserPost",
-  props: {
-    posts: { type: Array, default: () => [] },
-  },
+  components: { CommentList },
   setup() {
     const route = useRoute();
-    const post_id = ref(route.params.post_id);
+    const post_id = route.params.post_id;
+    const comments = ref([]);
+    const post = ref({});
+
+    onMounted(() => {
+      commentService
+        .getComments({ post_id })
+        .then((res) => (comments.value = res.data));
+    });
 
     return {
-      post_id,
+      comments,
+      post,
     };
   },
 };

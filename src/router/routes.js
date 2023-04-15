@@ -42,6 +42,7 @@ export default [
         children: [
           {
             path: ":user_id",
+            name: "account",
             component: () => import("@/views/UserAccount.vue"),
           },
           {

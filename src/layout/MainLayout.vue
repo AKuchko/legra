@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <main-sidebar class="main__sidebar" />
-    <view-window>
+    <view-window class="main__window">
       <router-view />
     </view-window>
   </div>
