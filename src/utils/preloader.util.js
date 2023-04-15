@@ -21,4 +21,4 @@ class PreloaderUtil {
   }
 }
 
-export default new PreloaderUtil();
+export default PreloaderUtil;

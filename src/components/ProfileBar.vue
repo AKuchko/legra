@@ -12,7 +12,6 @@
       </h3>
       <p class="profile-bar__usernote">
         {{ user.user_description }}
-        <!-- <Icon icon="mdi:pencil" /> -->
       </p>
     </div>
     <slot></slot>
@@ -24,7 +23,6 @@
 import BaseProfileImage from "./common/BaseProfileImage.vue";
 import BaseBlock from "./common/BaseBlock.vue";
 import { Icon } from "@iconify/vue";
-import { mapGetters } from "vuex";
 
 export default {
   name: "ProfileBar",

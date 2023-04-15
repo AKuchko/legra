@@ -1,19 +1,17 @@
 <template>
   <div class="main">
     <main-sidebar class="main__sidebar" />
-    <router-view v-slot="{ Component }">
-      <FadeTransition>
-        <component :is="Component" />
-      </FadeTransition>
-    </router-view>
+    <view-window>
+      <router-view />
+    </view-window>
   </div>
 </template>
 
 <script>
 import MainSidebar from "@/components/MainSidebar.vue";
-import FadeTransition from "@/components/FadeTransition.vue";
+import ViewWindow from "@/components/ViewWindow.vue";
 export default {
-  components: { MainSidebar, FadeTransition },
+  components: { MainSidebar, ViewWindow },
 };
 </script>
 
@@ -24,9 +22,8 @@ export default {
   grid-template-rows: 100%;
   grid-column-gap: 10px;
   width: 100vw;
-  height: 100svh;
-  overflow: hidden;
-  padding: 50px;
+  height: 100vh;
+  padding: 0 50px;
 
   &__sidebar {
     position: sticky;

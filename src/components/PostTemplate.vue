@@ -19,9 +19,9 @@
           <Icon icon="ph:heart" width="25" />
           <p class="post__button-text">{{ post.likes }} likes</p>
         </div>
-        <div class="post__button">
+        <router-link :to="`/post/${post.post_id}`" class="post__button">
           <Icon icon="ph:chat-teardrop" width="25" />
-        </div>
+        </router-link>
       </div>
       <div class="post__caption">
         {{ post.caption }}
