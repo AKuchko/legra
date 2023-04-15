@@ -1,61 +1,45 @@
 <template>
-  <div class="user">
-    <ProfileBar class="user__header" :user="user">
-      <UserStats :user_id="user.user_id" />
-    </ProfileBar>
-    <PostsList :posts="posts" :status="postPreloaderState" />
-  </div>
+  <router-view v-slot="{ Component }" :user="user" :posts="posts">
+    <transition-slide>
+      <component :is="Component" />
+    </transition-slide>
+  </router-view>
 </template>
 
 <script>
-/* eslint-disable */ 
-import PostsList from "@/components/PostsList.vue";
-import BasePreloader from "@/components/common/BasePreloader.vue";
-import ProfileBar from "@/components/ProfileBar.vue";
-import UserStats from "@/components/UserStats.vue";
+import TransitionSlide from "@/components/TransitionSlide.vue";
+import UserAccount from "./UserAccount.vue";
 import postService from "@/services/post.service";
 import userService from "@/services/user.service";
-import preloaderUtil from "@/utils/preloader.util";
 
 export default {
   name: "UserView",
-  components: { PostsList, BasePreloader, ProfileBar, UserStats },
+  components: { TransitionSlide, UserAccount },
   data() {
     return {
       user_id: null,
       user: {},
       posts: [],
-      postPreloaderState: preloaderUtil,
-      userPreloaderState: null,
     };
   },
   mounted() {
-    this.user_id = this.$route.params.id;
+    this.user_id = this.$route.params.user_id;
 
     // Достаем информацию о пользователе
-    userService.fetchUserInfo({ user_id: this.user_id })
-      .then(user_info => {
-        this.user = user_info.data
+    userService
+      .fetchUserInfo({ user_id: this.user_id })
+      .then((user_info) => {
+        this.user = user_info.data;
         // this.userPreloaderState.setState("loaded")
       })
       .catch(() => {
         // this.userPreloaderState.setState("error")
       });
-    
+
     // Достаем посты пользователя
-    postService.fetchUserPosts({ user_id: this.user_id })
-      .then(user_posts => {
-        this.posts = user_posts.data
-        this.postPreloaderState.setState('loaded')
-      })
-      .catch(() => {
-        this.postPreloaderState.setState('error')
-      });
+    postService.fetchUserPosts({ user_id: this.user_id }).then((user_posts) => {
+      this.posts = user_posts.data;
+    });
   },
 };
 </script>
-
-<style lang="scss">
-.user {
-}
-</style>

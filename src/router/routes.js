@@ -1,6 +1,5 @@
 import AuthMiddleware from "./middleware/auth.middleware";
 import fetchUser from "./middleware/fetchUser.middleware";
-// import fetchPosts from "./middleware/fetchUserPosts.middleware";
 
 export default [
   {
@@ -37,14 +36,30 @@ export default [
         component: () => import("@/views/MainView.vue"),
       },
       {
-        path: "/user/:id",
+        path: "/user",
         name: "user",
         component: () => import("@/views/UserView.vue"),
+        children: [
+          {
+            path: ":user_id",
+            component: () => import("@/views/UserAccount.vue"),
+          },
+          {
+            path: "/post/:post_id",
+            component: () => import("@/views/UserPost.vue"),
+          },
+        ],
       },
       {
         path: "/me",
         name: "me",
         component: () => import("@/views/MeView.vue"),
+        children: [
+          {
+            path: "/post/:post_id",
+            component: () => import("@/views/UserPost.vue"),
+          },
+        ],
       },
       {
         path: "messages",

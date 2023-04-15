@@ -12,7 +12,6 @@
     <div class="me__content">
       <PostsList :posts="userPosts" :status="postPreloaderState" />
     </div>
-    <AdditionalWindow :visible="showWindow" />
   </div>
 </template>
 
@@ -25,12 +24,10 @@
   import CreateModal from "@/components/CreateModal.vue";
   import { mapGetters, mapActions } from "vuex";
   import preloaderUtil from "@/utils/preloader.util";
-  import AdditionalWindow from "@/components/AdditionalWindow.vue";
   
   export default {
     name: "MeView",
-    components: { PostsList, ProfileBar, UserStats, BaseButton, CreateModal, 
-     },
+    components: { PostsList, ProfileBar, UserStats, BaseButton, CreateModal },
     data() {
       return {
         postPreloaderState: preloaderUtil,
