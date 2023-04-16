@@ -16,14 +16,17 @@ export default {
 <style>
 .slide-enter-active,
 .slide-leave-active {
+  position: relative;
   transition: 0.5s;
 }
 
 .slide-enter-from {
-  transform: translate(100vw, 0);
+  position: absolute;
+  transform: translate(200%, 0);
 }
 
 .slide-leave-to {
-  transform: translate(-100vw, 0);
+  position: absolute;
+  transform: translate(-200%, 0);
 }
 </style>

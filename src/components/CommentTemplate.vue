@@ -24,7 +24,7 @@ export default {
       return this.userInfo.user_id === this.comment.user_id;
     },
     userLink() {
-      return { name: "account", params: { user_id: this.comment.user_id } };
+      return { name: "user", params: { user_id: this.comment.user_id } };
     },
   },
 };

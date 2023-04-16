@@ -1,7 +1,9 @@
 <template>
   <div class="user">
-    <ProfileBar class="user__header" :user="user" />
-    <PostsList :posts="posts" :status="postsPrelodaer" />
+    <div class="user__wrapper">
+      <ProfileBar class="user__header" :user="user" />
+      <PostsList :posts="posts" :status="postsPrelodaer" />
+    </div>
   </div>
 </template>
 
@@ -34,4 +36,9 @@
   </script>
 
   <style>
+  .user {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
   </style>
