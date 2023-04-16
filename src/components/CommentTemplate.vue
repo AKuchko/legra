@@ -1,33 +1,34 @@
 <template>
   <div class="comment" :class="{ 'comment--me': isMyComment }">
     <router-link class="comment__profile-image" :to="userLink">
-      <BaseProfileImage :size="30" :imageData="comment.profile_image" />
+      <BaseProfileImage :size="30" :imageData="props.comment.profile_image" />
     </router-link>
     <div class="comment__content">
-      <p class="comment__nickname">{{ comment.user_name }}</p>
-      <p class="comment__text">{{ comment.comment_text }}</p>
+      <p class="comment__nickname">{{ props.comment.user_name }}</p>
+      <p class="comment__text">{{ props.comment.comment_text }}</p>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import BaseProfileImage from "./common/BaseProfileImage.vue";
-import { mapGetters } from "vuex";
 
-export default {
-  name: "CommentTemplate",
-  components: { BaseProfileImage },
-  props: { comment: { type: Object, default: () => {} } },
-  computed: {
-    ...mapGetters(["userInfo"]),
-    isMyComment() {
-      return this.userInfo.user_id === this.comment.user_id;
-    },
-    userLink() {
-      return { name: "user", params: { user_id: this.comment.user_id } };
-    },
-  },
-};
+import { computed, defineProps } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+const props = defineProps({
+  comment: { type: Object, default: () => {} },
+});
+
+const userInfo = computed(() => store.getters.userInfo);
+const isMyComment = computed(
+  () => userInfo.value.user_id === props.comment.user_id
+);
+const userLink = computed(() => ({
+  name: "user",
+  params: { user_id: props.comment.user_id },
+}));
 </script>
 
 <style lang="scss">

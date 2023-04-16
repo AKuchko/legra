@@ -4,13 +4,11 @@
   </transition>
 </template>
 
-<script>
-export default {
-  name: "TransitionSlide",
-  props: {
+<script setup>
+  import { defineProps } from 'vue';
+  const props = defineProps({
     direction: { type: String, default: "forward" },
-  },
-};
+  });
 </script>
 
 <style>

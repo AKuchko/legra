@@ -1,44 +1,35 @@
 <template>
   <div class="user">
     <div class="user__wrapper">
-      <ProfileBar class="user__header" :user="user" />
-      <PostsList :posts="posts" :status="postsPrelodaer" />
+      <ProfileBar class="user__header" :user="props.user" />
+      <PostsList :posts="props.posts" :status="postsPrelodaer" />
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 /* eslint-disable */
   import PostsList from "@/components/PostsList.vue";
   import ProfileBar from "@/components/ProfileBar.vue";
   import preloaderUtil from "@/utils/preloader.util";
-  import { ref, onMounted } from "vue";
+
+  import { ref, onMounted, defineProps } from "vue";
   
-  export default {
-    name: "UserAccount",
-    components: { PostsList, ProfileBar },
-    props: {
-      user: { type: Object, default: () => {} },
-      posts: { type: Array, default: () => [] },
-    },
-    setup() {
-      const postsPrelodaer = ref(new preloaderUtil());
+  const postsPrelodaer = ref(new preloaderUtil());
+  const props = defineProps({
+    user: { type: Object, default: () => {} },
+    posts: { type: Array, default: () => [] },
+  });
 
-      onMounted(() => {
-        postsPrelodaer.value.setState("loaded");
-      })
+  onMounted(() => {
+    postsPrelodaer.value.setState("loaded");
+  })
+</script>
 
-      return {
-        postsPrelodaer,
-      };
-    },
-  };
-  </script>
-
-  <style>
+<style>
   .user {
     display: flex;
     justify-content: center;
     width: 100%;
   }
-  </style>
+</style>
