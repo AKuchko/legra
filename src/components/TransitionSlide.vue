@@ -5,10 +5,10 @@
 </template>
 
 <script setup>
-  import { defineProps } from 'vue';
-  const props = defineProps({
-    direction: { type: String, default: "forward" },
-  });
+// import { defineProps } from "vue";
+// const props = defineProps({
+//   direction: { type: String, default: "forward" },
+// });
 </script>
 
 <style>
@@ -20,11 +20,13 @@
 
 .slide-enter-from {
   position: absolute;
-  transform: translate(200%, 0);
+  height: 100vh;
+  transform: translate(100%, 0);
 }
 
 .slide-leave-to {
   position: absolute;
-  transform: translate(-200%, 0);
+  height: 100vh;
+  transform: translate(-100%, 0);
 }
 </style>

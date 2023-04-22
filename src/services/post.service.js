@@ -1,10 +1,14 @@
 /* eslint-disable */ 
 import client from "@/http/client";
-import store from "@/store";
+// import store from "@/store";
 
 class PostService {
   fetchUserPosts({ user_id }) {
     return client.get(`/api/posts/user/${user_id}`);
+  }
+
+  getPost({ post_id }) {
+    return client.get(`/api/posts/post/${post_id}`);
   }
 
   createPost({ post_media, post_cropper, post_caption = "" }) {
@@ -16,7 +20,7 @@ class PostService {
     formData.append('post_cropper', JSON.stringify(post_cropper));
     formData.append('post_caption', post_caption);
 
-    client.post('/api/posts/create', formData, 
+    return client.post('/api/posts/create', formData, 
     {
       headers: {
           'Content-Type': 'multipart/form-data'
@@ -24,8 +28,9 @@ class PostService {
     });
   }
 
-  editPost({ image = "", note = "" }) {}
-  deletePost({ post_id }) {}
+  deletePost({ post_id }) {
+    return client.delete(`/api/posts/${post_id}`);
+  }
 }
 
 export default new PostService();

@@ -1,7 +1,7 @@
 <template>
   <Swiper class="base-media-slider">
     <SwiperSlide
-      v-for="media in mediaList"
+      v-for="media in props.mediaList"
       :key="media"
       class="base-media-slider__slide"
     >
@@ -10,17 +10,14 @@
   </Swiper>
 </template>
 
-<script>
+<script setup>
+import { defineProps } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 
-export default {
-  name: "BaseMediaSlider",
-  components: { Swiper, SwiperSlide },
-  props: {
-    mediaList: { type: Array, default: () => [] },
-  },
-};
+const props = defineProps({
+  mediaList: { type: Array, default: () => [] },
+});
 </script>
 
 <style lang="scss">

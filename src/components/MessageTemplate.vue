@@ -1,38 +1,41 @@
 <template>
-  <div class="comment" :class="{ 'comment--me': isMyComment }">
-    <router-link class="comment__profile-image" :to="userLink">
-      <BaseProfileImage :size="30" :imageData="props.comment.profile_image" />
+  <div class="message" :class="{ 'message--me': isMymessage }">
+    <router-link class="message__profile-image" :to="userLink">
+      <base-profile-image :size="30" :imageData="props.message.profile_image" />
     </router-link>
-    <div class="comment__content">
-      <p class="comment__nickname">{{ props.comment.user_name }}</p>
-      <p class="comment__text">{{ props.comment.comment_text }}</p>
+    <div class="message__content">
+      <div v-if="props.message.message.media" class="message__media">
+        <media-viewer :media="props.message.message.media" />
+      </div>
+      <p class="message__nickname">{{ props.message.user_name }}</p>
+      <p class="message__text">{{ props.message.message_text }}</p>
     </div>
   </div>
 </template>
 
 <script setup>
 import BaseProfileImage from "./common/BaseProfileImage.vue";
-
+import MediaViewer from "./MediaViewer.vue";
 import { computed, defineProps } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
 const props = defineProps({
-  comment: { type: Object, default: () => {} },
+  message: Object,
 });
 
 const userInfo = computed(() => store.getters.userInfo);
-const isMyComment = computed(
-  () => userInfo.value.user_id === props.comment.user_id
+const isMymessage = computed(
+  () => userInfo.value.user_id === props.message.user_id
 );
 const userLink = computed(() => ({
   name: "user",
-  params: { user_id: props.comment.user_id },
+  params: { user_id: props.message.user_id },
 }));
 </script>
 
 <style lang="scss">
-.comment {
+.message {
   display: flex;
   font-size: $font-small;
 
@@ -41,6 +44,9 @@ const userLink = computed(() => ({
     border-radius: 10px;
     text-align: left;
     background: #ececec;
+  }
+
+  &__media {
   }
 
   &__nickname {
@@ -53,14 +59,14 @@ const userLink = computed(() => ({
   }
 }
 
-.comment--me {
+.message--me {
   flex-direction: row-reverse;
 
-  .comment__profile-image {
+  .message__profile-image {
     margin: auto 0 0 10px;
   }
 
-  .comment__content {
+  .message__content {
     color: $color-light;
     background: $color-accent;
   }

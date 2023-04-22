@@ -1,42 +1,66 @@
 <script setup>
-// import PostTemplate from "@/components/PostTemplate.vue";
-import CommentList from "@/components/CommentList.vue";
+// components
+import PostTemplate from "@/components/PostTemplate.vue";
+import MessageList from "@/components/MessageList.vue";
 import MessageInputBox from "@/components/MessageInputBox.vue";
-
+// util
 import commentService from "@/services/comment.service.js";
-import { ref, onMounted } from "vue";
+import postService from "@/services/post.service.js";
+import { ref, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
 
+const comments = ref([]);
+const post = ref({});
+const message_text = ref("");
+// const message_media = ref([]);
 const route = useRoute();
 const post_id = route.params.post_id;
-const comments = ref([]);
-const message_text = ref("");
 
 function updateMessageText(value) {
   message_text.value = value;
 }
+function sendMessage() {
+  console.log(message_text.value);
+}
 
-onMounted(() => {
+onBeforeMount(() => {
   commentService
     .getComments({ post_id })
     .then((res) => (comments.value = res.data));
+
+  postService.getPost({ post_id }).then((res) => {
+    post.value = res.data;
+  });
 });
 </script>
 
 <template>
   <div class="user-post-comments">
-    <!-- <post-template :post="post" /> -->
-    <comment-list :comments="comments" />
+    <div class="user-post-comments__content">
+      <post-template :post="post" />
+      <message-list
+        class="user-post-comments__comment_list"
+        :messages="comments"
+      />
+    </div>
     <message-input-box
       :message_model="message_text"
       @on-message-input="updateMessageText"
+      @send-message="sendMessage"
     />
   </div>
 </template>
 
-<style>
+<style lang="scss">
 .user-post-comments {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+
+  &__content {
+    width: 100%;
+    overflow-y: scroll;
+  }
 }
 </style>

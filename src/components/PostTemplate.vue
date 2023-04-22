@@ -1,62 +1,59 @@
 <template>
-  <BaseBlock class="post">
-    <div class="post__media">
-      <img
-        v-if="!isMediaMultiple"
-        :src="post.media[0]"
-        alt=""
-        class="post__media-inner"
-      />
-      <BaseMediaSlider
-        v-else
-        :mediaList="post.media"
-        class="post__media-inner"
-      />
-    </div>
-    <div class="post__bottom">
-      <div class="post__actions">
-        <div class="post__button">
-          <Icon icon="ph:heart" width="25" />
-          <p class="post__button-text">{{ post.likes }} likes</p>
+  <div class="post">
+    <div class="post__content">
+      <div v-if="isPostLoaded" class="post__media">
+        <media-viewer :media="props.post.media" />
+      </div>
+      <div v-else class="post__media">
+        <base-preloader />
+      </div>
+      <div class="post__bottom">
+        <div class="post__actions">
+          <div class="post__button">
+            <Icon icon="ph:heart" width="25" />
+            <p class="post__button-text">{{ post.likes }} likes</p>
+          </div>
+          <router-link :to="commentRoute" class="post__button">
+            <Icon icon="ph:chat-teardrop" width="25" />
+          </router-link>
         </div>
-        <router-link :to="commentsRoute" class="post__button">
-          <Icon icon="ph:chat-teardrop" width="25" />
-        </router-link>
-      </div>
-      <div class="post__caption">
-        {{ post.caption }}
+        <div class="post__caption">
+          {{ post.caption }}
+        </div>
       </div>
     </div>
-  </BaseBlock>
+  </div>
 </template>
 
-<script>
-/* eslint-disable */
-import BaseBlock from "./common/BaseBlock.vue";
-import BaseMediaSlider from "./common/BaseMediaSlider.vue";
+<script setup>
+import { computed, defineProps } from "vue";
 import { Icon } from "@iconify/vue";
+import BasePreloader from "./common/BasePreloader.vue";
+import MediaViewer from "./MediaViewer.vue";
 
-export default {
-  name: "PostTemplate",
-  components: { BaseBlock, Icon, BaseMediaSlider },
-  props: {
-    post: { type: Object, default: () => {} },
-  },
-  computed: {
-    isMediaMultiple() {
-      return this.post.media.length > 1
-    },
-    commentsRoute() {
-      return { name: "comments", params: { post_id: `${this.post.post_id}` } };
-    },
-  },
-};
+const props = defineProps({
+  post: { type: Object, default: () => {} },
+});
+const isPostLoaded = computed(() => props.post.media);
+const commentRoute = computed(() => {
+  return { name: "comments", params: { post_id: `${props.post.post_id}` } };
+});
 </script>
 
 <style lang="scss">
 .post {
-  padding: 10px;
-  font-size: $font-small;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  &__content {
+    padding: 10px;
+    font-size: $font-small;
+    max-width: 25rem;
+    background: black;
+    border-radius: 15px;
+  }
 
   &__media {
     width: 100%;

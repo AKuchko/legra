@@ -1,13 +1,17 @@
 <template>
   <BaseBlock class="sidebar">
-    <a v-if="isUserStored" href="#/me" class="sidebar__profile">
+    <router-link
+      v-if="isUserStored"
+      :to="{ name: 'user', params: { user_id: 1 } }"
+      class="sidebar__profile"
+    >
       <BaseProfileImage
         class="sidebar__image"
         :size="40"
         :imageData="user.profile_image"
       />
       <h3 class="sidebar__username">@{{ user.profile_name }}</h3>
-    </a>
+    </router-link>
     <BasePreloader v-else />
     <ul class="sidebar__list">
       <li v-for="item in items" :key="item.id" class="sidebar__item">
