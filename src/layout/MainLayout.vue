@@ -10,8 +10,13 @@
 <script>
 import MainSidebar from "@/components/MainSidebar.vue";
 import ViewWindow from "@/components/ViewWindow.vue";
+import socket from "@/socket";
+
 export default {
   components: { MainSidebar, ViewWindow },
+  mounted() {
+    socket.connect();
+  },
 };
 </script>
 

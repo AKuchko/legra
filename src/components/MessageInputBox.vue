@@ -9,7 +9,6 @@ const props = defineProps({
 
 function sendOnEnter(event) {
   event.preventDefault();
-
   if (props.message_model) sendButton.value.click();
 }
 </script>
