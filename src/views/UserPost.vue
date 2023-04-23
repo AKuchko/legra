@@ -1,4 +1,5 @@
 <script setup>
+/* eslint-disable */
 // components
 import PostTemplate from "@/components/PostTemplate.vue";
 import MessageList from "@/components/MessageList.vue";
@@ -8,6 +9,7 @@ import commentService from "@/services/comment.service.js";
 import postService from "@/services/post.service.js";
 import { ref, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
+import socket from "@/socket";
 
 const comments = ref([]);
 const post = ref({});
@@ -20,17 +22,13 @@ function updateMessageText(value) {
   message_text.value = value;
 }
 function sendMessage() {
-  console.log(message_text.value);
+  commentService.postComment({ post_id, comment_text: message_text.value });
+  socket.emit("comment:add", { post_id, comment: "Bla" });
 }
 
 onBeforeMount(() => {
-  commentService
-    .getComments({ post_id })
-    .then((res) => (comments.value = res.data));
-
-  postService.getPost({ post_id }).then((res) => {
-    post.value = res.data;
-  });
+  commentService.getComments({ post_id }).then((res) => (comments.value = res.data));
+  postService.getPost({ post_id }).then((res) => (post.value = res.data));
 });
 </script>
 
