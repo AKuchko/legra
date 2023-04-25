@@ -35,7 +35,7 @@ onBeforeMount(() => {
 <template>
   <div class="user-post-comments">
     <div class="user-post-comments__content">
-      <post-template :post="post" />
+      <post-template :post="post" class="user-post-comments__post"/>
       <message-list
         class="user-post-comments__comment_list"
         :messages="comments"
@@ -55,6 +55,10 @@ onBeforeMount(() => {
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
+
+  &__post {
+    margin-bottom: 25px;
+  }
 
   &__content {
     width: 100%;

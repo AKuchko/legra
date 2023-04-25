@@ -4,11 +4,13 @@
       <base-profile-image :size="30" :imageData="props.message.profile_image" />
     </router-link>
     <div class="message__content">
-      <div v-if="props.message.message.media" class="message__media">
+      <p class="message__nickname">{{ props.message.user_name }}</p>
+      <div v-if="props.message.message.media.length" class="message__media">
         <media-viewer :media="props.message.message.media" />
       </div>
-      <p class="message__nickname">{{ props.message.user_name }}</p>
-      <p class="message__text">{{ props.message.message_text }}</p>
+      <p v-if="props.message.message.message_text" class="message__text">
+        {{ props.message.message.message_text }}
+      </p>
     </div>
   </div>
 </template>
@@ -41,12 +43,14 @@ const userLink = computed(() => ({
 
   &__content {
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 18px;
     text-align: left;
     background: #ececec;
   }
 
   &__media {
+    max-width: 20rem;
+    overflow: hidden;
   }
 
   &__nickname {
@@ -56,6 +60,10 @@ const userLink = computed(() => ({
 
   &__profile-image {
     margin: auto 10px 0 0;
+  }
+
+  &__text {
+    margin: 10px 0;
   }
 }
 
