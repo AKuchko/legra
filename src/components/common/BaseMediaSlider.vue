@@ -2,10 +2,10 @@
   <Swiper class="base-media-slider" :modules="[Pagination]" pagination>
     <SwiperSlide
       v-for="media in props.mediaList"
-      :key="media"
+      :key="media.data"
       class="base-media-slider__slide"
     >
-      <img :src="media" class="base-media-slider__media" />
+      <img :src="media.data" class="base-media-slider__media" />
     </SwiperSlide>
   </Swiper>
 </template>

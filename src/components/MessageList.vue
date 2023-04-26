@@ -8,12 +8,12 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="comment-list">
-    <ul class="comment-list__list">
+  <div class="message-list">
+    <ul class="message-list__list">
       <li
         v-for="message in props.messages"
-        :key="message.comment_id"
-        class="comment-list__comment"
+        :key="message.message_id"
+        class="message-list__message"
       >
         <message-template :message="message" />
       </li>
@@ -21,8 +21,8 @@ const props = defineProps({
   </div>
 </template>
 
-<style lang="scss" scoped>
-.comment-list {
+<style lang="scss">
+.message-list {
   display: flex;
   justify-content: center;
   width: 100%;
@@ -31,7 +31,7 @@ const props = defineProps({
     max-width: 25rem;
   }
 
-  &__comment:not(:last-child) {
+  &__message:not(:last-child) {
     margin-bottom: 10px;
   }
 }

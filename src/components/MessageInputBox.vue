@@ -10,14 +10,14 @@ const files = ref([]);
 
 function sendOnEnter(event) {
   event.preventDefault();
-  if (props.message_model) sendButton.value.click();
+  sendButton.value.click();
 }
 function addFiles({ _files_url, _files_data }) {
   for (let i = 0; i < _files_url.length; i++) {
     files.value.push(_files_url[i]);
   }
 
-  emit("on-media-add", _files_data);
+  emit("on-media-add", { _files_data });
 }
 </script>
 

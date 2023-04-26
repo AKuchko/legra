@@ -5,7 +5,7 @@ import PostTemplate from "@/components/PostTemplate.vue";
 import MessageList from "@/components/MessageList.vue";
 import MessageInputBox from "@/components/MessageInputBox.vue";
 // util
-import commentService from "@/services/comment.service.js";
+import messageService from "@/services/message.service";
 import postService from "@/services/post.service.js";
 import { ref, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
@@ -15,23 +15,23 @@ const route = useRoute();
 const post_id = route.params.post_id;
 const post = ref({});
 const comments = ref([]);
-const comment_text = ref("");
-const comment_media = new DataTransfer();
+const message_text = ref("");
+const message_media = new DataTransfer();
 
-const updateCommentText = (value) => (comment_text.value = value);
+const updateCommentText = (value) => (message_text.value = value);
 const createComment = () => {
-  commentService.postComment({ post_id, comment_text: comment_text.value, comment_media });
+  messageService.postMessage({ chat_id: post.value.chat_id, message_text: message_text.value, message_media });
 }
 const updateCommentMedia = ({ _files_data }) => {
   for (let i = 0; i < _files_data.length; i++) {
-    comment_media.items.add(_files_data[i]);
+    message_media.items.add(_files_data[i]);
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   socket.on(`comment:add:${post_id}`, (newComment) => (comments.value.push(newComment)));
-  postService.getPost({ post_id }).then((res) => (post.value = res.data));
-  commentService.getComments({ post_id }).then((res) => (comments.value = res.data));
+  post.value = await postService.getPost({ post_id }).then((r) => r.data);
+  comments.value = await messageService.getMessages({ chat_id: post.value.chat_id }).then((r) => r.data);
 });
 onUnmounted(() => {
   socket.off(`comment:add:${post_id}`);
@@ -48,7 +48,7 @@ onUnmounted(() => {
       />
     </div>
     <message-input-box
-      :message_model="comment_text"
+      :message_model="message_text"
       @on-media-add="updateCommentMedia"
       @on-message-input="updateCommentText"
       @send-message="createComment"

@@ -6,15 +6,19 @@ import userService from "@/services/user.service";
 
 import { ref, computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 
 const route = useRoute();
 const user = ref({});
 const posts = ref([]);
-const showUserAccount = computed(() => !route.params.post_id);
+const store = useStore();
 
 let user_id = route.params.user_id;
 
-function updateUser() {
+const showUserAccount = computed(() => !route.params.post_id);
+const isMyAccount = computed(() => store.getters.userInfo.user_id === user_id);
+
+function fetchAccount() {
   userService.fetchUserInfo({ user_id }).then((user_info) => {
     user.value = user_info.data;
   });
@@ -30,18 +34,23 @@ watch(route, () => {
   if (!user_id) return;
 
   setTimeout(() => {
-    updateUser();
+    fetchAccount();
   }, 150);
 });
 
 onMounted(() => {
-  updateUser();
+  fetchAccount();
 });
 </script>
 
 <template>
   <transition-slide>
-    <user-account v-show="showUserAccount" :user="user" :posts="posts" />
+    <user-account
+      v-show="showUserAccount"
+      :user="user"
+      :posts="posts"
+      :owner="isMyAccount"
+    />
   </transition-slide>
   <router-view v-slot="{ Component }">
     <transition-slide>

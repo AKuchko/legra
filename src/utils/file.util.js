@@ -1,5 +1,4 @@
 const readFileURL = (_file) => {
-  console.log(_file);
   const tempReader = new FileReader();
 
   return new Promise((resolve, reject) => {

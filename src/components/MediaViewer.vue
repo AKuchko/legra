@@ -11,7 +11,7 @@ const isMediaMultiple = computed(() => props.media.length > 1);
 <template>
   <div class="media-viewer">
     <div v-if="!isMediaMultiple" class="media-viewer__simple-view">
-      <img :src="props.media[0]" class="media-viewer__image" />
+      <img :src="props.media[0].data" class="media-viewer__image" />
     </div>
     <div v-else class="media-viewer__slider">
       <base-media-slider :mediaList="props.media" />
