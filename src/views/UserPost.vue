@@ -7,29 +7,35 @@ import MessageInputBox from "@/components/MessageInputBox.vue";
 // util
 import commentService from "@/services/comment.service.js";
 import postService from "@/services/post.service.js";
-import { ref, onBeforeMount } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import socket from "@/socket";
 
-const comments = ref([]);
-const post = ref({});
-const message_text = ref("");
-// const message_media = ref([]);
 const route = useRoute();
 const post_id = route.params.post_id;
+const post = ref({});
+const comments = ref([]);
+const comment_text = ref("");
+const comment_media = new DataTransfer();
 
-function updateMessageText(value) {
-  message_text.value = value;
+const updateCommentText = (value) => (comment_text.value = value);
+const createComment = () => {
+  commentService.postComment({ post_id, comment_text: comment_text.value, comment_media });
 }
-function sendMessage() {
-  commentService.postComment({ post_id, comment_text: message_text.value });
-  socket.emit("comment:add", { post_id, comment: "Bla" });
+const updateCommentMedia = ({ _files_data }) => {
+  for (let i = 0; i < _files_data.length; i++) {
+    comment_media.items.add(_files_data[i]);
+  }
 }
 
-onBeforeMount(() => {
-  commentService.getComments({ post_id }).then((res) => (comments.value = res.data));
+onMounted(() => {
+  socket.on(`comment:add:${post_id}`, (newComment) => (comments.value.push(newComment)));
   postService.getPost({ post_id }).then((res) => (post.value = res.data));
+  commentService.getComments({ post_id }).then((res) => (comments.value = res.data));
 });
+onUnmounted(() => {
+  socket.off(`comment:add:${post_id}`);
+})
 </script>
 
 <template>
@@ -42,9 +48,10 @@ onBeforeMount(() => {
       />
     </div>
     <message-input-box
-      :message_model="message_text"
-      @on-message-input="updateMessageText"
-      @send-message="sendMessage"
+      :message_model="comment_text"
+      @on-media-add="updateCommentMedia"
+      @on-message-input="updateCommentText"
+      @send-message="createComment"
     />
   </div>
 </template>

@@ -3,7 +3,7 @@ import BaseFiledropper from "./common/BaseFiledropper.vue";
 import BaseFilepicker from "./common/BaseFilepicker.vue";
 import { ref, defineProps, defineEmits } from "vue";
 
-const emit = defineEmits(["on-message-input", "send-message"]);
+const emit = defineEmits(["on-message-input", "on-media-add", "send-message"]);
 const props = defineProps({ message_model: { type: String, default: "" } });
 const sendButton = ref(null);
 const files = ref([]);
@@ -12,11 +12,12 @@ function sendOnEnter(event) {
   event.preventDefault();
   if (props.message_model) sendButton.value.click();
 }
-function addFiles(_files) {
-  for (let _file of _files) {
-    files.value.push(_file);
+function addFiles({ _files_url, _files_data }) {
+  for (let i = 0; i < _files_url.length; i++) {
+    files.value.push(_files_url[i]);
   }
-  console.log(files.value);
+
+  emit("on-media-add", _files_data);
 }
 </script>
 

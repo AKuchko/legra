@@ -5,11 +5,11 @@
     </router-link>
     <div class="message__content">
       <p class="message__nickname">{{ props.message.user_name }}</p>
-      <div v-if="props.message.message.media.length" class="message__media">
-        <media-viewer :media="props.message.message.media" />
+      <div v-if="props.message.media.length" class="message__media">
+        <media-viewer :media="props.message.media" />
       </div>
-      <p v-if="props.message.message.message_text" class="message__text">
-        {{ props.message.message.message_text }}
+      <p v-if="props.message.comment_text" class="message__text">
+        {{ props.message.comment_text }}
       </p>
     </div>
   </div>
