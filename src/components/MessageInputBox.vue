@@ -1,55 +1,70 @@
 <script setup>
 import BaseFiledropper from "./common/BaseFiledropper.vue";
 import BaseFilepicker from "./common/BaseFilepicker.vue";
-import { ref, defineProps, defineEmits } from "vue";
+import FilesViewer from "./FilesViewer.vue";
+import { ref, defineEmits } from "vue";
 
-const emit = defineEmits(["on-message-input", "on-media-add", "send-message"]);
-const props = defineProps({ message_model: { type: String, default: "" } });
+const emit = defineEmits(["on-message-input", "send-message"]);
+const message_text = ref("");
 const sendButton = ref(null);
 const files = ref([]);
 
+function updatemMessageText(event) {
+  message_text.value = event.target.innerText;
+}
 function sendOnEnter(event) {
   event.preventDefault();
   sendButton.value.click();
 }
-function addFiles({ _files_url, _files_data }) {
-  for (let i = 0; i < _files_url.length; i++) {
-    files.value.push(_files_url[i]);
+function addMedia({ _files }) {
+  for (let i = 0; i < _files.length; i++) {
+    files.value.push(_files[i]);
   }
-
-  emit("on-media-add", { _files_data });
+}
+function removeMedia(_id) {
+  files.value = files.value.filter((_file) => _file.id != _id);
+}
+function sendMessage() {
+  const message_media = new DataTransfer();
+  for (let i = 0; i < files.value.length; i++) {
+    message_media.items.add(files.value[i].file);
+  }
+  emit("send-message", { message_text: message_text.value, message_media });
 }
 </script>
 
 <template>
   <div class="message-input-box">
-    <base-filedropper @file-drop="addFiles" />
+    <base-filedropper @file-drop="addMedia" />
     <div class="message-input-box__message-wrapper">
-      <div
-        class="message-input-box__message-text"
-        contenteditable="true"
-        :value="props.message_model"
-        @input="emit('on-message-input', $event.target.innerText)"
-        @keydown.enter.exact.prevent="sendOnEnter"
-      ></div>
-      <base-filepicker>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 256 256"
-        >
-          <path
-            fill="currentColor"
-            d="M209.66 122.34a8 8 0 0 1 0 11.32l-82.05 82a56 56 0 0 1-79.2-79.21l99.26-100.72a40 40 0 1 1 56.61 56.55L105 193a24 24 0 1 1-34-34l83.3-84.62a8 8 0 1 1 11.4 11.22l-83.31 84.71a8 8 0 1 0 11.27 11.36L192.93 81A24 24 0 1 0 159 47L59.76 147.68a40 40 0 1 0 56.53 56.62l82.06-82a8 8 0 0 1 11.31.04Z"
-          />
-        </svg>
-      </base-filepicker>
+      <files-viewer :images="files" @delete="removeMedia" />
+      <div class="message-input-box__input">
+        <div
+          class="message-input-box__message-text"
+          contenteditable="true"
+          :value="message_text"
+          @input="updatemMessageText"
+          @keydown.enter.exact.prevent="sendOnEnter"
+        ></div>
+        <base-filepicker>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 256 256"
+          >
+            <path
+              fill="currentColor"
+              d="M209.66 122.34a8 8 0 0 1 0 11.32l-82.05 82a56 56 0 0 1-79.2-79.21l99.26-100.72a40 40 0 1 1 56.61 56.55L105 193a24 24 0 1 1-34-34l83.3-84.62a8 8 0 1 1 11.4 11.22l-83.31 84.71a8 8 0 1 0 11.27 11.36L192.93 81A24 24 0 1 0 159 47L59.76 147.68a40 40 0 1 0 56.53 56.62l82.06-82a8 8 0 0 1 11.31.04Z"
+            />
+          </svg>
+        </base-filepicker>
+      </div>
     </div>
     <button
       ref="sendButton"
       class="message-input-box__button"
-      @click="emit('send-message')"
+      @click="sendMessage"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -84,6 +99,7 @@ function addFiles({ _files_url, _files_data }) {
   &__message-wrapper {
     display: flex;
     align-items: center;
+    flex-direction: column;
     width: 100%;
     max-width: 25rem;
     height: 100%;
@@ -93,6 +109,12 @@ function addFiles({ _files_url, _files_data }) {
     border-radius: 8px;
     overflow-y: scroll;
     background: $color-light-bg;
+  }
+
+  &__input {
+    display: flex;
+    align-items: center;
+    width: 100%;
   }
 
   &__message-text {

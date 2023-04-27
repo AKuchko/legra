@@ -11,16 +11,16 @@ const setDragOver = (value) => (dragOver.value = value);
 
 async function sendFiles(event) {
   const _files_data = event.dataTransfer.files;
-  const _files_url = new Array();
+  const _files = new Array();
 
   for (let i = 0; i < _files_data.length; i++) {
     if (_files_data[i].type.split("/")[0] !== "image") continue;
 
     const file_url = await readFileURL(_files_data[i]);
 
-    _files_url.push({ id: Date.now(), url: file_url });
+    _files.push({ id: Date.now(), url: file_url, file: _files_data[i] });
   }
-  emit("file-drop", { _files_url, _files_data });
+  emit("file-drop", { _files });
 }
 // body file drag logic
 function bodyDragEneter(event) {

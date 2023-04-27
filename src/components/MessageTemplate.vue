@@ -1,20 +1,3 @@
-<template>
-  <div class="message" :class="{ 'message--me': isMymessage }">
-    <router-link class="message__profile-image" :to="userLink">
-      <base-profile-image :size="30" :imageData="props.message.profile_image" />
-    </router-link>
-    <div class="message__content">
-      <p class="message__nickname">{{ props.message.user_name }}</p>
-      <div v-if="props.message.media.length" class="message__media">
-        <media-viewer :media="props.message.media" />
-      </div>
-      <p v-if="props.message.message_text" class="message__text">
-        {{ props.message.message_text }}
-      </p>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import BaseProfileImage from "./common/BaseProfileImage.vue";
 import MediaViewer from "./MediaViewer.vue";
@@ -35,6 +18,23 @@ const userLink = computed(() => ({
   params: { user_id: props.message.user_id },
 }));
 </script>
+
+<template>
+  <div class="message" :class="{ 'message--me': isMymessage }">
+    <router-link class="message__profile-image" :to="userLink">
+      <base-profile-image :size="30" :imageData="props.message.profile_image" />
+    </router-link>
+    <div class="message__content">
+      <p class="message__nickname">{{ props.message.user_name }}</p>
+      <div v-if="props.message.media.length" class="message__media">
+        <media-viewer :media="props.message.media" />
+      </div>
+      <p v-if="props.message.message_text" class="message__text">
+        {{ props.message.message_text }}
+      </p>
+    </div>
+  </div>
+</template>
 
 <style lang="scss">
 .message {
