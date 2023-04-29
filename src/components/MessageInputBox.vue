@@ -30,6 +30,9 @@ function sendMessage() {
     message_media.items.add(files.value[i].file);
   }
   emit("send-message", { message_text: message_text.value, message_media });
+
+  message_text.value = "";
+  files.value = [];
 }
 </script>
 
@@ -42,10 +45,11 @@ function sendMessage() {
         <div
           class="message-input-box__message-text"
           contenteditable="true"
-          :value="message_text"
           @input="updatemMessageText"
           @keydown.enter.exact.prevent="sendOnEnter"
-        ></div>
+        >
+          {{ message_text }}
+        </div>
         <base-filepicker>
           <svg
             xmlns="http://www.w3.org/2000/svg"

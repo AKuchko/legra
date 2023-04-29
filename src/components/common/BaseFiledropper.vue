@@ -1,5 +1,5 @@
 <script setup>
-import TransitionFade from "../TransitionFade.vue";
+import TransitionFade from "../transitions/TransitionFade.vue";
 import { ref, onMounted, onUnmounted, defineEmits } from "vue";
 import readFileURL from "@/utils/file.util";
 

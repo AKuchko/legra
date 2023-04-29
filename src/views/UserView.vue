@@ -1,5 +1,5 @@
 <script setup>
-import TransitionSlide from "@/components/TransitionSlide.vue";
+import TransitionSlide from "@/components/transitions/TransitionSlide.vue";
 import UserAccount from "./UserAccount.vue";
 import postService from "@/services/post.service";
 import userService from "@/services/user.service";

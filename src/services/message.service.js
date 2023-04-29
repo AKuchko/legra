@@ -36,8 +36,8 @@ class MessageService {
     client.put("/api/chat/message/edit");
   }
 
-  deleteMessage({ chat_id, message_id }) {
-    client.delete("/api/chat/message/delete", { chat_id, message_id });
+  deleteMessage({ message_id }) {
+    client.delete(`/api/chat/message/delete/${message_id}`, { message_id });
   }
 }
 

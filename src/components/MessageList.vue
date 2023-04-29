@@ -23,16 +23,12 @@ const props = defineProps({
 
 <style lang="scss">
 .message-list {
-  display: flex;
-  justify-content: center;
   width: 100%;
 
   &__list {
-    max-width: 25rem;
-  }
-
-  &__message:not(:last-child) {
-    margin-bottom: 10px;
+    margin: 0 auto;
+    padding: 1rem 1rem 0 1.125rem;
+    max-width: 45.5rem;
   }
 }
 </style>
