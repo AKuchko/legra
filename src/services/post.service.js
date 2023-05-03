@@ -31,6 +31,10 @@ class PostService {
   deletePost({ post_id }) {
     return client.delete(`/api/posts/${post_id}`);
   }
+
+  likePost({ post_id, post_user_id }) {
+    return client.post("/api/posts/like", { post_id, post_user_id });
+  }
 }
 
 export default new PostService();

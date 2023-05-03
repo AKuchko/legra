@@ -1,26 +1,31 @@
 <template>
-  <div class="post">
-    <div class="post__content">
-      <div v-if="isPostLoaded" class="post__media">
+  <div :id="`post:${props.post.post_id}`" class="post">
+    <div v-if="isPostLoaded" class="post__content">
+      <div class="post__media">
         <media-viewer :media="props.post.media" />
-      </div>
-      <div v-else class="post__media">
-        <base-preloader />
       </div>
       <div class="post__bottom">
         <div class="post__actions">
-          <div class="post__button">
-            <Icon icon="ph:heart" width="25" />
-            <p class="post__button-text">{{ post.likes }} likes</p>
+          <div class="post__button" @click="addLike">
+            <Icon
+              icon="ph:heart"
+              width="25"
+              :style="{ color: isLikedByMe ? 'red' : '' }"
+            />
+            <p class="post__button-text">{{ post.likes.length }}</p>
           </div>
           <router-link :to="commentRoute" class="post__button">
             <Icon icon="ph:chat-teardrop" width="25" />
+            <p class="post__button-text">{{ post.likes.length }}</p>
           </router-link>
         </div>
-        <div class="post__caption">
+        <div v-if="post.caption" class="post__caption">
           {{ post.caption }}
         </div>
       </div>
+    </div>
+    <div v-else class="post__media">
+      <base-preloader />
     </div>
   </div>
 </template>
@@ -28,52 +33,55 @@
 <script setup>
 import { computed, defineProps } from "vue";
 import { Icon } from "@iconify/vue";
+import { useStore } from "vuex";
 import BasePreloader from "./common/BasePreloader.vue";
 import MediaViewer from "./MediaViewer.vue";
+import postService from "@/services/post.service";
 
 const props = defineProps({
   post: { type: Object, default: () => {} },
 });
+const store = useStore();
 const isPostLoaded = computed(() => props.post.media);
 const commentRoute = computed(() => {
-  return { name: "comments", params: { post_id: `${props.post.post_id}` } };
+  return { name: "comments", params: { chat_id: `${props.post.chat_id}` } };
 });
+const isLikedByMe = computed(() => {
+  const myLike = props.post.likes.find(
+    (like) => like.user_id === store.getters.userInfo.user_id
+  );
+  return !!myLike;
+});
+
+const addLike = () => {
+  postService.likePost({
+    post_id: props.post.post_id,
+    post_user_id: props.post.user_id,
+  });
+};
 </script>
 
 <style lang="scss">
 .post {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
 
   &__content {
-    padding: 10px;
+    margin: auto;
+    padding: 0.5rem;
     font-size: $font-small;
     max-width: 25rem;
-    background: black;
-    border-radius: 15px;
-  }
-
-  &__media {
-    width: 100%;
-    border-radius: 5px;
-    overflow: hidden;
+    background: $color-light-bg;
+    border-radius: 0.75rem;
   }
 
   &__bottom {
-    padding: 10px;
-  }
-
-  &__media-inner {
-    width: 100%;
-    height: 100%;
+    margin-top: 0.5rem;
+    padding-left: 0.5rem;
   }
 
   &__actions {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
   }
 
   &__button {
@@ -87,6 +95,7 @@ const commentRoute = computed(() => {
   }
 
   &__caption {
+    margin-top: 0.5rem;
     text-align: left;
   }
 }

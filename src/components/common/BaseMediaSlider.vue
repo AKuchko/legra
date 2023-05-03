@@ -32,7 +32,7 @@ const props = defineProps({
   &__media {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   .swiper-pagination-bullet-active {

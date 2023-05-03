@@ -1,6 +1,11 @@
 <template>
   <div class="profile-image" :style="imageSize">
-    <img :src="imageData" alt="Image" class="profile-image__image" />
+    <img
+      v-if="imageData"
+      :src="imageData"
+      alt="Image"
+      class="profile-image__image"
+    />
   </div>
 </template>
 
