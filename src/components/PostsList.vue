@@ -1,35 +1,18 @@
 <template>
-  <ul v-if="status.loading" class="posts-list posts-list--preloading">
-    <li
-      v-for="preloader in [1, 2, 3, 4]"
-      :key="preloader"
-      class="posts-list__preloader"
-    ></li>
-  </ul>
-  <ul v-else-if="status.loaded" class="posts-list">
-    <li v-for="post in posts" :key="post.id" class="posts-list__post">
+  <ul class="posts-list">
+    <li v-for="post in props.posts" :key="post.id" class="posts-list__post">
       <PostTemplate :post="post" />
     </li>
   </ul>
-  <div v-else-if="status.loaded & !posts" class="posts-list posts-list--empty">
-    <p>There is no posts</p>
-  </div>
-  <div v-else-if="status.error" class="posts-list post-list--error">
-    <p>Somthing went wrong ...</p>
-  </div>
 </template>
 
-<script>
+<script setup>
+import { defineProps } from "vue";
 import PostTemplate from "./PostTemplate.vue";
 
-export default {
-  name: "PostsList",
-  components: { PostTemplate },
-  props: {
-    posts: { type: Array, default: () => [] },
-    status: { type: Object, default: () => {} },
-  },
-};
+const props = defineProps({
+  posts: { type: Array, default: () => [] },
+});
 </script>
 
 <style lang="scss">

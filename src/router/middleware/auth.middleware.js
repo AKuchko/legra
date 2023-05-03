@@ -2,7 +2,9 @@ import authService from "@/services/auth.service";
 import { LOGIN_ROUTE_NAME, MAIN_ROUTE_NAME } from "@/constants/routes";
 
 const checkAuth = ({ next }) => {
-  if (authService.hasAuthToken()) return next();
+  if (authService.hasAuthToken()) {
+    return next();
+  }
   return next({ name: LOGIN_ROUTE_NAME });
 };
 

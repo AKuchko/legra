@@ -1,34 +1,42 @@
 <template>
-  <Swiper class="base-media-slider">
+  <Swiper class="base-media-slider" :modules="[Pagination]" pagination>
     <SwiperSlide
-      v-for="media in mediaList"
-      :key="media"
+      v-for="media in props.mediaList"
+      :key="media.data"
       class="base-media-slider__slide"
     >
-      <img :src="media" class="base-media-slide__media" />
+      <img :src="media.data" class="base-media-slider__media" />
     </SwiperSlide>
   </Swiper>
 </template>
 
-<script>
+<script setup>
+import { defineProps } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
+import { Pagination } from "swiper";
 import "swiper/css";
+import "swiper/css/pagination";
 
-export default {
-  name: "BaseMediaSlider",
-  components: { Swiper, SwiperSlide },
-  props: {
-    mediaList: { type: Array, default: () => [] },
-  },
-};
+const props = defineProps({
+  mediaList: { type: Array, default: () => [] },
+});
 </script>
 
 <style lang="scss">
-.base-media-slide {
+.base-media-slider {
+  &__slide {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
   &__media {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+  }
+
+  .swiper-pagination-bullet-active {
+    background: $color-light;
   }
 }
 </style>

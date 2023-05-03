@@ -17,17 +17,13 @@ export default {
   position: relative;
   display: flex;
   align-items: center;
-  overflow-y: scroll;
+  overflow-y: hidden;
 
   &__wrapper {
-    position: absolute;
     display: flex;
     justify-content: center;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
-    padding: 50px 0 0;
   }
 }
 </style>

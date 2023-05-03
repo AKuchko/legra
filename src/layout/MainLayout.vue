@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <main-sidebar class="main__sidebar" />
-    <view-window>
+    <view-window class="main__window">
       <router-view />
     </view-window>
   </div>
@@ -10,8 +10,13 @@
 <script>
 import MainSidebar from "@/components/MainSidebar.vue";
 import ViewWindow from "@/components/ViewWindow.vue";
+import socket from "@/socket";
+
 export default {
   components: { MainSidebar, ViewWindow },
+  mounted() {
+    socket.connect();
+  },
 };
 </script>
 
@@ -23,14 +28,10 @@ export default {
   grid-column-gap: 10px;
   width: 100vw;
   height: 100vh;
-  padding: 0 50px;
+  margin: auto;
 
   &__sidebar {
-    position: sticky;
-    top: 50px;
-    left: 0;
-    height: calc(100% - 100px);
-    max-height: 20rem;
+    padding: 2.5rem 1rem 2.5rem;
   }
 }
 </style>
