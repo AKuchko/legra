@@ -25,7 +25,7 @@ const isMediaMultiple = computed(() => props.media.length > 1);
   height: 100%;
 
   &__simple-view {
-    border-radius: 8px;
+    border-radius: 0.25rem;
     overflow: hidden;
 
     img {

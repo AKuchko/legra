@@ -29,10 +29,10 @@ h6{
 }
 html,
 body{
-	color: #000;
+	color: #111;
 	height: 100%;
 	line-height: 1;
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: normal;
 	font-style: normal;
 }
@@ -53,6 +53,6 @@ input {
 
 @media (min-width: 600px) {
 	html {
-		font-size: 20px;
+		font-size: 16px;
 	}
 }

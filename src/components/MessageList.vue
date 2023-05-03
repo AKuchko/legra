@@ -1,10 +1,16 @@
 <script setup>
 import MessageTemplate from "./MessageTemplate.vue";
-import { defineProps } from "vue";
+import { defineProps, defineEmits } from "vue";
 
 const props = defineProps({
   messages: { type: Array, default: () => [] },
+  privileges: { type: String, default: "customer" },
 });
+const emit = defineEmits(["reply_to"]);
+
+const reply_to = (message_id) => {
+  emit("reply_to", message_id);
+};
 </script>
 
 <template>
@@ -15,7 +21,11 @@ const props = defineProps({
         :key="message.message_id"
         class="message-list__message"
       >
-        <message-template :message="message" />
+        <message-template
+          :message="message"
+          :privileges="props.privileges"
+          @reply="reply_to"
+        />
       </li>
     </ul>
   </div>

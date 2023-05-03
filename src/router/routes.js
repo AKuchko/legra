@@ -41,20 +41,9 @@ export default [
         component: () => import("@/views/UserView.vue"),
         children: [
           {
-            path: "post/:post_id",
+            path: "post/comments/:chat_id",
             name: "comments",
-            component: () => import("@/views/UserPost.vue"),
-          },
-        ],
-      },
-      {
-        path: "/me",
-        name: "me",
-        component: () => import("@/views/MeView.vue"),
-        children: [
-          {
-            path: "/post/:post_id",
-            component: () => import("@/views/UserPost.vue"),
+            component: () => import("@/views/ChatView.vue"),
           },
         ],
       },

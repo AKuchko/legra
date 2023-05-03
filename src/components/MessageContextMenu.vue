@@ -1,54 +1,56 @@
-<script>
+<script setup>
 import TransitionFadeOver from "./transitions/TransitionFadeOver.vue";
-import messageService from "@/services/message.service";
-import { ref, computed } from "vue";
+import { computed, defineEmits, defineProps } from "vue";
+import { useStore } from "vuex";
 
-export default {
-  name: "MessageContextMenu",
-  props: {
-    message_data: { type: Object, default: () => {} },
-    position: { type: Object, default: () => ({ x: 0, y: 0 }) },
-    activator: { type: Boolean, default: false },
-  },
-  components: { TransitionFadeOver },
-  setup(props) {
-    const menu_list = ref([
-      {
-        id: 0,
-        text: "Delete message",
-        icon: "",
-        action: "delete",
-      },
-      {
-        id: 1,
-        text: "Edit message",
-        icon: "",
-        action: "edit",
-      },
-    ]);
-    const contextMenuPosition = computed(() => {
-      return { top: props.position.y + "px", left: props.position.x + "px" };
-    });
+// UTIL
+const store = useStore();
+const props = defineProps({
+  message_data: { type: Object, default: () => {} },
+  position: { type: Object, default: () => ({ x: 0, y: 0 }) },
+  activator: { type: Boolean, default: false },
+  rights: { type: String, default: "customer" },
+});
+const emit = defineEmits(["reply", "delete", "edit"]);
 
-    const onMenuAction = (action) => {
-      switch (action) {
-        case "delete":
-          console.log(props.message_data);
-          messageService.deleteMessage({
-            message_id: props.message_data.message_id,
-          });
-          break;
-        case "edit":
-          console.log("edit");
-      }
-    };
+// VARS
+const message_owner_action_list = [
+  { id: 0, text: "Delete message", action: "delete" },
+  { id: 1, text: "Edit message", action: "edit" },
+  { id: 2, text: "Copy message", action: "copy" },
+  { id: 3, text: "Forward message", action: "forward" },
+  { id: 4, text: "Reply", action: "reply" },
+];
+const chat_owner_customer_msg = [
+  { id: 0, text: "Delete message", action: "delete" },
+  { id: 1, text: "Copy message", action: "copy" },
+  { id: 2, text: "Forward message", action: "forward" },
+  { id: 3, text: "Reply", action: "reply" },
+];
+const message_customer_action_list = [
+  { id: 0, text: "Copy message", action: "copy" },
+  { id: 1, text: "Forward message", action: "forward" },
+  { id: 2, text: "Reply", action: "reply" },
+];
 
-    return {
-      menu_list,
-      contextMenuPosition,
-      onMenuAction,
-    };
-  },
+// COMPUTED
+const menu_list = computed(() => {
+  if (props.message_data.user_id === store.getters.userInfo.user_id)
+    return message_owner_action_list;
+  else if (
+    (props.rights === "admin") &
+    (props.message_data.user_id !== store.getters.userInfo.user_id)
+  )
+    return chat_owner_customer_msg;
+  return message_customer_action_list;
+});
+const contextMenuPosition = computed(() => {
+  return { top: props.position.y + "px", left: props.position.x + "px" };
+});
+
+// FUNCTIOINS
+const onMenuAction = (action) => {
+  emit(action);
 };
 </script>
 
@@ -78,6 +80,7 @@ export default {
   width: 100vw;
   height: 100vh;
   z-index: 55;
+  color: #111;
 
   &__menu {
     position: absolute;

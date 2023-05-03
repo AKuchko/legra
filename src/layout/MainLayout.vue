@@ -33,9 +33,5 @@ export default {
   &__sidebar {
     padding: 2.5rem 1rem 2.5rem;
   }
-
-  &__window {
-    padding-top: 2.5rem;
-  }
 }
 </style>
