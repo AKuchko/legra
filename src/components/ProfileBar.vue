@@ -1,58 +1,79 @@
-<template>
-  <BaseBlock class="profile-bar">
-    <BaseProfileImage
-      :size="75"
-      :imageData="user.profile_image"
-      class="profile-bar__image"
-    />
-    <div class="profile-bar__info">
-      <h3 class="profile-bar__username">
-        @{{ user.user_name }}
-        <Icon icon="mdi:pencil" />
-      </h3>
-      <p class="profile-bar__usernote">
-        {{ user.user_description }}
-      </p>
-    </div>
-    <slot></slot>
-  </BaseBlock>
-</template>
-
 <script>
-/* eslint-disable */ 
+/* eslint-disable */
 import BaseProfileImage from "./common/BaseProfileImage.vue";
-import BaseBlock from "./common/BaseBlock.vue";
-import { Icon } from "@iconify/vue";
+import ProfileActions from "./ProfileActions.vue";
+import UserStats from "./UserStats.vue";
 
 export default {
   name: "ProfileBar",
-  components: { BaseProfileImage, BaseBlock, Icon },
+  components: { BaseProfileImage, ProfileActions, UserStats },
   props: {
     user: { type: Object }
   },
 };
 </script>
 
+<template>
+  <div class="profile-bar">
+    <div class="profile-bar__head">
+      <base-profile-image :imageData="user.profile_image" :size="100" />
+      <div class="profile-bar__user-activity">
+        <user-stats :stats="user.stats" class="profile-bar__stats" />
+        <profile-actions :user_id="user.user_id" :followers="user.followers" class="profile-bar__actions" />
+      </div>
+    </div>
+    <div class="profile-bar__bottom">
+      <p class="profile-bar__text">
+        <span>{{ user.profile_name }}</span>
+      </p>
+      <p ref="description_text" class="profile-bar__text profile-bar__desc">
+        {{ user.profile_description }}
+        <button class="show-more">more</button>
+      </p>
+    </div>
+  </div>
+</template>
+
 <style lang="scss">
 .profile-bar {
-  display: flex;
-  align-items: center;
-  height: auto;
-  padding: 25px;
-  text-align: left;
+  padding: 1rem;
+  font-size: 0.875rem;
+  max-width: 25rem;
+  min-width: 25rem;
 
-  &__image {
-    flex-shrink: 0;
-    margin-right: 25px;
+  &__head {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
   }
 
-  &__username {
-    font-weight: 700;
-    margin-bottom: 10px;
+  &__user-activity {
+    flex-grow: 1;
+    margin-left: 1rem;
   }
 
-  &__usernote {
-    font-size: $font-small;
+  &__stats {
+    margin-bottom: 1rem;
+  }
+
+  &__bottom p:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
+
+  &__text {
+    text-align: left;
+    line-height: 1rem;
+
+    span {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+  }
+
+  &__desc {
+    max-height: 2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 </style>

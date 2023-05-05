@@ -1,73 +1,45 @@
-<template>
-  <div class="stats">
-    <ul class="stats__list">
-      <li v-for="stat in stats" :key="stat.id" class="stats__item">
-        <div class="stats__inner">
-          <h4 class="stats__value">{{ stat.value }}</h4>
-          <p class="stats__name">{{ stat.name }}</p>
-        </div>
-      </li>
-    </ul>
-  </div>
-</template>
-
 <script>
-/* eslint-disable */ 
-import userService from "@/services/user.service";
-
+/* eslint-disable */
+// import { ref } from 'vue';
 export default {
   name: "UserStats",
   props: {
-    user_id: { type: Number, default: 6 },
+    stats: Object,
   },
-  data() {
-    return {
-      stats: [
-        {
-          id: 0,
-          name: "Followers",
-          value: 3,
-        },
-        {
-          id: 1,
-          name: "Subscribes",
-          value: 3,
-        },
-        {
-          id: 2,
-          name: "Posts",
-          value: 3,
-        },
-      ],
-      is_loaded: "loading",
-    };
-  },
-  mounted() {
-    userService.fetchUserFollowers({ user_id: this.user_id }).then((user_followers) => {
-    //   console.log(user_followers);
-    });
-  },
-};
+}
 </script>
 
-<style lang="scss">
-.stats {
-  font-size: $font-small;
+<template>
+  <div class="user-stats">
+    <div class="user-stats__wrapper">
+      <ul class="user-stats__list">
+        <li v-for="stat in stats" :key="stat.name" class="user-stats__item">
+          <div class="user-stats__item-value">
+            <span>{{ stat.value }}</span>
+          </div>
+          <p class="user-stats__item-name">{{ stat.name }}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
 
+<style lang="scss">
+.user-stats {
   &__list {
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
 
   &__item {
-    width: 4rem;
-    margin-left: 10px;
+    position: relative;
     text-align: center;
+    font-weight: 300;
   }
 
-  &__value {
-    font-weight: 700;
-    margin-bottom: 10px;
+  &__item-value {
+    font-size: 1.25rem;
   }
 }
 </style>

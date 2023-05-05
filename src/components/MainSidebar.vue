@@ -101,17 +101,4 @@ export default {
     display: block;
   }
 }
-
-@media (max-width: 600px) {
-  .sidebar {
-    display: flex;
-    min-height: auto;
-    max-width: none;
-    width: 100%;
-    height: 50px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-  }
-}
 </style>

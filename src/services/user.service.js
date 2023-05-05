@@ -13,6 +13,14 @@ class UserService {
   fetchUserSubscribes({ user_id }) {
     return client.get(`/api/users/subscribes/${user_id}`);
   }
+
+  followUser({ user_id }) {
+    return client.post("/api/users/follow", { user_id });
+  }
+
+  unfollowUser({ user_id }) {
+    return client.delete(`/api/users/unfollow/${user_id}`);
+  }
 }
 
 export default new UserService();
