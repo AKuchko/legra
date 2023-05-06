@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 /* eslint-disable */
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
@@ -92,4 +92,4 @@ onUnmounted(() => {
     max-width: 35rem;
   }
 }
-</style>
+</style> -->

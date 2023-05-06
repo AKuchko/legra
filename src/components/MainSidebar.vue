@@ -6,11 +6,12 @@
       class="sidebar__profile"
     >
       <BaseProfileImage
+        v-if="user.profile_image"
         class="sidebar__image"
         :size="40"
-        :imageData="user.profile_image"
+        :imageData="user.profile_image[0].data"
       />
-      <h3 class="sidebar__username">@{{ user.profile_name }}</h3>
+      <h3 class="sidebar__username">{{ user.profile_name }}</h3>
     </router-link>
     <BasePreloader v-else />
     <ul class="sidebar__list">

@@ -1,80 +1,96 @@
-<script setup>
-import TransitionSlide from "@/components/transitions/TransitionSlide.vue";
-import UserAccount from "./UserAccount.vue";
+<script>
+/* eslint-disable */
+import CreateModal from "@/components/CreateModal.vue";
+import PostsList from "@/components/PostsList.vue";
+import ProfileBar from "@/components/ProfileBar.vue";
 import postService from "@/services/post.service";
 import userService from "@/services/user.service";
 import socket from "@/socket";
-
-import { ref, computed, onMounted, onUnmounted, watch } from "vue";
-import { useRoute } from "vue-router";
+import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 
-const route = useRoute();
-const user = ref({});
-const posts = ref([]);
-const store = useStore();
+export default {
+  name: "UserView",
+  components: { CreateModal, PostsList, ProfileBar },
+  async setup() {
+    const modalVisibile = ref(false);
+    const openPostCreator = () => (modalVisibile.value = true);
+    const hideModal = () => (modalVisibile.value = false);
+    const user = ref({});
+    const posts = ref([]);
+    const store = useStore();
+    const route = useRoute();
 
-let user_id = route.params.user_id;
+    let user_id = route.params.user_id;
 
-const showUserAccount = computed(() => !route.params.chat_id);
-const isMyAccount = computed(() => store.getters.userInfo.user_id === user_id);
+    const isMyAccount = computed(() => (store.getters.userInfo.user_id === user_id));
 
-async function fetchAccount() {
-  await userService.fetchUserInfo({ user_id }).then((user_info) => {
-    user.value = user_info.data;
-  });
+    onMounted(() => {
+      window.addEventListener("openPostCreator", openPostCreator);
+      socket.on(`user:edit:${user.value.user_id}`, ({ field, value }) => (user.value[field] = value));
+      socket.on(`post:like:${user.value.user_id}`, ({ post_id, action, user }) => {
+        const postToUpdate = posts.value.find((post) => post.post_id === post_id);
+        if (action === "unlike") {
+          postToUpdate.likes = postToUpdate.likes.filter(
+            (like) => like.user_id !== user.user_id
+          );
+        } else postToUpdate.likes.push(user);
+      });
+    });
+    onUnmounted(() => {
+      window.removeEventListener("openPostCreator", openPostCreator);
+      socket.off(`user:edit:${user.value.user_id}`);
+      socket.off(`post:like:${user.value.user_id}`);
+    })
 
-  await postService.fetchUserPosts({ user_id }).then((user_posts) => {
-    posts.value = user_posts.data;
-  });
+    watch(route, () => {
+      const new_user_id = route.params.user_id;
+      if (!new_user_id || new_user_id === user_id) return;
+      user_id = new_user_id;
+      setTimeout(async () => {
+        await userService.fetchUserInfo({ user_id }).then((r) => (user.value = r.data));
+        await postService.fetchUserPosts({ user_id }).then((r) => (posts.value = r.data));
+      }, 150);
+    });
+
+    await userService.fetchUserInfo({ user_id }).then((r) => (user.value = r.data));
+    await postService.fetchUserPosts({ user_id }).then((r) => (posts.value = r.data));
+
+    return {
+      user,
+      posts,
+      isMyAccount,
+      modalVisibile,
+      hideModal,
+    }
+  },
 }
-
-watch(route, () => {
-  const new_user_id = route.params.user_id;
-
-  if (!new_user_id || new_user_id === user_id) return;
-  user_id = new_user_id;
-  setTimeout(() => {
-    fetchAccount();
-  }, 150);
-});
-
-onMounted(async () => {
-  await userService.fetchUserInfo({ user_id }).then((user_info) => {
-    user.value = user_info.data;
-  });
-
-  await postService.fetchUserPosts({ user_id }).then((user_posts) => {
-    posts.value = user_posts.data;
-  });
-
-  socket.on(`post:like:${user.value.user_id}`, ({ post_id, action, user }) => {
-    const postToUpdate = posts.value.find((post) => post.post_id === post_id);
-
-    if (action === "unlike") {
-      postToUpdate.likes = postToUpdate.likes.filter(
-        (like) => like.user_id !== user.user_id
-      );
-    } else postToUpdate.likes.push(user);
-  });
-});
-onUnmounted(() => {
-  socket.off(`post:like:${user.value.user_id}`);
-});
 </script>
 
 <template>
-  <transition-slide>
-    <user-account
-      v-show="showUserAccount"
-      :user="user"
-      :posts="posts"
-      :owner="isMyAccount"
-    />
-  </transition-slide>
-  <router-view v-slot="{ Component }">
-    <transition-slide>
-      <component :is="Component" />
-    </transition-slide>
-  </router-view>
+  <div class="user">
+    <div class="user__wrapper">
+      <create-modal :modalVisibility="modalVisibile" @close-popup="hideModal" />
+      <profile-bar class="user__header" :user="user" />
+      <posts-list :posts="posts" />
+    </div>
+  </div>
 </template>
+
+<style lang="scss">
+  .user {
+    width: 100%;
+    overflow-y: scroll;
+
+    &__wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__header {
+      margin-bottom: 1rem;
+    }
+  }
+</style>

@@ -6,11 +6,12 @@ class PostService {
   fetchUserPosts({ user_id }) {
     return client.get(`/api/posts/user/${user_id}`);
   }
-
   getPost({ post_id }) {
     return client.get(`/api/posts/post/${post_id}`);
   }
-
+  getComments({ post_id }) {
+    return client.get(`/api/posts/comments/${post_id}`)
+  }
   createPost({ post_media, post_cropper, post_caption = "" }) {
     const formData = new FormData();
 
@@ -27,11 +28,9 @@ class PostService {
       }
     });
   }
-
   deletePost({ post_id }) {
     return client.delete(`/api/posts/${post_id}`);
   }
-
   likePost({ post_id, post_user_id }) {
     return client.post("/api/posts/like", { post_id, post_user_id });
   }

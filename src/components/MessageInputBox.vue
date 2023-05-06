@@ -7,11 +7,8 @@ import FilesViewer from "./FilesViewer.vue";
 import { ref, defineEmits, defineProps, onMounted } from "vue";
 import { Icon } from "@iconify/vue";
 
-// UTIL
 const emit = defineEmits(["send-message"]);
 const props = defineProps({ reply_msg: { type: Object, default: () => {} } });
-
-// VARS
 const message_text = ref("");
 const message_input = ref(null);
 const sendButton = ref(null);
@@ -20,7 +17,6 @@ const embededMessage = ref(null);
 const embededIcon = ref("");
 let messageType = "message";
 
-// FUNCTIONS
 function updatemMessageText(event) {
   message_text.value = event.target.innerText;
 }
@@ -37,13 +33,13 @@ function removeMedia(_id) {
   files.value = files.value.filter((_file) => _file.id != _id);
 }
 function sendMessage() {
-  const message_media = new DataTransfer();
+  const media = new DataTransfer();
   for (let i = 0; i < files.value.length; i++) {
-    message_media.items.add(files.value[i].file);
+    media.items.add(files.value[i].file);
   }
   emit("send-message", {
-    message_text: message_text.value,
-    message_media,
+    message: message_text.value,
+    media,
     embeded_message: embededMessage.value,
     type: messageType,
   });
@@ -64,18 +60,20 @@ function cancelEmbededMessage() {
 
 onMounted(() => {
   window.addEventListener("reply-message", (e) => {
-    embededMessage.value = e.detail.message;
+    embededMessage.value = e.detail.target;
     embededIcon.value = "quill:reply";
     messageType = "reply";
     message_input.value.focus();
   })
   window.addEventListener("edit-message", (e) => {
-    embededMessage.value = e.detail.message;
+    embededMessage.value = e.detail.target;
     embededIcon.value = "material-symbols:edit-rounded";
     messageType = "edit";
-    message_text.value = embededMessage.value.message_text;
+    message_text.value = embededMessage.value.message;
     message_input.value.focus();
-    // setCaret();
+  })
+  window.addEventListener("forward-message", (e) => {
+    console.log("forward");
   })
 });
 </script>

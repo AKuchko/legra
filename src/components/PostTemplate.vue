@@ -16,7 +16,7 @@
           </div>
           <router-link :to="commentRoute" class="post__button">
             <Icon icon="ph:chat-teardrop" width="25" />
-            <p class="post__button-text">{{ post.likes.length }}</p>
+            <p class="post__button-text">{{ post.comments_count }}</p>
           </router-link>
         </div>
         <div v-if="post.caption" class="post__caption">
@@ -44,7 +44,7 @@ const props = defineProps({
 const store = useStore();
 const isPostLoaded = computed(() => props.post.media);
 const commentRoute = computed(() => {
-  return { name: "comments", params: { chat_id: `${props.post.chat_id}` } };
+  return { name: "comments", params: { post_id: `${props.post.post_id}` } };
 });
 const isLikedByMe = computed(() => {
   const myLike = props.post.likes.find(

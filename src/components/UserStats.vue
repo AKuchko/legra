@@ -4,20 +4,32 @@
 export default {
   name: "UserStats",
   props: {
-    stats: Object,
+    user: { type: Object, default: () => {} }
   },
 }
 </script>
 
-<template>
+<template v-if="user">
   <div class="user-stats">
     <div class="user-stats__wrapper">
       <ul class="user-stats__list">
-        <li v-for="stat in stats" :key="stat.name" class="user-stats__item">
+        <li id="user-posts-count" class="user-stats__item">
           <div class="user-stats__item-value">
-            <span>{{ stat.value }}</span>
+            <span>{{ user.posts_count }}</span>
           </div>
-          <p class="user-stats__item-name">{{ stat.name }}</p>
+          <p class="user-stats__item-name">Posts</p>
+        </li>
+        <li id="user-followers-count" class="user-stats__item">
+          <div class="user-stats__item-value">
+            <span>{{ user.followers.length }}</span>
+          </div>
+          <p class="user-stats__item-name">Followers</p>
+        </li>
+        <li id="user-following-count" class="user-stats__item">
+          <div class="user-stats__item-value">
+            <span>{{ user.follwing.length }}</span>
+          </div>
+          <p class="user-stats__item-name">Following</p>
         </li>
       </ul>
     </div>

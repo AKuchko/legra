@@ -10,7 +10,7 @@
       <div class="embeded-message__msg-info">
         <p class="embeded-message__user-name">{{ message.user_name }}</p>
         <p>
-          <span>{{ message.message_text }}</span>
+          <span>{{ message.message }}</span>
         </p>
       </div>
     </div>

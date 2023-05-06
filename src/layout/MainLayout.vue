@@ -1,9 +1,18 @@
 <template>
   <div class="main">
     <main-sidebar class="main__sidebar" />
-    <view-window class="main__window">
-      <router-view />
-    </view-window>
+    <router-view v-slot="{ Component }">
+      <suspense timeout="0">
+        <template #default>
+          <view-window class="main__window">
+            <Component :is="Component" />
+          </view-window>
+        </template>
+        <template #fallback>
+          <h1>loading...</h1>
+        </template>
+      </suspense>
+    </router-view>
   </div>
 </template>
 

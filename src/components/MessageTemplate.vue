@@ -4,38 +4,36 @@ import BaseProfileImage from "./common/BaseProfileImage.vue";
 import MediaViewer from "./MediaViewer.vue";
 import MessageContextMenu from "./MessageContextMenu.vue";
 import EmbededMessage from "./EmbededMessage.vue";
-import messageService from "@/services/message.service";
+import MsgPrivileges from "@/utils/MessagePrivileges.util";
 import { computed, defineProps, defineEmits, nextTick, onMounted, onUnmounted, ref } from "vue";
 import { useStore } from "vuex";
 
-// UTIL
 const props = defineProps({ 
   message: Object, 
-  privileges: String,
+  userRole: String,
 });
 const emit = defineEmits([ "reply" ]);
 
-
-// VARS
-const message_ref = ref(null);
 const store = useStore();
+const user_id = store.getters.userInfo.user_id;
+const message_ref = ref(null);
 const contextMenuActivator = ref(false);
 const contextMenuPosition = ref({ x: 0, y: 0 });
+const isMymessage = computed(() => user_id === props.message.from_id);
+const userLink = computed(() => ( { name: "user", params: { user_id: props.message.from_id } } ));
+const privileges = computed(() => {
+  if (isMymessage) return MsgPrivileges.ownerPriviliges;
+  if ((this._user_role === "admin") & !this._owner) return MsgPrivileges.adminPrivileges;
+  if ((this._user_role === "customer") & !this._owner) return MsgPrivileges.customerPrivileges;
+})
 
-// COMPUTED
-const userInfo = computed(() => store.getters.userInfo);
-const isMymessage = computed(() => userInfo.value.user_id === props.message.user_id);
-const userLink = computed(() => ( { name: "user", params: { user_id: props.message.user_id } } ));
-
-// FUNCTIONS
 const onContextmenu = (event) => {
-  if (message_ref.value.contains(event.target)) {
-    event.preventDefault();
-    contextMenuPosition.value.x = event.clientX;
-    contextMenuPosition.value.y = event.clientY;
-    document.querySelector(".message.context-show")?.classList.remove("context-show");
-    message_ref.value.classList.add("context-show");
-  }
+  if (!message_ref.value.contains(event.target)) return;
+  event.preventDefault();
+  contextMenuPosition.value.x = event.clientX;
+  contextMenuPosition.value.y = event.clientY;
+  document.querySelector(".message.context-show")?.classList.remove("context-show");
+  message_ref.value.classList.add("context-show");
 }
 const onCloseContextmenu = () => {
   document.querySelector(".message.context-show")?.classList.remove("context-show");
@@ -49,25 +47,12 @@ const observeCallback = (mutations) => {
     })
   }
 };
-const delete_msg = () => {
-  messageService.deleteMessage({ message_id: props.message.message_id, chat_id: props.message.chat_id });
-}
-const edit_msg = () => {
-  window.dispatchEvent(new CustomEvent("edit-message", {
-    detail: {
-      message: props.message,
-    }
-  }));
-}
 const reply_msg = () => {
-  window.dispatchEvent(new CustomEvent("reply-message", {
-    detail: {
-      message: props.message,
-    }
-  }));
+  window.dispatchEvent(
+    new CustomEvent("reply-message", { detail: { target: props.message } })
+  )
 }
 
-// HOOKS
 onMounted(() => {
   document.addEventListener("contextmenu", onContextmenu);
   document.addEventListener("click", onCloseContextmenu);
@@ -97,15 +82,12 @@ onUnmounted(() => {
         :activator="contextMenuActivator" 
         :message_data="props.message" 
         :position="contextMenuPosition"
-        :rights="props.privileges"
-        @reply="reply_msg"
-        @delete="delete_msg"
-        @edit="edit_msg"
+        :privileges="privileges"
       />
       <router-link class="message__profile-image" :to="userLink">
         <base-profile-image
           :size="30"
-          :imageData="props.message.profile_image"
+          :imageData="props.message.profile_image[0].data"
         />
       </router-link>
       <div class="message__body">
@@ -114,8 +96,8 @@ onUnmounted(() => {
         <div v-if="props.message.media.length" class="message__media">
           <media-viewer :media="props.message.media" />
         </div>
-        <p v-if="props.message.message_text" class="message__text">
-          {{ props.message.message_text }}
+        <p v-if="props.message.message" class="message__text">
+          {{ props.message.message }}
         </p>
       </div>
     </div>

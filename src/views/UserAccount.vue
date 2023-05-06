@@ -1,37 +1,72 @@
+<script>
+/* eslint-disable */
+import CreateModal from "@/components/CreateModal.vue";
+import PostsList from "@/components/PostsList.vue";
+import ProfileBar from "@/components/ProfileBar.vue";
+import postService from "@/services/post.service";
+import userService from "@/services/user.service";
+import socket from "@/socket";
+import { ref, onMounted, onUnmounted, computed } from "vue";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+
+export default {
+  name: "UserAccount",
+  components: { CreateModal, PostsList, ProfileBar },
+  async setup() {
+    const modalVisibile = ref(false);
+    const openPostCreator = () => (modalVisibile.value = true);
+    const hideModal = () => (modalVisibile.value = false);
+    const user = ref({});
+    const posts = ref([]);
+    const store = useStore();
+    const route = useRoute();
+
+    let user_id = route.params.user_id;
+
+    const isMyAccount = computed(() => (store.getters.userInfo.user_id === user_id));
+
+    onMounted(() => {
+      window.addEventListener("openPostCreator", openPostCreator);
+      socket.on(`user:edit:${user.value.user_id}`, ({ field, value }) => (user.value[field] = value));
+      socket.on(`post:like:${user.value.user_id}`, ({ post_id, action, user }) => {
+        const postToUpdate = posts.value.find((post) => post.post_id === post_id);
+        if (action === "unlike") {
+          postToUpdate.likes = postToUpdate.likes.filter(
+            (like) => like.user_id !== user.user_id
+          );
+        } else postToUpdate.likes.push(user);
+      });
+    });
+    onUnmounted(() => {
+      window.removeEventListener("openPostCreator", openPostCreator);
+      socket.off(`user:edit:${user.value.user_id}`);
+      socket.off(`post:like:${user.value.user_id}`);
+    })
+
+    await userService.fetchUserInfo({ user_id }).then((r) => (user.value = r.data));
+    await postService.fetchUserPosts({ user_id }).then((r) => (posts.value = r.data));
+
+    return {
+      user,
+      posts,
+      isMyAccount,
+      modalVisibile,
+      hideModal,
+    }
+  },
+}
+</script>
+
 <template>
   <div class="user">
     <div class="user__wrapper">
       <create-modal :modalVisibility="modalVisibile" @close-popup="hideModal" />
-      <profile-bar class="user__header" :user="props.user" />
-      <posts-list :posts="props.posts" />
+      <profile-bar class="user__header" :user="user" />
+      <posts-list :posts="posts" />
     </div>
   </div>
 </template>
-
-<script setup>
-/* eslint-disable */
-  import CreateModal from "@/components/CreateModal.vue";
-  import PostsList from "@/components/PostsList.vue";
-  import ProfileBar from "@/components/ProfileBar.vue";
-  import { ref, defineProps, onMounted, onUnmounted } from "vue";
-
-  const modalVisibile = ref(false);
-  const openPostCreator = () => (modalVisibile.value = true);
-  const hideModal = () => (modalVisibile.value = false);
-  
-  const props = defineProps({
-    user: { type: Object, default: () => {} },
-    posts: { type: Array, default: () => [] },
-    owner: { type: Boolean, default: false },
-  });
-
-  onMounted(() => {
-    window.addEventListener("openPostCreator", openPostCreator);
-  });
-  onUnmounted(() => {
-    window.removeEventListener("openPostCreator", openPostCreator);
-  })
-</script>
 
 <style lang="scss">
   .user {
