@@ -1,107 +1,102 @@
 <template>
-  <BaseBlock class="post" :class="isMiniature ? 'post--mini' : ''">
-    <div class="post__content">
-      <div class="post__image">
-        <img :src="`data:image/jpeg;base64,${image}`" alt="Photo" />
+  <div :id="`post:${props.post.post_id}`" class="post">
+    <div v-if="isPostLoaded" class="post__content">
+      <div class="post__media">
+        <media-viewer :media="props.post.media" />
       </div>
       <div class="post__bottom">
         <div class="post__actions">
-          <div class="post__action post__likes">
-            <Icon icon="mdi:cards-heart" />
-            {{ likes }}
+          <div class="post__button" @click="addLike">
+            <Icon
+              icon="ph:heart"
+              width="25"
+              :style="{ color: isLikedByMe ? 'red' : '' }"
+            />
+            <p class="post__button-text">{{ post.likes.length }}</p>
           </div>
-          <div class="post__action post__comments">
-            <Icon icon="mdi:comment" :inline="true" color="#fff" />
-            {{ likes }}
-          </div>
+          <router-link :to="commentRoute" class="post__button">
+            <Icon icon="ph:chat-teardrop" width="25" />
+            <p class="post__button-text">{{ post.comments_count }}</p>
+          </router-link>
         </div>
-        <div class="post__note" v-if="note">
-          <p class="post__note-text">{{ note }}</p>
+        <div v-if="post.caption" class="post__caption">
+          {{ post.caption }}
         </div>
       </div>
     </div>
-  </BaseBlock>
+    <div v-else class="post__media">
+      <base-preloader />
+    </div>
+  </div>
 </template>
 
-<script>
-import BaseBlock from "./common/BaseBlock.vue";
+<script setup>
+import { computed, defineProps } from "vue";
 import { Icon } from "@iconify/vue";
+import { useStore } from "vuex";
+import BasePreloader from "./common/BasePreloader.vue";
+import MediaViewer from "./MediaViewer.vue";
+import postService from "@/services/post.service";
 
-export default {
-  name: "PostTemplate",
-  components: { BaseBlock, Icon },
-  props: {
-    image: { type: String, default: "" },
-    likes: { type: Number, default: 100 },
-    note: { type: String, default: "" },
-    comments: { type: Array, default: () => [] },
-    isMiniature: { type: Boolean, default: false },
-  },
+const props = defineProps({
+  post: { type: Object, default: () => {} },
+});
+const store = useStore();
+const isPostLoaded = computed(() => props.post.media);
+const commentRoute = computed(() => {
+  return { name: "comments", params: { post_id: `${props.post.post_id}` } };
+});
+const isLikedByMe = computed(() => {
+  const myLike = props.post.likes.find(
+    (like) => like.user_id === store.getters.userInfo.user_id
+  );
+  return !!myLike;
+});
+
+const addLike = () => {
+  postService.likePost({
+    post_id: props.post.post_id,
+    post_user_id: props.post.user_id,
+  });
 };
 </script>
 
 <style lang="scss">
 .post {
-  padding: 10px;
   width: 100%;
-  transition: $transition-base; // Проблемы с анимацией
 
   &__content {
-    height: 100%;
+    margin: auto;
+    padding: 0.5rem;
+    font-size: $font-small;
+    max-width: 25rem;
+    background: $color-light-bg;
+    border-radius: 0.75rem;
   }
 
-  &__image {
-    margin-bottom: 10px;
-    overflow: hidden;
-    border-radius: 10px;
-    transition: $transition-base;
-  }
-
-  &__image img {
-    width: 100%;
+  &__bottom {
+    margin-top: 0.5rem;
+    padding-left: 0.5rem;
   }
 
   &__actions {
     display: flex;
+    align-items: center;
   }
 
-  &__action {
-    position: relative;
+  &__button {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 7px 10px;
-    margin-right: 10px;
-    border-radius: 27px;
-    background: $color-placeholder;
-    font-size: $font-small;
+    margin-right: 25px;
   }
 
-  &__note {
-    margin-top: 10px;
+  &__button-text {
+    margin-left: 5px;
+  }
+
+  &__caption {
+    margin-top: 0.5rem;
     text-align: left;
-  }
-}
-
-.post--mini {
-  padding: 0;
-
-  .post__bottom {
-    visibility: hidden;
-    position: absolute;
-    width: 0;
-    height: 0;
-  }
-
-  .post__image {
-    height: 100%;
-    border-radius: 0;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
   }
 }
 </style>

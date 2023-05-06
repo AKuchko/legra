@@ -11,7 +11,10 @@
     "@iconify/vue": "^4.1.0",
     "axios": "^1.2.2",
     "core-js": "^3.8.3",
+    "cropperjs": "^1.5.13",
     "js-cookie": "^3.0.1",
+    "socket.io-client": "^4.6.1",
+    "swiper": "^9.2.0",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vuex": "^4.1.0"
@@ -44,7 +47,30 @@
     "parserOptions": {
       "parser": "@babel/eslint-parser"
     },
-    "rules": {}
+    "rules": {
+      "vue/attributes-order": [
+        "error",
+        {
+          "order": [
+            "DEFINITION",
+            "LIST_RENDERING",
+            "CONDITIONALS",
+            "RENDER_MODIFIERS",
+            "GLOBAL",
+            [
+              "UNIQUE",
+              "SLOT"
+            ],
+            "TWO_WAY_BINDING",
+            "OTHER_DIRECTIVES",
+            "OTHER_ATTR",
+            "EVENTS",
+            "CONTENT"
+          ],
+          "alphabetical": false
+        }
+      ]
+    }
   },
   "browserslist": [
     "> 1%",

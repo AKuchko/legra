@@ -1,67 +1,56 @@
 <template>
-  <ul class="posts-list" :class="listType" v-if="posts">
-    <li class="posts-list__post" v-for="post in posts" :key="post.id">
-      <PostTemplate
-        :image="post.image"
-        :isMiniature="isMiniature"
-        :note="post.note"
-        @click="($event) => (isMiniature = !isMiniature)"
-      />
+  <ul class="posts-list">
+    <li v-for="post in props.posts" :key="post.id" class="posts-list__post">
+      <PostTemplate :post="post" />
     </li>
   </ul>
-  <div class="posts-list__empty" v-else></div>
 </template>
 
-<script>
+<script setup>
+import { defineProps } from "vue";
 import PostTemplate from "./PostTemplate.vue";
 
-export default {
-  name: "PostsList",
-  components: { PostTemplate },
-  props: {
-    posts: { type: Array, default: () => [] },
-  },
-  data() {
-    return {
-      isMiniature: true,
-    };
-  },
-  computed: {
-    listType() {
-      return this.isMiniature ? "posts-list--mini" : "";
-    },
-  },
-};
+const props = defineProps({
+  posts: { type: Array, default: () => [] },
+});
 </script>
 
 <style lang="scss">
 .posts-list {
+  display: grid;
+  grid-template-columns: minmax(160px, 25rem);
+
   &__post {
     margin-bottom: 25px;
   }
-}
 
-.posts-list--mini {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(50px, 12.4rem));
-  grid-gap: 5px;
-  width: 100%;
-}
-
-.posts-list--mini .posts-list__post {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-width: 12.25rem;
-  max-height: 12.25rem;
-  background-color: $color-placeholder;
-  overflow: hidden;
-  margin-bottom: 0;
-
-  & img {
+  &--preloading {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(50px, 12.4rem));
+    grid-template-rows: repeat(2, minmax(50px, 12.4rem));
+    grid-gap: 5px;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+  }
+
+  &__preloader {
+    max-width: 12.4rem;
+    max-height: 12.4rem;
+    background: $color-placeholder;
+    animation-duration: 1s;
+    animation-name: preloader_anim;
+    animation-iteration-count: infinite;
+  }
+}
+
+@keyframes preloader_anim {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
   }
 }
 </style>

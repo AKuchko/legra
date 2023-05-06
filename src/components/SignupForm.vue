@@ -17,10 +17,10 @@
     <form class="signup-form__form" @submit.prevent="signup">
       <ul class="signup-form__input-list">
         <li class="signup-form__input">
-          <BaseInput label="Your email" v-model="userModel.email" />
+          <BaseInput v-model="userModel.email" label="Your email" />
         </li>
         <li class="signup-form__input">
-          <BaseInput label="Password" v-model="userModel.password" />
+          <BaseInput v-model="userModel.password" label="Password" />
         </li>
         <li class="signup-form__input">
           <BaseButton v-if="isEmailCorrect" type="submit">Signup</BaseButton>

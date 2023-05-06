@@ -1,7 +1,8 @@
 <template>
   <div class="profile-image" :style="imageSize">
     <img
-      :src="`data:image/jpeg;base64,${imageData}`"
+      v-if="imageData"
+      :src="imageData"
       alt="Image"
       class="profile-image__image"
     />
@@ -32,6 +33,7 @@ export default {
   &__image {
     width: 100%;
     height: 100%;
+    object-fit: cover;
   }
 }
 </style>

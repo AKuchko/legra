@@ -15,7 +15,7 @@
       <Icon icon="bi:pencil" />
     </h1>
     <p class="small-text">We send a verification code on your email address</p>
-    <BaseInput label="code" v-model="code" />
+    <BaseInput v-model="code" label="code" />
   </form>
 </template>
 

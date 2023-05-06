@@ -1,6 +1,5 @@
 import AuthMiddleware from "./middleware/auth.middleware";
 import fetchUser from "./middleware/fetchUser.middleware";
-import fetchPosts from "./middleware/fetchUserPosts.middleware";
 
 export default [
   {
@@ -27,7 +26,7 @@ export default [
     path: "/",
     component: () => import("@/layout/MainLayout.vue"),
     meta: {
-      middleware: [AuthMiddleware.checkAuth, fetchUser, fetchPosts],
+      middleware: [AuthMiddleware.checkAuth, fetchUser],
     },
     redirect: "main",
     children: [
@@ -37,9 +36,14 @@ export default [
         component: () => import("@/views/MainView.vue"),
       },
       {
-        path: "user",
+        path: "user/:user_id",
         name: "user",
-        component: () => import("@/views/MeView.vue"),
+        component: () => import("@/views/UserView.vue"),
+      },
+      {
+        path: "coomments/:post_id",
+        name: "comments",
+        component: () => import("@/views/CommentsView.vue"),
       },
       {
         path: "messages",

@@ -6,6 +6,9 @@ import createMiddlewarePipeline from "./middlewarePipeline";
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+  // scrollBehavior(to, from, savedPosition) {
+  //   return savedPosition || { top: 0 };
+  // },
 });
 
 router.beforeEach((to, from, next) => {

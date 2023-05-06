@@ -1,15 +1,21 @@
 <template>
   <BaseBlock class="sidebar">
-    <a href="#/user" class="sidebar__profile">
+    <router-link
+      v-if="isUserStored"
+      :to="{ name: 'user', params: { user_id: 1 } }"
+      class="sidebar__profile"
+    >
       <BaseProfileImage
+        v-if="user.profile_image"
         class="sidebar__image"
         :size="40"
-        :imageData="userInfo.profile_image"
+        :imageData="user.profile_image[0].data"
       />
-      <h3 class="sidebar__username">@{{ userInfo.username }}</h3>
-    </a>
+      <h3 class="sidebar__username">{{ user.profile_name }}</h3>
+    </router-link>
+    <BasePreloader v-else />
     <ul class="sidebar__list">
-      <li class="sidebar__item" v-for="item in items" :key="item.id">
+      <li v-for="item in items" :key="item.id" class="sidebar__item">
         <a :href="item.link" class="sidebar__link">
           {{ item.name }}
           <Icon :icon="item.icon" :inline="true" width="20" height="20" />
@@ -22,12 +28,13 @@
 <script>
 import BaseBlock from "./common/BaseBlock.vue";
 import BaseProfileImage from "./common/BaseProfileImage.vue";
+import BasePreloader from "./common/BasePreloader.vue";
 import { mapGetters } from "vuex";
 import { Icon } from "@iconify/vue";
 
 export default {
   name: "MainSidebar",
-  components: { BaseBlock, BaseProfileImage, Icon },
+  components: { BaseBlock, BaseProfileImage, Icon, BasePreloader },
   props: {
     items: {
       type: Array,
@@ -44,7 +51,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["userInfo", "isUserStored"]),
+    ...mapGetters({
+      user: "userInfo",
+      isUserStored: "isUserStored",
+    }),
   },
 };
 </script>
@@ -53,7 +63,6 @@ export default {
 .sidebar {
   min-height: 300px;
   max-width: 200px;
-  margin-right: 25px;
   padding: 40px 25px;
   transition: $transition-base;
 
@@ -91,19 +100,6 @@ export default {
   &__link {
     padding: 8px 10px;
     display: block;
-  }
-}
-
-@media (max-width: 600px) {
-  .sidebar {
-    display: flex;
-    min-height: auto;
-    max-width: none;
-    width: 100%;
-    height: 50px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
   }
 }
 </style>
