@@ -50,3 +50,7 @@ input {
 	font-size: inherit;
 	background: inherit;
 }
+[contenteditable] {
+    -webkit-user-select: text;
+    user-select: text;
+}

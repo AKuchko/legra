@@ -14,6 +14,8 @@ export default {
   emits: ["crop"],
   props: {
     image: { type: Object, default: () => {} },
+    ratio: { type: Number, default: 3 / 4 },
+    viewMode: { type: Number, default: 1 },
   },
   setup(props, { emit }) {
     let cropper = null;
@@ -22,10 +24,11 @@ export default {
       emit("crop", { cropperData: cropper.getData(), id: props.image.id });
     };
     const cropperSettings = {
-      viewMode: 1,
-      initialAspectRatio: 3 / 4,
+      viewMode: props.viewMode,
+      initialAspectRatio: props.ratio,
       minContainerWidth: 320,
       minContainerHeight: 320,
+      autoCropArea: 1,
       cropBoxMovable: false,
       cropBoxResizable: false,
       toggleDragModeOnDblclick: false,
@@ -58,7 +61,7 @@ export default {
 
 <style lang="scss" scoped>
 .base-cropper {
-  max-width: 20rem;
-  max-height: 25rem;
+  border-radius: 0.35rem;
+  overflow: hidden;
 }
 </style>

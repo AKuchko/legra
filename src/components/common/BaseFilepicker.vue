@@ -34,6 +34,7 @@ async function sendFiles(event) {
 
     _files.push({ id: Date.now(), url: file_url, file: _files_data[i] });
   }
+  event.target.value = "";
   emit("file-select", { _files });
 }
 </script>

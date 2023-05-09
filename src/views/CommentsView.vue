@@ -36,8 +36,6 @@ export default {
         }
 
         onMounted(async () => {
-            // post.value = await postService.getPost({ post_id }).then((r) => r.data);
-            // const commentsChat = await postService.getComments({ post_id }).then((r) => r.data);
             window.addEventListener("delete-message", deleteMsgEvent);
             socket.on(`message:add:${chat_id.value}`, addMessage);
             socket.on(`message:delete:${chat_id.value}`, removeMessage); 

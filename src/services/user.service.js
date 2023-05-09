@@ -21,6 +21,15 @@ class UserService {
   unfollowUser({ user_id }) {
     return client.delete(`/api/users/unfollow/${user_id}`);
   }
+
+  updateUser({ user_name, description, profile_image, crop_data }) {
+    const fd = new FormData();
+    fd.append("profile_image", profile_image);
+    fd.append("crop_data", JSON.stringify(crop_data));
+    fd.append("user_name", user_name);
+    fd.append("description", description);
+    return client.put("/api/users/update", fd, { headers: { "Content-Type": "multipart/form-data" } });
+  }
 }
 
 export default new UserService();

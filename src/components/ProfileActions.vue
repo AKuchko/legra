@@ -10,16 +10,12 @@ export default {
     followers: Array,
   },
   setup(props) {
-    // Vars
     const store = useStore();
-
-    // Computed
     const myActions = computed(() => store.getters.userInfo.user_id === props.user_id);
     const isFollowing = computed(() => {
       return props.followers ? props.followers.find(follower => follower.user_id === store.getters.userInfo.user_id) : false;
     })
-
-    // Methods
+    const message_link = { name: "chat", params: { user_id: props.user_id }};
     const createFollow = () => ( userService.followUser({ user_id: props.user_id }) );
     const deleteFollow = () => ( userService.unfollowUser({ user_id: props.user_id }) );
     const followAction = () => {
@@ -31,6 +27,7 @@ export default {
     return {
       myActions,
       isFollowing,
+      message_link,
       openCreateModal,
       followAction,
     }
@@ -47,7 +44,7 @@ export default {
     >
       {{ isFollowing ? "Unfollow" : "Follow +" }}
     </button>
-    <button class="action-composer__action action-composer__action--accent">Message</button>
+    <router-link :to="message_link" class="action-composer__action action-composer__action--accent">Message</router-link>
   </div>
   <div v-else class="action-coposer">
     <button class="action-composer__action action-composer__action--accent" @click="openCreateModal">Create new post</button>

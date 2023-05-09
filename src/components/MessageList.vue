@@ -6,11 +6,6 @@ const props = defineProps({
   messages: { type: Array, default: () => [] },
   userRole: { type: String, default: "customer" },
 });
-// const emit = defineEmits(["reply_to"]);
-
-// const reply_to = (message_id) => {
-//   emit("reply_to", message_id);
-// };
 </script>
 
 <template>
