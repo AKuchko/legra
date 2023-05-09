@@ -50,7 +50,6 @@ export default {
         <message-list 
             :messages="messages" 
             :user-role="userRole" 
-            @reply_to="set_reply_message"
         >
           <li v-if="commentsPost">
             <post-template :post="commentsPost" />
@@ -58,10 +57,7 @@ export default {
         </message-list>
       </div>
       <div class="chat__bottom">
-        <message-input-box 
-            :reply_msg="replyed_message" 
-            @send-message="sendMessage"
-        />
+        <message-input-box @send-message="sendMessage" />
       </div>
     </div>
   </div>

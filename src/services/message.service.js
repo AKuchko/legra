@@ -4,9 +4,6 @@ class MessageService {
   _form_data_headers = {
     headers: { "Content-Type": "multipart/form-data" },
   };
-  // getUserChatRole({ chat_id }) {
-  //   return client.get(`/api/chat/privileges/${chat_id}`);
-  // }
   getMessages({ chat_id }) {
     return client.get(`/api/message/${chat_id}`);
   }
