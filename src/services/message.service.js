@@ -10,7 +10,7 @@ class MessageService {
   getMessages({ chat_id }) {
     return client.get(`/api/message/${chat_id}`);
   }
-  postMessage({ chat_id, message, media, reply_message_id }) {
+  postMessage({ chat_id, message, media, reply_message_id, meta }) {
     const formData = new FormData();
 
     for (let i = 0; i < media.files.length; i++)
@@ -19,6 +19,7 @@ class MessageService {
     formData.append("message", message);
     formData.append("chat_id", chat_id);
     formData.append("reply_message_id", reply_message_id);
+    formData.append("meta", JSON.stringify(meta));
 
     return client.post("/api/message/create", formData, {
       headers: { "Content-Type": "multipart/form-data" },

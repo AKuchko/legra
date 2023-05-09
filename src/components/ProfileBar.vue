@@ -26,9 +26,9 @@ export default {
       <p class="profile-bar__text">
         <span>{{ user.profile_name }}</span>
       </p>
-      <p ref="description_text" class="profile-bar__text profile-bar__desc">
-        {{ user.profile_description }}
-        <button class="show-more">more</button>
+      <p v-if="user.description" ref="description_text" class="profile-bar__text profile-bar__desc">
+        {{ user.description }}
+        <!-- <button class="show-more">more</button> -->
       </p>
     </div>
   </div>

@@ -20,6 +20,14 @@ export default {
     },
   },
   mutations: {
+    setUserBIO(state, { user_name, profile_name, description }) {
+      state.user.user_name = user_name;
+      state.user.profile_name = profile_name;
+      state.user.description = description;
+    },
+    setUserImage(state, { profile_image }) {
+      state.user.profile_image.push(profile_image);
+    },
     setUser(state, user) {
       state.user = user;
     },

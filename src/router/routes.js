@@ -48,12 +48,17 @@ export default [
       {
         path: "messages",
         name: "messages",
-        component: () => import("@/views/MessagesView.vue"),
+        component: () => import("@/views/MessangerView.vue"),
       },
       {
         path: "settings",
         name: "settings",
         component: () => import("@/views/SettingsView.vue"),
+      },
+      {
+        path: "chat/:user_id",
+        name: "chat",
+        component: () => import("@/views/ChatView.vue"),
       },
     ],
   },

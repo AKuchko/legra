@@ -47,6 +47,7 @@ function sendMessage() {
   cancelEmbededMessage();
   message_text.value = "";
   files.value = [];
+  message_input.value.innerText = "";
 }
 function cancelEmbededMessage() {
   embededMessage.value = null;
@@ -70,6 +71,7 @@ onMounted(() => {
     embededIcon.value = "material-symbols:edit-rounded";
     messageType = "edit";
     message_text.value = embededMessage.value.message;
+    message_input.value.innerText = message_text.value;
     message_input.value.focus();
   })
   window.addEventListener("forward-message", (e) => {
@@ -107,9 +109,7 @@ onMounted(() => {
             @input="updatemMessageText"
             @keydown.enter.exact.prevent="sendOnEnter"
             dir="auto"
-          >
-            {{ message_text }}
-          </div>
+          ></div>
           <span v-show="!message_text" class="message-input-box__input-placeholder">Message</span>
         </div>
         <div class="message-input-box__attach-button">

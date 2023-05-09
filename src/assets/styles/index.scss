@@ -28,3 +28,19 @@
 .no-scroll {
     overflow: hidden;
 }
+
+.fly-button {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+}
+
+.rounded-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-light-bg;
+    border-radius: 50%;
+    cursor: pointer;
+    background: $color-accent;
+}

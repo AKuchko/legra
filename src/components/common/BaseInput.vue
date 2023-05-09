@@ -17,18 +17,9 @@
 export default {
   name: "BaseInput",
   props: {
-    modelValue: {
-      type: [String, Number],
-      default: "",
-    },
-    label: {
-      type: String,
-      default: "",
-    },
-    type: {
-      type: String,
-      default: "text",
-    },
+    modelValue: { type: [String, Number], default: "" },
+    label: { type: String, default: "" },
+    type: { type: String, default: "text" },
   },
   computed: {
     placeholderState() {
@@ -67,6 +58,7 @@ export default {
     left: 5px;
     padding: 0 5px;
     font-size: $font-xsmall;
+    pointer-events: none;
   }
 
   &__input:focus ~ .base-input__placeholder {
