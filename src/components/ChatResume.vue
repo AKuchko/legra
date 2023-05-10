@@ -21,7 +21,10 @@ export default {
 
 <template>
   <router-link :to="chatLink" class="chat-resume">
-    <base-profile-image :imageData="chatInfo.chat_image[0].data" />
+    <base-profile-image
+      :imageData="chatInfo.chat_image"
+      :user_name="chatInfo.chat_name"
+    />
     <div class="chat-resume__body">
       <div class="chat-resume__info-row">
         <h3>{{ chatInfo.chat_name }}</h3>

@@ -5,9 +5,10 @@ import BaseCropper from "@/components/common/BaseCropper.vue";
 import BaseFilepicker from "@/components/common/BaseFilepicker.vue";
 import BaseButton from "@/components/common/BaseButton.vue";
 import BaseInput from "@/components/common/BaseInput.vue";
+import BaseProfileImage from "@/components/common/BaseProfileImage.vue";
 
 import { useStore } from "vuex";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import userService from "@/services/user.service";
 
 export default {
@@ -19,21 +20,24 @@ export default {
     BaseButton,
     TransitionFade,
     BaseInput,
+    BaseProfileImage,
   },
   setup() {
     const store = useStore();
-    const user = store.getters.userInfo;
+    const current_user = computed(() => store.getters.userInfo);
+    const copy_user_name = ref(current_user.value.user_name);
+    const copy_desc = ref(current_user.value.description);
     const profile_image = ref(null);
     const cropperVisible = ref(false);
     const changed = ref(false);
     let image_cropp = {};
 
     const updateUsername = (value) => {
-      user.user_name = value;
+      copy_user_name.value = value;
       changed.value = true;
     };
     const updateDesc = (value) => {
-      user.description = value;
+      copy_desc.value = value;
       changed.value = true;
     };
     const openCropper = () => (cropperVisible.value = true);
@@ -50,17 +54,18 @@ export default {
           crop_data: image_cropp,
         })
         .then((r) => {
-          const new_img = r.data.profile_image;
-          store.commit("setUserImage", { profile_image: new_img });
-          user.profile_image.push(new_img);
+          const new_img = r.data;
+          console.log(new_img);
+          store.commit("setUserImage", new_img);
+          // user.profile_image.push(new_img);
           closeCropper();
         });
     };
     const submitChanges = () => {
       userService
         .updateUser({
-          user_name: user.user_name,
-          description: user.description,
+          user_name: copy_user_name.value,
+          description: copy_desc.value,
         })
         .then((r) => {
           const { user_name, profile_name, description } = r.data;
@@ -70,7 +75,9 @@ export default {
     };
 
     return {
-      user,
+      copy_user_name,
+      copy_desc,
+      current_user,
       profile_image,
       cropperVisible,
       changed,
@@ -113,7 +120,12 @@ export default {
       <div class="settings__header">
         <div class="settings__account">
           <div class="settings__user-image">
-            <img :src="user.profile_image.at(-1).data" />
+            <!-- <img :src="user.profile_image.at(-1).data" /> -->
+            <BaseProfileImage
+              :size="160"
+              :imageData="current_user.profile_image"
+              :user_name="current_user.user_name"
+            />
             <BaseFilepicker class="edit-layer" @file-select="onNewImage">
               <Icon icon="material-symbols:edit-rounded" width="40" />
             </BaseFilepicker>
@@ -122,15 +134,15 @@ export default {
             <ul class="settings__info-items">
               <li class="settings__info-item">
                 <BaseInput
-                  :modelValue="user.user_name"
-                  label="username"
+                  :modelValue="copy_user_name"
+                  label="Username"
                   @update:modelValue="updateUsername"
                 />
               </li>
               <li class="settings__info-item">
                 <BaseInput
-                  :modelValue="user.description"
-                  label="username"
+                  :modelValue="copy_desc"
+                  label="Description"
                   @update:modelValue="updateDesc"
                 />
               </li>
