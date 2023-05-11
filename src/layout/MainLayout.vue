@@ -38,9 +38,5 @@ export default {
   width: 100vw;
   height: 100vh;
   margin: auto;
-
-  &__sidebar {
-    padding: 2.5rem 1rem 2.5rem;
-  }
 }
 </style>
