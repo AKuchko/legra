@@ -16,7 +16,7 @@ export default {
 <template>
   <div class="profile-bar">
     <div class="profile-bar__head">
-      <base-profile-image v-if="user.profile_image" :imageData="user.profile_image[0].data" :size="100" />
+      <base-profile-image :imageData="user.profile_image" :size="100" :user_name="user.user_name" />
       <div class="profile-bar__user-activity">
         <user-stats :user="user" class="profile-bar__stats" />
         <profile-actions :user_id="user.user_id" :followers="user.followers" class="profile-bar__actions" />

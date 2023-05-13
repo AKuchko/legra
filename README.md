@@ -20,6 +20,31 @@ npm run build
 npm run lint
 ```
 
+```
+.
+├── public
+└── src
+    ├── assets
+    │   └── styles
+    ├── components
+    │   ├── common
+    │   ├── sidebarLayers
+    │   └── transitions
+    ├── constants
+    ├── http
+    │   └── interceptors
+    ├── layout
+    ├── router
+    │   └── middleware
+    ├── services
+    ├── socket
+    ├── store
+    │   ├── modules
+    │   └── mutations-types
+    ├── utils
+    └── views
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 

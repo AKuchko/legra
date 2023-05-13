@@ -6,13 +6,16 @@ import BaseFilepicker from "@/components/common/BaseFilepicker.vue";
 import BaseButton from "@/components/common/BaseButton.vue";
 import BaseInput from "@/components/common/BaseInput.vue";
 import BaseProfileImage from "@/components/common/BaseProfileImage.vue";
+import BaseBackBtn from "../common/BaseBackBtn.vue";
+import MainLayer from "./MainLayer.vue";
+import DropDownMenu from "../DropDownMenu.vue";
 
 import { useStore } from "vuex";
 import { ref, computed } from "vue";
 import userService from "@/services/user.service";
 
 export default {
-  name: "SettingsView",
+  name: "SettingsLayer",
   components: {
     Icon,
     BaseFilepicker,
@@ -21,6 +24,8 @@ export default {
     TransitionFade,
     BaseInput,
     BaseProfileImage,
+    BaseBackBtn,
+    DropDownMenu,
   },
   setup() {
     const store = useStore();
@@ -57,7 +62,6 @@ export default {
           const new_img = r.data;
           console.log(new_img);
           store.commit("setUserImage", new_img);
-          // user.profile_image.push(new_img);
           closeCropper();
         });
     };
@@ -72,6 +76,9 @@ export default {
           store.commit("setUserBIO", { user_name, profile_name, description });
         });
       changed.value = false;
+    };
+    const back = () => {
+      store.dispatch("toggleComponent", { component: MainLayer });
     };
 
     return {
@@ -88,6 +95,7 @@ export default {
       updateUsername,
       updateDesc,
       submitChanges,
+      back,
     };
   },
 };
@@ -118,39 +126,48 @@ export default {
     </div>
     <div class="settings__wrapper">
       <div class="settings__header">
-        <div class="settings__account">
-          <div class="settings__user-image">
-            <!-- <img :src="user.profile_image.at(-1).data" /> -->
-            <BaseProfileImage
-              :size="160"
-              :imageData="current_user.profile_image"
-              :user_name="current_user.user_name"
+        <BaseBackBtn @click="back" />
+        <div class="settings__header-content">
+          <h3 class="settings__header-title">Settings</h3>
+          <div class="settings__header-more">
+            <DropDownMenu
+              :menu="[
+                { name: 'Log out', action: 'logout', icon: 'ion:exit-outline' },
+              ]"
             />
-            <BaseFilepicker class="edit-layer" @file-select="onNewImage">
-              <Icon icon="material-symbols:edit-rounded" width="40" />
-            </BaseFilepicker>
-          </div>
-          <div class="settings__user-info">
-            <ul class="settings__info-items">
-              <li class="settings__info-item">
-                <BaseInput
-                  :modelValue="copy_user_name"
-                  label="Username"
-                  @update:modelValue="updateUsername"
-                />
-              </li>
-              <li class="settings__info-item">
-                <BaseInput
-                  :modelValue="copy_desc"
-                  label="Description"
-                  @update:modelValue="updateDesc"
-                />
-              </li>
-            </ul>
           </div>
         </div>
       </div>
-      <div class="settings__body"></div>
+      <div class="settings__body">
+        <div class="settings__user-image">
+          <BaseProfileImage
+            :size="160"
+            :imageData="current_user.profile_image"
+            :user_name="current_user.user_name"
+          />
+          <BaseFilepicker class="edit-layer" @file-select="onNewImage">
+            <Icon icon="material-symbols:edit-rounded" width="40" />
+          </BaseFilepicker>
+        </div>
+        <div class="settings__user-info">
+          <ul class="settings__info-items">
+            <li class="settings__info-item">
+              <BaseInput
+                :modelValue="copy_user_name"
+                label="Username"
+                @update:modelValue="updateUsername"
+              />
+            </li>
+            <li class="settings__info-item">
+              <BaseInput
+                :modelValue="copy_desc"
+                label="Description"
+                @update:modelValue="updateDesc"
+              />
+            </li>
+          </ul>
+        </div>
+      </div>
       <TransitionFade>
         <button
           v-if="changed"
@@ -167,26 +184,51 @@ export default {
 <style lang="scss">
 .settings {
   width: 100%;
+  min-width: 25rem;
+  height: 100%;
 
   &__wrapper {
     position: relative;
-    max-width: 45rem;
+    overflow-y: scroll;
     height: 100%;
-    margin: auto;
   }
 
-  &__account {
+  &__header {
+    display: flex;
+    align-items: center;
+    padding: 0.375rem 0.8rem;
+    height: 3.5rem;
+    background: #dbdbdb;
+  }
+
+  &__header-content {
+    flex: 1;
     display: flex;
     align-items: center;
   }
 
+  &__header-title {
+    flex: 1;
+    text-align: left;
+    margin-left: 1.375rem;
+    font-size: 1.25rem;
+  }
+
+  &__body {
+    padding-top: 0.8rem;
+    overflow-y: overlay;
+    overflow-x: hidden;
+    border-top: 1px solid $color-placeholder;
+  }
+
   &__user-info {
-    flex-grow: 1;
-    margin-left: 1rem;
+    padding: 0 0.8rem;
   }
 
   &__user-image {
     position: relative;
+    margin: auto;
+    margin-bottom: 1rem;
     max-width: 10rem;
     border-radius: 50%;
     overflow: hidden;

@@ -101,7 +101,8 @@ export default {
       <router-link class="message__profile-image" :to="userLink">
         <base-profile-image
           :size="30"
-          :imageData="message.profile_image[0].data"
+          :imageData="message.profile_image"
+          :user_name="message.user_name"
         />
       </router-link>
       <div class="message__body">

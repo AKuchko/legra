@@ -25,8 +25,8 @@ export default {
       state.user.profile_name = profile_name;
       state.user.description = description;
     },
-    setUserImage(state, { profile_image }) {
-      state.user.profile_image.push(profile_image);
+    setUserImage(state, new_media) {
+      state.user.profile_image.push(new_media);
     },
     setUser(state, user) {
       state.user = user;
