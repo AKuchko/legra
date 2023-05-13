@@ -2,6 +2,21 @@
   <router-view />
 </template>
 
+<script setup>
+import { onMounted } from "vue";
+import authService from "./services/auth.service";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+onMounted(() => {
+  window.addEventListener("logout", () => {
+    authService.logout();
+    router.push({ name: "login" });
+  });
+});
+</script>
+
 <style lang="scss">
 #app {
   font-size: $font-base;

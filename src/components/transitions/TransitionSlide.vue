@@ -19,13 +19,15 @@ const dir = computed(() => (props.reverse ? "slide-reverse" : "slide"));
 }
 
 .slide-enter-from {
-  height: 100vh;
+  position: absolute;
+  top: 0;
   opacity: 0;
   transform: translate(100%, 0);
 }
 
 .slide-leave-to {
-  height: 100vh;
+  position: absolute;
+  top: 0;
   opacity: 0;
   transform: translate(-100%, 0);
 }

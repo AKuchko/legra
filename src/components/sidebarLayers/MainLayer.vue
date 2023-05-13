@@ -49,19 +49,19 @@ export default {
           <li class="main-sidebar__item">
             <router-link :to="mainLink" class="main-sidebar__link">
               Main
-              <Icon icon="mdi:home-variant" width="20" />
+              <Icon icon="ion:home" width="20" />
             </router-link>
           </li>
           <li class="main-sidebar__item">
             <router-link :to="messangerLink" class="main-sidebar__link">
               Messanger
-              <Icon icon="ri:chat-3-fill" width="20" />
+              <Icon icon="ion:chatbubble" width="20" />
             </router-link>
           </li>
           <li class="main-sidebar__item">
             <button @click="openSettings" class="main-sidebar__link">
               Settings
-              <Icon icon="solar:settings-outline" width="20" />
+              <Icon icon="ion:settings-sharp" width="20" />
             </button>
           </li>
         </ul>

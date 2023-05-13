@@ -37,6 +37,7 @@ export default {
 
 <style lang="scss">
 .sidebar {
+  position: relative;
   height: 100%;
   overflow: hidden;
   background: $color-light-bg;

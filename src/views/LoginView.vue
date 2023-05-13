@@ -1,41 +1,43 @@
 <template>
   <div class="login">
-    <svg class="login__logo" height="120" width="120">
-      <circle
-        cx="60"
-        cy="60"
-        r="57"
-        stroke="gray"
-        stroke-width="3"
-        fill="transparent"
-      />
-    </svg>
-    <h1 class="login__title title-medium">Legram</h1>
-    <p class="login__subtitle small-text">
-      Enter your email adress and password
-    </p>
-    <form class="login__form" @submit.prevent="login">
-      <div class="login__input-group">
-        <BaseInput
-          v-model="model.email"
-          type="email"
-          label="Your email adress"
-          class="login__input"
+    <div class="login__wrapper">
+      <svg class="login__logo" height="120" width="120">
+        <circle
+          cx="60"
+          cy="60"
+          r="57"
+          stroke="gray"
+          stroke-width="3"
+          fill="transparent"
         />
-        <BaseInput
-          v-model="model.password"
-          type="password"
-          label="Your password"
-          class="login__input"
-        />
-      </div>
-      <BaseButton type="submit">Test button</BaseButton>
-      <p class="login__caption">
-        If you donn't have ann account – you can
-        <a href="#/register" class="base-link">create one</a>
-        .
+      </svg>
+      <h1 class="login__title title-medium">Legram</h1>
+      <p class="login__subtitle small-text">
+        Enter your email adress and password
       </p>
-    </form>
+      <form class="login__form" @submit.prevent="login">
+        <div class="login__input-group">
+          <BaseInput
+            v-model="model.email"
+            type="email"
+            label="Your email adress"
+            class="login__input"
+          />
+          <BaseInput
+            v-model="model.password"
+            type="password"
+            label="Your password"
+            class="login__input"
+          />
+        </div>
+        <BaseButton type="submit">Test button</BaseButton>
+        <p class="login__caption">
+          If you donn't have ann account – you can
+          <a href="#/register" class="base-link">create one</a>
+          .
+        </p>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -73,6 +75,12 @@ export default {
 
 <style lang="scss">
 .login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
   &__logo {
     margin: 0 auto 15px;
   }

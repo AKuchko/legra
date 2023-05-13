@@ -8,6 +8,7 @@ import BaseInput from "@/components/common/BaseInput.vue";
 import BaseProfileImage from "@/components/common/BaseProfileImage.vue";
 import BaseBackBtn from "../common/BaseBackBtn.vue";
 import MainLayer from "./MainLayer.vue";
+import DropDownMenu from "../DropDownMenu.vue";
 
 import { useStore } from "vuex";
 import { ref, computed } from "vue";
@@ -24,6 +25,7 @@ export default {
     BaseInput,
     BaseProfileImage,
     BaseBackBtn,
+    DropDownMenu,
   },
   setup() {
     const store = useStore();
@@ -60,7 +62,6 @@ export default {
           const new_img = r.data;
           console.log(new_img);
           store.commit("setUserImage", new_img);
-          // user.profile_image.push(new_img);
           closeCropper();
         });
     };
@@ -128,6 +129,13 @@ export default {
         <BaseBackBtn @click="back" />
         <div class="settings__header-content">
           <h3 class="settings__header-title">Settings</h3>
+          <div class="settings__header-more">
+            <DropDownMenu
+              :menu="[
+                { name: 'Log out', action: 'logout', icon: 'ion:exit-outline' },
+              ]"
+            />
+          </div>
         </div>
       </div>
       <div class="settings__body">
@@ -193,7 +201,15 @@ export default {
     background: #dbdbdb;
   }
 
+  &__header-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
   &__header-title {
+    flex: 1;
+    text-align: left;
     margin-left: 1.375rem;
     font-size: 1.25rem;
   }

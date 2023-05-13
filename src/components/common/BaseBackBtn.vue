@@ -7,7 +7,7 @@ export default {
 </script>
 
 <template>
-  <button class="back-button">
+  <button class="back-button" title="Back">
     <Icon icon="material-symbols:arrow-back-rounded" width="25" />
   </button>
 </template>

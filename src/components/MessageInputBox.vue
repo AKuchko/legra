@@ -11,7 +11,7 @@ export default {
   name: "MessageInputBox",
   emits: ["send-message"],
   components: { BaseFiledropper, BaseFilepicker, EmbededMessage, FilesViewer, Icon },
-  setup({ emit }) {
+  setup(props, { emit }) {
     const message_text = ref("");
     const message_input = ref(null);
     const sendButton = ref(null);
@@ -48,7 +48,7 @@ export default {
         embeded_message: embededMessage.value,
         type: messageType,
       });
-      clearEmbede();
+      clearEmbeded();
       clearData();
     }; 
 

@@ -44,3 +44,17 @@
     cursor: pointer;
     background: $color-accent;
 }
+
+.button-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    transition: $transition-base;
+
+    &:hover {
+        background: $color-placeholder;
+    }
+}

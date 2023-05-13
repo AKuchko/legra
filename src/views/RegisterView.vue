@@ -1,5 +1,7 @@
 <template>
-  <SignupForm />
+  <div class="signup">
+    <SignupForm />
+  </div>
 </template>
 
 <script>
@@ -21,5 +23,10 @@ export default {
 
 <style lang="scss">
 .signup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 </style>

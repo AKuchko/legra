@@ -1,6 +1,5 @@
 <script setup>
 /* eslint-disable */
-import MessagePrivileges from "@/utils/MessagePrivileges.util";
 import TransitionFadeOver from "./transitions/TransitionFadeOver.vue";
 import { computed, defineProps } from "vue";
 
