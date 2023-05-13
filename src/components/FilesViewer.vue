@@ -8,8 +8,12 @@
         @click="$emit('select', file.id)"
       >
         <img :src="file.url" class="files-viewer__image" />
-        <button class="files-viewer__button" @click="$emit('delete', file.id)">
-          <span>Del</span>
+        <button
+          class="files-viewer__button"
+          title="Remove"
+          @click="$emit('delete', file.id)"
+        >
+          <Icon icon="ion:close-round" width="20" />
         </button>
       </li>
     </ul>
@@ -17,8 +21,10 @@
 </template>
 
 <script>
+import { Icon } from "@iconify/vue";
 export default {
   name: "FilesViewer",
+  components: { Icon },
   props: { images: { type: Array, default: () => [] } },
   emits: ["select", "delete"],
 };
@@ -38,12 +44,31 @@ export default {
   }
 
   &__item {
+    cursor: copy;
     position: relative;
     overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0;
+      transition: $transition-base;
+      background: rgba($color: $color-dark, $alpha: 0.5);
+    }
   }
 
-  &__item:hover .files-viewer__button {
-    opacity: 1;
+  &__item:hover {
+    .files-viewer__button {
+      opacity: 1;
+    }
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   &__image {
@@ -54,9 +79,11 @@ export default {
 
   &__button {
     position: absolute;
+    cursor: pointer;
     top: 1rem;
     right: 1rem;
     opacity: 0;
+    color: $color-light-bg;
     transition: $transition-base;
   }
 }
