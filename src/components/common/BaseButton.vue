@@ -1,5 +1,5 @@
 <template>
-  <button class="base-button" :class="buttonTheme">
+  <button class="base-button accent" :class="buttonTheme">
     <slot>{{ label }}</slot>
   </button>
 </template>
@@ -31,7 +31,6 @@ export default {
   height: 56px;
   border-radius: $border-radius-base;
   color: $color-light;
-  background: $color-accent;
 
   &:hover {
     opacity: 0.8;

@@ -3,8 +3,8 @@
     <transition name="fade" @click="$emit('close-popup')">
       <div class="modal__overlay"></div>
     </transition>
-    <BaseBlock
-      class="modal__window"
+    <div
+      class="modal__window secondary"
       :class="{ 'drop-area--drag-over': isDragover }"
       @dragover.prevent="setDragOver(true)"
       @dragleave="setDragOver(false)"
@@ -40,13 +40,13 @@
           @change="addFiles"
         />
       </form>
-    </BaseBlock>
+    </div>
   </div>
 </template>
 
 <script>
 import { ref } from "vue";
-import BaseBlock from "./common/BaseBlock.vue";
+// import BaseBlock from "./common/BaseBlock.vue";
 import BaseButton from "./common/BaseButton.vue";
 import BaseInput from "./common/BaseInput.vue";
 import CropperList from "./CropperList.vue";
@@ -59,7 +59,7 @@ export default {
   props: {
     modalVisibility: { type: Boolean, default: false },
   },
-  components: { BaseBlock, BaseButton, BaseInput, CropperList, FilesViewer },
+  components: { BaseButton, BaseInput, CropperList, FilesViewer },
   setup(props, { emit }) {
     const dropInput = ref(null);
     const addedFiles = ref([]);

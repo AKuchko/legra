@@ -1,10 +1,10 @@
 import authService from "@/services/auth.service";
-import postService from "@/services/post.service";
+
+const defaultState = () => ({ user: {} });
 
 export default {
   state: {
     user: {},
-    posts: [],
   },
   actions: {
     fetchUserInfo(context) {
@@ -12,11 +12,8 @@ export default {
         context.commit("setUser", userInfo.data);
       });
     },
-    fetchUserPosts(context) {
-      const user_id = context.getters.userInfo.user_id;
-      return postService.fetchUserPosts({ user_id }).then((userPosts) => {
-        context.commit("setPosts", userPosts.data);
-      });
+    resetUser({ commit }) {
+      commit("resetUserStore");
     },
   },
   mutations: {
@@ -34,19 +31,13 @@ export default {
     setPosts(state, posts) {
       state.posts = posts;
     },
-    removeUser(state) {
-      state.user = {};
+    resetUserStore(state) {
+      Object.assign(state, defaultState());
     },
   },
   getters: {
     userInfo(state) {
       return state.user;
-    },
-    userId(state) {
-      return state.user.id;
-    },
-    userPosts(state) {
-      return state.posts;
     },
     isUserStored(state) {
       return Object.keys(state.user).length !== 0;

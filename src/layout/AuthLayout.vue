@@ -8,7 +8,7 @@ export default {
 </script>
 
 <template>
-  <div class="auth-layout">
+  <div class="auth-layout bg">
     <router-view v-slot="{ Component }">
       <transition name="auth-slide">
         <component :is="Component" />
@@ -21,7 +21,6 @@ export default {
 .auth-layout {
   width: 100vw;
   height: 100%;
-  background-color: $color-light-bg;
   overflow: hidden;
 }
 

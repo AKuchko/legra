@@ -15,12 +15,13 @@ export default {
   },
   setup(props, { emit }) {
     const menuRef = ref(null);
+    const closeMenu = () => (emit("close"));
     const onMenuAction = (action) => {
       window.dispatchEvent(
         new CustomEvent(`${action}`, { detail: { target: props.target } })
       );
+      closeMenu();
     };
-    const closeMenu = () => (emit("close"));
 
     return {
       menuRef,
@@ -74,11 +75,17 @@ export default {
     min-width: 12rem;
     padding: 0.25rem 0;
     border-radius: 1rem;
-    background: rgba($color: $color-light-bg, $alpha: 0.8);
     overflow: hidden;
     overflow-y: scroll;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    color: $color-dark-secondary;
+    background: rgba($color: $color-light-secondary, $alpha: 0.9);
     z-index: 21;
+
+    @media (prefers-color-scheme: dark) {
+      color: $color-light-secondary;
+      background: rgba($color: $color-dark-secondary, $alpha: 0.9);
+    }
   }
 
   &__item {

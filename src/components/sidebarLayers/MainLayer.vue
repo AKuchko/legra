@@ -17,7 +17,7 @@ export default {
     const meLink = { name: 'user', params: { user_id: me.value.user_id } };
 
     const openSettings = () => {
-        store.dispatch("toggleComponent", { component: SettingsLayer });
+      store.dispatch("toggleComponent", { component: SettingsLayer });
     };
 
     return {
@@ -77,10 +77,6 @@ export default {
   min-width: 10rem;
   transition: $transition-base;
 
-  &:hover {
-    min-width: 12rem;
-  }
-
   &__header {
     position: relative;
     padding: 0.375rem 0.8rem;
@@ -104,7 +100,7 @@ export default {
     transition: $transition-base;
 
     &:hover {
-      background: rgba($color: #000000, $alpha: 0.2);
+      background: rgba($color: $color-placeholder, $alpha: 0.5);
     }
   }
 
@@ -131,7 +127,7 @@ export default {
 
     &:hover {
       border-radius: 8px;
-      background: rgba($color: #000000, $alpha: 0.2);
+      background: rgba($color: $color-placeholder, $alpha: 0.5);
     }
   }
 

@@ -16,7 +16,7 @@
         Enter your email adress and password
       </p>
       <form class="login__form" @submit.prevent="login">
-        <div class="login__input-group">
+        <div class="login__input-group bg">
           <BaseInput
             v-model="model.email"
             type="email"
@@ -33,7 +33,7 @@
         <BaseButton type="submit">Test button</BaseButton>
         <p class="login__caption">
           If you donn't have ann account – you can
-          <a href="#/register" class="base-link">create one</a>
+          <a href="#/register" class="accent-text">create one</a>
           .
         </p>
       </form>

@@ -110,7 +110,7 @@ export default {
           class="cropper__wrapper"
           @click="closeCropper"
         >
-          <div class="cropper__window" @click.prevent.stop>
+          <div class="cropper__window secondary" @click.stop>
             <div class="cropper__bsae-cropper">
               <BaseCropper
                 :image="profile_image"
@@ -125,7 +125,7 @@ export default {
       </transition-fade>
     </div>
     <div class="settings__wrapper">
-      <div class="settings__header">
+      <div class="settings__header secondary">
         <BaseBackBtn @click="back" />
         <div class="settings__header-content">
           <h3 class="settings__header-title">Settings</h3>
@@ -139,33 +139,35 @@ export default {
         </div>
       </div>
       <div class="settings__body">
-        <div class="settings__user-image">
-          <BaseProfileImage
-            :size="160"
-            :imageData="current_user.profile_image"
-            :user_name="current_user.user_name"
-          />
-          <BaseFilepicker class="edit-layer" @file-select="onNewImage">
-            <Icon icon="material-symbols:edit-rounded" width="40" />
-          </BaseFilepicker>
-        </div>
-        <div class="settings__user-info">
-          <ul class="settings__info-items">
-            <li class="settings__info-item">
-              <BaseInput
-                :modelValue="copy_user_name"
-                label="Username"
-                @update:modelValue="updateUsername"
-              />
-            </li>
-            <li class="settings__info-item">
-              <BaseInput
-                :modelValue="copy_desc"
-                label="Description"
-                @update:modelValue="updateDesc"
-              />
-            </li>
-          </ul>
+        <div class="settings__account">
+          <div class="settings__user-image">
+            <BaseProfileImage
+              :size="160"
+              :imageData="current_user.profile_image"
+              :user_name="current_user.user_name"
+            />
+            <BaseFilepicker class="edit-layer" @file-select="onNewImage">
+              <Icon icon="material-symbols:edit-rounded" width="40" />
+            </BaseFilepicker>
+          </div>
+          <div class="settings__user-info">
+            <ul class="settings__info-items">
+              <li class="settings__info-item secondary">
+                <BaseInput
+                  :modelValue="copy_user_name"
+                  label="Username"
+                  @update:modelValue="updateUsername"
+                />
+              </li>
+              <li class="settings__info-item secondary">
+                <BaseInput
+                  :modelValue="copy_desc"
+                  label="Description"
+                  @update:modelValue="updateDesc"
+                />
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       <TransitionFade>
@@ -198,7 +200,7 @@ export default {
     align-items: center;
     padding: 0.375rem 0.8rem;
     height: 3.5rem;
-    background: #dbdbdb;
+    border-bottom: 1px solid rgba($color: $color-placeholder, $alpha: 0.3);
   }
 
   &__header-content {
@@ -215,14 +217,15 @@ export default {
   }
 
   &__body {
-    padding-top: 0.8rem;
     overflow-y: overlay;
     overflow-x: hidden;
-    border-top: 1px solid $color-placeholder;
+  }
+
+  &__account {
+    padding: 0.8rem 0.8rem;
   }
 
   &__user-info {
-    padding: 0 0.8rem;
   }
 
   &__user-image {
@@ -276,7 +279,6 @@ export default {
     .cropper__window {
       padding: 1rem;
       border-radius: 0.5rem;
-      background: $color-light-bg;
     }
 
     .cropper__bsae-cropper {

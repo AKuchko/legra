@@ -60,6 +60,7 @@ export default {
     }
     const onEdit = (e) => {
       embededMessage.value = e.detail.target;
+      console.log(embededMessage.value);
       embededIcon.value = "material-symbols:edit-rounded";
       messageType = "edit";
       message_text.value = embededMessage.value.message;
@@ -102,7 +103,7 @@ export default {
 <template>
   <base-filedropper @file-drop="addMedia" />
   <div class="message-input-box">
-    <div class="message-input-box__compose">
+    <div class="message-input-box__compose secondary">
       <embeded-message v-if="embededMessage" :message="embededMessage" :icon="embededIcon">
         <template #icon>
           <i class="icon">
@@ -140,7 +141,7 @@ export default {
     </div>
     <button
       ref="sendButton"
-      class="message-input-box__button"
+      class="message-input-box__button secondary"
       @click="sendMessage"
     >
       <Icon icon="ri:send-plane-fill" width="20" />
@@ -164,7 +165,6 @@ export default {
     flex-grow: 1;
     max-width: calc(100% - 4rem);
     border-radius: 8px;
-    background: $color-light-bg;
   }
 
   &__input-wrapper {

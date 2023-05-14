@@ -1,5 +1,6 @@
 <script setup>
 import TransitionFade from "../transitions/TransitionFade.vue";
+import { Icon } from "@iconify/vue";
 import { ref, onMounted, onUnmounted, defineEmits } from "vue";
 import readFileURL from "@/utils/file.util";
 
@@ -60,7 +61,7 @@ onUnmounted(() => {
   <div class="dropArea">
     <transition-fade>
       <div v-if="showDropArea" class="dropArea__wrapper">
-        <div class="dropArea__target">
+        <div class="dropArea__target secondary">
           <div
             class="dropArea__target-content"
             :class="{ 'dropArea__target-content--drag-over': dragOver }"
@@ -68,17 +69,7 @@ onUnmounted(() => {
             @dragleave.prevent.stop="setDragOver(false)"
             @drop="sendFiles"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              viewBox="0 0 512 512"
-            >
-              <path
-                fill="currentColor"
-                d="M40 472h432V40H40Zm400-123.858L328.628 236.769l46.6-46.6L440 254.935ZM72 72h368v137.68l-64.769-64.77L306 214.142l-100-100l-134 134Zm0 221.4l134-134l234 234V440H72Z"
-              />
-            </svg>
+            <Icon icon="ion:document" width="20%" />
             <p>Drop photo here</p>
           </div>
         </div>
@@ -117,7 +108,6 @@ onUnmounted(() => {
     max-width: 43rem;
     padding: 10px;
     border-radius: 18px;
-    background: $color-light-bg;
   }
 
   &__target-content {
@@ -129,10 +119,28 @@ onUnmounted(() => {
     border: 0.15rem dashed $color-dark;
     border-radius: 8px;
     font-size: $font-medium;
+    transition: $transition-base;
+
+    p {
+      color: $color-dark;
+    }
 
     &--drag-over {
       border-color: $color-accent;
       color: $color-accent;
+
+      p {
+        color: $color-accent;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        border-color: $color-accent-dark;
+        color: $color-accent-dark;
+
+        p {
+          color: $color-accent-dark;
+        }
+      }
     }
   }
 }

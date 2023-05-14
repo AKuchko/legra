@@ -12,7 +12,7 @@ export default {
 
 <template>
   <div class="chat-list">
-    <ul class="chat-list__wrapper">
+    <ul class="chat-list__wrapper secondary">
       <li
         v-for="chat in chats"
         :key="chat.chat_id"
@@ -30,7 +30,6 @@ export default {
     padding: 0.2rem;
     max-width: 30rem;
     border-radius: 0.5rem;
-    background: $color-light-bg;
   }
 }
 </style>
