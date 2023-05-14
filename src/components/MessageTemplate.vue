@@ -2,7 +2,8 @@
 /* eslint-disable */
 import BaseProfileImage from "./common/BaseProfileImage.vue";
 import MediaViewer from "./MediaViewer.vue";
-import MessageContextMenu from "./MessageContextMenu.vue";
+import BaseContextMenu from "./common/BaseContextMenu.vue";
+// import MessageContextMenu from "./MessageContextMenu.vue";
 import EmbededMessage from "./EmbededMessage.vue";
 import MsgPrivileges from "@/utils/MessagePrivileges.util";
 import { computed, defineProps, nextTick, onMounted, onUnmounted, ref } from "vue";
@@ -10,7 +11,7 @@ import { useStore } from "vuex";
 
 export default {
   name: "MessageTemplate",
-  components: { BaseProfileImage, MediaViewer, MessageContextMenu, EmbededMessage },
+  components: { BaseProfileImage, BaseContextMenu, MediaViewer, EmbededMessage },
   props: {
     message: Object, 
     userRole: String,
@@ -92,12 +93,12 @@ export default {
     @dblclick="reply_msg"
   >
     <div class="message__content">
-      <message-context-menu 
+      <!-- <message-context-menu 
         :activator="contextMenuActivator" 
         :message_data="message" 
         :position="contextMenuPosition"
         :privileges="privileges"
-      />
+      /> -->
       <router-link class="message__profile-image" :to="userLink">
         <base-profile-image
           :size="30"
@@ -105,7 +106,12 @@ export default {
           :user_name="message.user_name"
         />
       </router-link>
-      <div class="message__body">
+      <div class="message__body secondary">
+        <BaseContextMenu 
+          :activator="contextMenuActivator" 
+          :targret="message" 
+          :menu="privileges"
+        />
         <p class="message__nickname">{{ message.user_name }}</p>
         <embeded-message v-if="message.embeded_message" :message="message.embeded_message" />
         <div v-if="message.media.length" class="message__media">
@@ -126,6 +132,7 @@ export default {
   margin-bottom: 0.5rem;
 
   &__content {
+    position: relative;
     display: flex;
   }
 
@@ -151,26 +158,26 @@ export default {
   }
 
   &__text {
-    margin: 10px 0;
+    margin: 0.5rem 0 0;
   }
 
   &::before {
     content: "";
-    display: none;
+    display: block;
     position: absolute;
     top: -2.5%;
-    right: 0;
+    right: -10rem;
     width: 100vw;
     height: 105%;
     transition: $transition-base;
     background: #000;
     opacity: 0;
   }
+
+  
 }
 
 .message--me {
-  color: $color-light;
-
   .message__content {
     flex-direction: row-reverse;
   }
@@ -180,6 +187,7 @@ export default {
   }
 
   .message__body {
+    color: $color-light;
     background: $color-accent;
   }
 

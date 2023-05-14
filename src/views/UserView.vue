@@ -21,12 +21,17 @@ export default {
     const posts = ref([]);
     const store = useStore();
     const route = useRoute();
+    const deletePost = (e) => {
+      const post = e.detail.target;
+      postService.deletePost({ post_id: post.post_id });
+    };
 
     let user_id = route.params.user_id;
 
     const isMyAccount = computed(() => (store.getters.userInfo.user_id === user_id));
 
     onMounted(() => {
+      window.addEventListener("post-delete", deletePost);
       window.addEventListener("openPostCreator", openPostCreator);
       socket.on(`user:edit:${user.value.user_id}`, ({ field, value }) => (user.value[field] = value));
       socket.on(`post:like:${user.value.user_id}`, ({ post_id, action, user }) => {

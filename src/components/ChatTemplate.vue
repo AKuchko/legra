@@ -80,6 +80,7 @@ export default {
     width: 100%;
     margin-bottom: 0.3rem;
     overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   &__bottom {

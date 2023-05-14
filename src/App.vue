@@ -6,13 +6,16 @@
 import { onMounted } from "vue";
 import authService from "./services/auth.service";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 const router = useRouter();
+const store = useStore();
 
 onMounted(() => {
   window.addEventListener("logout", () => {
     authService.logout();
     router.push({ name: "login" });
+    setTimeout(() => store.dispatch("resetUser"), 1000);
   });
 });
 </script>

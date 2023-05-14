@@ -1,12 +1,58 @@
 // Light theme
 $color-light: #FFFFFF;
 $color-light-bg: #f4f4f4;
-$color-light-secondary: #f0f0f0;
+$color-light-secondary: #eee;
 // Dark theme
 $color-dark: #555555;
-$color-dark-bg: #393939;
+$color-dark-bg: #121212;
+$color-dark-secondary: #373737;
 // Util colors
 $color-placeholder: #9E9E9E;
 $color-danger: #DB222A;
 $color-yellow: #F9CE37;
 $color-accent: #0091ff;
+$color-accent-dark: #774de0;
+
+.bg {
+    background: $color-light-bg;
+}
+
+.secondary {
+    background: $color-light-secondary;
+}
+
+.accent {
+    background: $color-accent;
+}
+
+.accent-text {
+    color: $color-accent;
+}
+
+p, span, h1, h2, h3, input, a, button {
+    color: $color-dark-secondary;
+}
+
+@media (prefers-color-scheme: dark) {
+    .bg {
+        background: $color-dark-bg;
+    }
+    
+    .secondary {
+        background: $color-dark-secondary;
+    }
+
+    .accent {
+        background: $color-accent-dark;
+    }
+
+    p, span, h1, h2, h3, input, a, button {
+        color: $color-light-bg;
+    }
+
+    .accent-text {
+        color: $color-accent-dark;
+    }
+}
+
+

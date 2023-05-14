@@ -1,11 +1,15 @@
 <template>
-  <div class="main">
-    <main-sidebar class="main__sidebar" />
+  <div class="main bg">
+    <transition name="sidebar">
+      <main-sidebar class="main__sidebar secondary" />
+    </transition>
     <router-view v-slot="{ Component }">
       <suspense timeout="0">
         <template #default>
           <view-window class="main__window">
-            <Component :is="Component" />
+            <TransitionSlide>
+              <Component :is="Component" />
+            </TransitionSlide>
           </view-window>
         </template>
         <template #fallback>
@@ -19,10 +23,11 @@
 <script>
 import MainSidebar from "@/components/MainSidebar.vue";
 import ViewWindow from "@/components/ViewWindow.vue";
+import TransitionSlide from "@/components/transitions/TransitionSlide.vue";
 import socket from "@/socket";
 
 export default {
-  components: { MainSidebar, ViewWindow },
+  components: { MainSidebar, ViewWindow, TransitionSlide },
   mounted() {
     socket.connect();
   },
@@ -38,5 +43,17 @@ export default {
   width: 100vw;
   height: 100vh;
   margin: auto;
+}
+.sidebar-enter-active,
+.sidebar-leave-active {
+  transition: all 0.2s ease-in-out;
+}
+
+.sidebar-enter-from,
+.sidebar-leave-to {
+  position: absolute;
+  top: 0;
+  opacity: 0;
+  transform: translate(-100%, 0) scale(0.9);
 }
 </style>

@@ -25,7 +25,7 @@ export default {
       :imageData="chatInfo.chat_image"
       :user_name="chatInfo.chat_name"
     />
-    <div class="chat-resume__body">
+    <div v-if="chatInfo.last_message" class="chat-resume__body">
       <div class="chat-resume__info-row">
         <h3>{{ chatInfo.chat_name }}</h3>
         <div class="separator"></div>
@@ -70,10 +70,6 @@ export default {
     justify-content: flex-start;
     align-items: center;
     overflow: hidden;
-
-    h3 {
-      color: #222;
-    }
 
     .separator {
       flex-grow: 1;

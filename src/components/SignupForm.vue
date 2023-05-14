@@ -16,17 +16,24 @@
     </p>
     <form class="signup-form__form" @submit.prevent="signup">
       <ul class="signup-form__input-list">
-        <li class="signup-form__input">
+        <li class="signup-form__input bg">
           <BaseInput v-model="userModel.email" label="Your email" />
         </li>
-        <li class="signup-form__input">
+        <li class="signup-form__input bg">
           <BaseInput v-model="userModel.password" label="Password" />
         </li>
         <li class="signup-form__input">
           <BaseButton v-if="isEmailCorrect" type="submit">Signup</BaseButton>
+          <p v-else>Incorrect</p>
         </li>
+        <p class="signup-form__caption">
+          If you already have an account, just
+          <router-link :to="{ name: 'login' }" class="accent-text">
+            sign in
+          </router-link>
+          .
+        </p>
       </ul>
-      <p v-if="!isEmailCorrect">Incorrect</p>
     </form>
   </div>
 </template>

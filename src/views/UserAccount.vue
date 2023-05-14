@@ -15,12 +15,17 @@ export default {
   components: { CreateModal, PostsList, ProfileBar },
   async setup() {
     const modalVisibile = ref(false);
-    const openPostCreator = () => (modalVisibile.value = true);
-    const hideModal = () => (modalVisibile.value = false);
     const user = ref({});
     const posts = ref([]);
     const store = useStore();
     const route = useRoute();
+    const openPostCreator = () => (modalVisibile.value = true);
+    const hideModal = () => (modalVisibile.value = false);
+    const deletePost = (e) => {
+      const post = e.detail.target;
+      console.log(post);
+      // postService.deletePost({ post_id: post.post_id });
+    };
 
     let user_id = route.params.user_id;
 
@@ -28,6 +33,7 @@ export default {
 
     onMounted(() => {
       window.addEventListener("openPostCreator", openPostCreator);
+      window.addEventListener("post-delete", deletePost);
       socket.on(`user:edit:${user.value.user_id}`, ({ field, value }) => (user.value[field] = value));
       socket.on(`post:like:${user.value.user_id}`, ({ post_id, action, user }) => {
         const postToUpdate = posts.value.find((post) => post.post_id === post_id);

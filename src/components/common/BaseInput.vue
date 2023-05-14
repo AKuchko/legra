@@ -36,8 +36,9 @@ export default {
   height: 54px;
   padding: 15px;
   margin: auto;
-  border: 1px solid $color-dark;
+  border: 1px solid rgba($color: $color-placeholder, $alpha: 0.5);
   border-radius: $border-radius-base;
+  background: inherit;
 
   &__input {
     width: 100%;
@@ -50,7 +51,9 @@ export default {
     left: 15px;
     transform: translateY(-50%);
     transition: $transition-base;
-    background: $color-light-bg;
+    color: $color-placeholder;
+    background: inherit;
+    pointer-events: none;
   }
 
   &__placeholder.active {
@@ -58,7 +61,6 @@ export default {
     left: 5px;
     padding: 0 5px;
     font-size: $font-xsmall;
-    pointer-events: none;
   }
 
   &__input:focus ~ .base-input__placeholder {
