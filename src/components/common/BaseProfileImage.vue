@@ -17,21 +17,12 @@ export default {
       return false;
     });
 
-    // onMounted(() => {
-    //   console.log(stringToColour(props.user_name));
-    // });
-
     return {
       imageSize,
       letterSize,
       imageContent,
     };
   },
-  // computed: {
-  //   imageSize() {
-  //     return `width: ${this.size}px; height: ${this.size}px;`;
-  //   },
-  // },
 };
 </script>
 

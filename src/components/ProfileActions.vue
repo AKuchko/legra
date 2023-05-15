@@ -39,15 +39,15 @@ export default {
   <div v-if="!myActions" class="action-composer">
     <button
       class="action-composer__action" 
-      :class="{'action-composer__action--accent': !isFollowing, 'action-composer__action--dark': isFollowing}"
+      :class="{'accent': !isFollowing, 'action-composer__action--dark': isFollowing}"
       @click="followAction"
     >
       {{ isFollowing ? "Unfollow" : "Follow +" }}
     </button>
-    <router-link :to="message_link" class="action-composer__action action-composer__action--accent">Message</router-link>
+    <router-link :to="message_link" class="action-composer__action accent">Message</router-link>
   </div>
   <div v-else class="action-coposer">
-    <button class="action-composer__action action-composer__action--accent" @click="openCreateModal">Create new post</button>
+    <button class="action-composer__action accent" @click="openCreateModal">Create new post</button>
   </div>
 </template>
 
@@ -67,12 +67,8 @@ export default {
       margin-right: 0.625rem;
     }
 
-    &--accent {
-      background: $color-accent;
-    }
-
     &--dark {
-      background: #111;
+      background: $color-dark-secondary;
     }
   }
 }

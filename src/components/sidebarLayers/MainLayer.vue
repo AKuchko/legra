@@ -5,6 +5,7 @@ import { Icon } from "@iconify/vue";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import SettingsLayer from "./SettingsLayer.vue";
+import SearchLayer from "./SearchLayer.vue";
 
 export default {
   name: "MainOver",
@@ -19,6 +20,9 @@ export default {
     const openSettings = () => {
       store.dispatch("toggleComponent", { component: SettingsLayer });
     };
+    const openSearch = () => {
+      store.dispatch("toggleComponent", { component: SearchLayer });
+    }
 
     return {
       meLink,
@@ -26,6 +30,7 @@ export default {
       messangerLink,
       me,
       openSettings,
+      openSearch,
     }
   },
 };
@@ -57,6 +62,12 @@ export default {
               Messanger
               <Icon icon="ion:chatbubble" width="20" />
             </router-link>
+          </li>   
+          <li class="main-sidebar__item">
+            <button @click="openSearch" class="main-sidebar__link">
+              Search
+              <Icon icon="ion:search" width="20" />
+            </button>
           </li>
           <li class="main-sidebar__item">
             <button @click="openSettings" class="main-sidebar__link">

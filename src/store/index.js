@@ -1,11 +1,13 @@
 import { createStore } from "vuex";
-import userStore from "./modules/user.store";
-import sidebarStore from "./modules/sidebar.store";
+import rightColumnModule from "./modules/rightColumn.module";
+import sidebarModule from "./modules/sidebar.module";
+import userModule from "./modules/user.module";
 
 const store = createStore({
   modules: {
-    userStore,
-    sidebarStore,
+    userModule,
+    sidebarModule,
+    rightColumnModule,
   },
 });
 
