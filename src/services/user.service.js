@@ -22,6 +22,10 @@ class UserService {
     return client.delete(`/api/users/unfollow/${user_id}`);
   }
 
+  findUser({ user_name }) {
+    return client.get(`/api/users/find/${user_name}`);
+  }
+
   updateUser({ user_name, description, profile_image, crop_data }) {
     const fd = new FormData();
     fd.append("profile_image", profile_image);
