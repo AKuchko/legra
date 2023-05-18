@@ -11,7 +11,7 @@ export default {
     const imageSize = computed(
       () => `width: ${props.size}px; height: ${props.size}px;`
     );
-    const letterSize = computed(() => `font-size: ${props.size / 50}rem`);
+    const letterSize = computed(() => `font-size: ${(props.size / 50) * 2}rem`);
     const imageContent = computed(() => {
       if (props.imageData) return !!props.imageData.length;
       return false;

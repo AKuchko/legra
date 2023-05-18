@@ -1,20 +1,23 @@
 <script>
 /* eslint-disable */
 import { ref } from 'vue';
+import ForwardWindow from "@/components/ForwardWindow.vue";
 import messageService from "@/services/message.service";
 import MessageList from '@/components/MessageList.vue';
 import MessageInputBox from '@/components/MessageInputBox.vue';
 import PostTemplate from "./PostTemplate.vue";
+import ChatHeader from './ChatHeader.vue';
 
 export default {
   name: "ChatTemplate",
-  components: { MessageList, MessageInputBox, PostTemplate },
+  components: { MessageList, MessageInputBox, PostTemplate, ForwardWindow, ChatHeader },
   props: {
     messages: { type: Array, default: () => [] },
     commentsPost: { type: Object, default: () => {} },
     meta: { type: Object, default: {} },
-    chat_id: Number,
-    userRole: String,
+    chat_id: { type: Number },
+    chat: { type: Object, default: () => {} },
+    userRole: { type: String },
   },
   setup(props) {
     const replyed_message = ref(null)
@@ -44,16 +47,15 @@ export default {
 
 <template>
   <div class="chat">
+    <forward-window />
     <div class="chat__wrapper">
-      <div class="chat__header"></div>
+      <chat-header :chat-name="chat.chat_name" :chatImage="chat.chat_image" />
       <div class="chat__body">
         <message-list 
             :messages="messages" 
             :user-role="userRole" 
         >
-          <li v-if="commentsPost">
-            <post-template :post="commentsPost" />
-          </li>
+          <post-template v-if="commentsPost"  :post="commentsPost" />
         </message-list>
       </div>
       <div class="chat__bottom">
@@ -81,11 +83,12 @@ export default {
     margin-bottom: 0.3rem;
     overflow-y: scroll;
     overflow-x: hidden;
+    flex-grow: 1;
   }
 
   &__bottom {
     width: calc(100% - 25vw);
-    max-width: 35rem;
+    max-width: 45rem;
   }
 }
 </style>

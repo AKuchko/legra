@@ -66,11 +66,12 @@ export default {
             messages,
             chat_id,
             userRole,
+            commentsChat,
         }
     },
 }
 </script>
 
 <template>
-    <chat-template :messages="messages" :user-role="userRole" :comments-post="post" :chat_id="chat_id" />
+    <chat-template :messages="messages" :user-role="userRole" :comments-post="post" :chat_id="chat_id" :chat="commentsChat" />
 </template>

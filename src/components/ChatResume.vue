@@ -1,26 +1,49 @@
 <script>
 import BaseProfileImage from "./common/BaseProfileImage.vue";
+import BaseContextMenu from "./common/BaseContextMenu.vue";
+// import DropDownMenu from "./DropDownMenu.vue";
 import { ref } from "vue";
 export default {
   name: "ChatResume",
-  components: { BaseProfileImage },
+  components: { BaseProfileImage, BaseContextMenu },
   props: {
     chatInfo: { type: Object, default: () => {} },
   },
   setup(props) {
+    const activator = ref(false);
     const chatLink = ref({
       name: "chat",
       params: { user_id: props.chatInfo.user_id },
     });
+    const actions = [
+      { name: "Delete", action: "chat-delete", icon: "ion:ios-trash-outline" },
+    ];
+    const openMenu = () => (activator.value = true);
+    const closeMenu = () => (activator.value = false);
+    const onContext = (e) => {
+      e.preventDefault();
+      openMenu();
+      console.log("action");
+    };
     return {
+      activator,
       chatLink,
+      actions,
+      onContext,
+      closeMenu,
     };
   },
 };
 </script>
 
 <template>
-  <router-link :to="chatLink" class="chat-resume">
+  <router-link :to="chatLink" class="chat-resume" @contextmenu="onContext">
+    <base-context-menu
+      :menu="actions"
+      :target="chatInfo"
+      :activator="activator"
+      @close="closeMenu"
+    />
     <base-profile-image
       :imageData="chatInfo.chat_image"
       :user_name="chatInfo.chat_name"
@@ -44,6 +67,7 @@ export default {
 
 <style lang="scss">
 .chat-resume {
+  position: relative;
   display: flex;
   align-items: center;
   padding: 0.5rem;
@@ -51,7 +75,7 @@ export default {
   transition: $transition-base;
 
   &:hover {
-    background: rgba($color: #000000, $alpha: 0.1);
+    background: rgba($color: $color-placeholder, $alpha: 0.5);
   }
 
   &__body {

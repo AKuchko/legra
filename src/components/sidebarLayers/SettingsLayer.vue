@@ -6,9 +6,9 @@ import BaseFilepicker from "@/components/common/BaseFilepicker.vue";
 import BaseButton from "@/components/common/BaseButton.vue";
 import BaseInput from "@/components/common/BaseInput.vue";
 import BaseProfileImage from "@/components/common/BaseProfileImage.vue";
-import BaseBackBtn from "../common/BaseBackBtn.vue";
 import MainLayer from "./MainLayer.vue";
 import DropDownMenu from "../DropDownMenu.vue";
+import BackButton from "../buttons/BackButton.vue";
 
 import { useStore } from "vuex";
 import { ref, computed } from "vue";
@@ -24,7 +24,7 @@ export default {
     TransitionFade,
     BaseInput,
     BaseProfileImage,
-    BaseBackBtn,
+    BackButton,
     DropDownMenu,
   },
   setup() {
@@ -126,7 +126,7 @@ export default {
     </div>
     <div class="settings__wrapper">
       <div class="settings__header secondary">
-        <BaseBackBtn @click="back" />
+        <BackButton @click="back" />
         <div class="settings__header-content">
           <h3 class="settings__header-title">Settings</h3>
           <div class="settings__header-more">

@@ -100,6 +100,8 @@ export default {
   width: 100%;
 
   &__content {
+    max-width: 25rem;
+    margin: auto;
     padding: 0 0.5rem;
     font-size: $font-small;
     border-radius: 0.75rem;

@@ -7,10 +7,13 @@ export default {
     user: {},
   },
   actions: {
-    fetchUserInfo(context) {
+    fetchUserInfo({ commit }) {
       return authService.fetchUserInfo().then((userInfo) => {
-        context.commit("setUser", userInfo.data);
+        commit("setUser", userInfo.data);
       });
+    },
+    updateUserInfo({ commit }, { field, value }) {
+      commit("updateUser", { field, value });
     },
     resetUser({ commit }) {
       commit("resetUserStore");
@@ -24,6 +27,9 @@ export default {
     },
     setUserImage(state, new_media) {
       state.user.profile_image.push(new_media);
+    },
+    updateUser(state, { field, value }) {
+      state.user[field] = value;
     },
     setUser(state, user) {
       state.user = user;

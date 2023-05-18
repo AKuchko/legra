@@ -5,6 +5,7 @@ import PostsList from "@/components/PostsList.vue";
 import ProfileBar from "@/components/ProfileBar.vue";
 import postService from "@/services/post.service";
 import userService from "@/services/user.service";
+import ForwardWindow from "@/components/ForwardWindow.vue";
 import socket from "@/socket";
 import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import { useStore } from "vuex";
@@ -12,7 +13,7 @@ import { useRoute } from "vue-router";
 
 export default {
   name: "UserView",
-  components: { CreateModal, PostsList, ProfileBar },
+  components: { CreateModal, PostsList, ProfileBar, ForwardWindow },
   async setup() {
     const modalVisibile = ref(false);
     const openPostCreator = () => (modalVisibile.value = true);
@@ -21,19 +22,22 @@ export default {
     const posts = ref([]);
     const store = useStore();
     const route = useRoute();
+    let user_id = route.params.user_id;
+    const isMyAccount = computed(() => (store.getters.userInfo.user_id === user_id));
+
     const deletePost = (e) => {
       const post = e.detail.target;
       postService.deletePost({ post_id: post.post_id });
     };
-
-    let user_id = route.params.user_id;
-
-    const isMyAccount = computed(() => (store.getters.userInfo.user_id === user_id));
+    const updateUser = ({ field, value }) => {
+      user.value[field] = value;
+      if (isMyAccount) store.dispatch("updateUserInfo", { field, value });
+    };
 
     onMounted(() => {
       window.addEventListener("post-delete", deletePost);
       window.addEventListener("openPostCreator", openPostCreator);
-      socket.on(`user:edit:${user.value.user_id}`, ({ field, value }) => (user.value[field] = value));
+      socket.on(`user:edit:${user.value.user_id}`, updateUser);
       socket.on(`post:like:${user.value.user_id}`, ({ post_id, action, user }) => {
         const postToUpdate = posts.value.find((post) => post.post_id === post_id);
         if (action === "unlike") {
@@ -75,6 +79,7 @@ export default {
 
 <template>
   <div class="user">
+    <forward-window />
     <div class="user__wrapper">
       <create-modal :modalVisibility="modalVisibile" @close-popup="hideModal" />
       <profile-bar class="user__header" :user="user" />

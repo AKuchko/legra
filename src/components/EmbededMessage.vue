@@ -77,7 +77,6 @@ export default {
       height: 0.5rem;
 
       span {
-        color: #111;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;

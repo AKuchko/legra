@@ -1,6 +1,6 @@
 <template>
   <div class="base-cropper">
-    <img ref="cropperRef" :src="image.url" />
+    <img ref="cropperRef" :src="image.url" style="max-height: 40rem" />
   </div>
 </template>
 

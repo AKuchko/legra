@@ -60,26 +60,25 @@ export default {
     }
     const onEdit = (e) => {
       embededMessage.value = e.detail.target;
-      console.log(embededMessage.value);
       embededIcon.value = "material-symbols:edit-rounded";
       messageType = "edit";
       message_text.value = embededMessage.value.message;
       message_input.value.innerText = message_text.value;
       message_input.value.focus();
     }
-    const onForward = (e) => {
-      console.log(e);
-    }
+    // const onForward = (e) => {
+    //   console.log(e);
+    // }
 
     onMounted(() => {
       window.addEventListener("reply-message", onReply);
       window.addEventListener("edit-message", onEdit);
-      window.addEventListener("forward-message", onForward);
+      // window.addEventListener("forward-message", onForward);
     });
     onUnmounted(() => {
       window.removeEventListener("reply-message", onReply);
       window.removeEventListener("edit-message", onEdit);
-      window.removeEventListener("forward-message", onForward);
+      // window.removeEventListener("forward-message", onForward);
     });
 
     return {
@@ -104,7 +103,7 @@ export default {
   <base-filedropper @file-drop="addMedia" />
   <div class="message-input-box">
     <div class="message-input-box__compose secondary">
-      <embeded-message v-if="embededMessage" :message="embededMessage" :icon="embededIcon">
+      <embeded-message v-if="embededMessage" :message="embededMessage">
         <template #icon>
           <i class="icon">
             <Icon :icon="embededIcon" width="24" />
@@ -144,7 +143,7 @@ export default {
       class="message-input-box__button secondary"
       @click="sendMessage"
     >
-      <Icon icon="ri:send-plane-fill" width="20" />
+      <Icon icon="ion:ios-send" width="25" />
     </button>
   </div>
 </template>
@@ -159,11 +158,10 @@ export default {
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
 
   &__compose {
     flex-grow: 1;
-    max-width: calc(100% - 4rem);
     border-radius: 8px;
   }
 
@@ -185,7 +183,7 @@ export default {
     display: block;
     width: 100%;
     height: auto;
-    padding: 0.75rem 0;
+    padding: 1rem 0;
     padding-right: 0;
     padding-left: 0.75rem;
     white-space: pre-wrap;
@@ -193,12 +191,17 @@ export default {
     word-break: break-word;
     overflow: hidden;
     text-align: initial;
+    color: $color-dark;
+
+    @media (prefers-color-scheme: dark) {
+      color: $color-light;
+    }
   }
 
   &__input-placeholder {
     position: absolute;
     left: 0.75rem;
-    top: 0.75rem;
+    top: 1rem;
     pointer-events: none;
     color: $color-placeholder;
   }
@@ -209,7 +212,7 @@ export default {
     align-items: center;
     justify-content: center;
     min-width: 2.5rem;
-    height: 2.5rem;
+    height: 3rem;
     cursor: pointer;
     transition: $transition-base;
 
@@ -230,9 +233,18 @@ export default {
     margin-left: 0.5rem;
     border-radius: 50%;
     background: $color-light-bg;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 3rem;
+    height: 3rem;
     cursor: pointer;
+    transition: $transition-base;
+
+    &:hover {
+      color: $color-accent;
+
+      @media (prefers-color-scheme: dark) {
+        color: $color-accent-dark;
+      }
+    }
   }
 
   .cancel-button {

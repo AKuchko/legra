@@ -12,9 +12,9 @@ export default {
   components: { ChatTemplate },
   async setup() {
     const route = useRoute();
+    const user_id = route.params.user_id;
     const userRole = ref("admin");
     const chat = ref({});
-    const user_id = route.params.user_id;
     const meta = ref({ chat_type: "personal", to: user_id })
 
     const addMessage = (message) => (chat.value.messages.push(message));
@@ -74,5 +74,6 @@ export default {
     :messages="chat.messages"
     :user-role="userRole"
     :meta="meta"
+    :chat="chat"
   />
 </template>

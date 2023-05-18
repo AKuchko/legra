@@ -25,7 +25,7 @@ export default {
 .search-input {
   width: 100%;
   overflow: hidden;
-  padding: 0.8rem 0.5rem;
+  padding: 0.8rem;
 
   input {
     width: 100%;
@@ -36,6 +36,10 @@ export default {
 
     &:focus {
       border-color: $color-accent;
+
+      @media (prefers-color-scheme: dark) {
+        border-color: $color-accent-dark;
+      }
     }
   }
 }

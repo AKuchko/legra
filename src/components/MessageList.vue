@@ -31,8 +31,8 @@ const props = defineProps({
 
   &__list {
     margin: 0 auto;
-    padding: 1rem 1rem 0 1.125rem;
-    max-width: 45.5rem;
+    padding: 0.8rem 0;
+    max-width: 45rem;
   }
 }
 </style>

@@ -12,7 +12,7 @@ export default {
 
 <template>
   <div class="chat-list">
-    <ul class="chat-list__wrapper secondary">
+    <ul v-if="chats.length" class="chat-list__wrapper secondary">
       <li
         v-for="chat in chats"
         :key="chat.chat_id"
@@ -21,6 +21,9 @@ export default {
         <chat-resume :chatInfo="chat" />
       </li>
     </ul>
+    <div v-else class="chat-list__empty-list">
+      <h2>Chat list is empty</h2>
+    </div>
   </div>
 </template>
 
@@ -30,6 +33,15 @@ export default {
     padding: 0.2rem;
     max-width: 30rem;
     border-radius: 0.5rem;
+    min-width: 45.5rem;
+  }
+
+  &__empty-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 45.5rem;
+    height: 100%;
   }
 }
 </style>

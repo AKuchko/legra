@@ -1,7 +1,7 @@
 <script>
 import { Icon } from "@iconify/vue";
 export default {
-  name: "BaseBackBtn",
+  name: "BackButton",
   components: { Icon },
 };
 </script>

@@ -23,7 +23,6 @@ export default {
     const hideModal = () => (modalVisibile.value = false);
     const deletePost = (e) => {
       const post = e.detail.target;
-      console.log(post);
       // postService.deletePost({ post_id: post.post_id });
     };
 

@@ -7,7 +7,12 @@
         class="cropper-list__cropper"
         :class="{ 'cropper-list__cropper--hidden': !file.selected }"
       >
-        <BaseCropper :image="file" @crop="updateCrop" />
+        <BaseCropper
+          :image="file"
+          :ratio="3 / 4"
+          :viewMode="1"
+          @crop="updateCrop"
+        />
       </li>
     </ul>
   </div>

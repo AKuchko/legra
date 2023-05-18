@@ -34,7 +34,7 @@ export default {
 
 <template>
   <div ref="menuRef" class="context-menu">
-    <div v-if="activator" class="context-menu__backdrop" @click="closeMenu"></div>
+    <div v-if="activator" class="context-menu__backdrop" @click.prevent="closeMenu"></div>
     <transition-fade-over>
         <ul v-show="activator" class="context-menu__list">
             <li
@@ -53,6 +53,7 @@ export default {
 
 <style lang="scss">
 .context-menu {
+  position: relative;
   color: #111;
 
   &__backdrop {
@@ -71,7 +72,6 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    max-height: 10rem;
     min-width: 12rem;
     padding: 0.25rem 0;
     border-radius: 1rem;

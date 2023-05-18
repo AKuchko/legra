@@ -3,6 +3,7 @@
 import BaseProfileImage from "./common/BaseProfileImage.vue";
 import MediaViewer from "./MediaViewer.vue";
 import BaseContextMenu from "./common/BaseContextMenu.vue";
+import { Icon } from "@iconify/vue";
 // import MessageContextMenu from "./MessageContextMenu.vue";
 import EmbededMessage from "./EmbededMessage.vue";
 import MsgPrivileges from "@/utils/MessagePrivileges.util";
@@ -11,9 +12,9 @@ import { useStore } from "vuex";
 
 export default {
   name: "MessageTemplate",
-  components: { BaseProfileImage, BaseContextMenu, MediaViewer, EmbededMessage },
+  components: { BaseProfileImage, BaseContextMenu, MediaViewer, EmbededMessage, Icon },
   props: {
-    message: Object, 
+    message: { type: Object, default: () => {} }, 
     userRole: String,
   },
   setup(props) {
@@ -93,12 +94,6 @@ export default {
     @dblclick="reply_msg"
   >
     <div class="message__content">
-      <!-- <message-context-menu 
-        :activator="contextMenuActivator" 
-        :message_data="message" 
-        :position="contextMenuPosition"
-        :privileges="privileges"
-      /> -->
       <router-link class="message__profile-image" :to="userLink">
         <base-profile-image
           :size="30"
@@ -109,11 +104,23 @@ export default {
       <div class="message__body secondary">
         <BaseContextMenu 
           :activator="contextMenuActivator" 
-          :targret="message" 
+          :target="message" 
           :menu="privileges"
         />
-        <p class="message__nickname">{{ message.user_name }}</p>
-        <embeded-message v-if="message.embeded_message" :message="message.embeded_message" />
+        <div class="message__info">
+          <div class="message__info-wrapper" v-if="message.forward_obj">
+            <Icon icon="ion:forward" width="20"/>
+            <router-link 
+            :to="{ name: 'user', params: { user_id: message.forward_obj.from_id } }"
+            class="message__nickname">
+              from {{ message.forward_obj.user_name }}
+            </router-link>
+          </div>
+          <div v-else class="message__info-wrapper">
+            <p class="message__nickname">{{ message.user_name }}</p>
+          </div>
+          <embeded-message v-if="message.embeded_message" :message="message.embeded_message" />
+        </div>
         <div v-if="message.media.length" class="message__media">
           <media-viewer :media="message.media" />
         </div>
@@ -143,13 +150,18 @@ export default {
     background: $color-light-bg;
   }
 
+  &__info-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.25rem;
+  }
+
   &__media {
     max-width: 20rem;
     overflow: hidden;
   }
 
   &__nickname {
-    margin-bottom: 5px;
     font-size: $font-xsmall;
   }
 
@@ -170,11 +182,9 @@ export default {
     width: 100vw;
     height: 105%;
     transition: $transition-base;
-    background: #000;
+    background: rgba($color: $color-placeholder, $alpha: 0.3);
     opacity: 0;
   }
-
-  
 }
 
 .message--me {
@@ -189,6 +199,10 @@ export default {
   .message__body {
     color: $color-light;
     background: $color-accent;
+
+    @media (prefers-color-scheme: dark) {
+      background: $color-accent-dark;
+    }
   }
 
   .embeded-message {

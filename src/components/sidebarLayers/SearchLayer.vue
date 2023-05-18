@@ -1,6 +1,6 @@
 <script>
 /* eslint-disable */ 
-import BaseBackBtn from "../common/BaseBackBtn.vue";
+import BackButton from "../buttons/BackButton.vue";
 import MainLayer from "./MainLayer.vue";
 import BaseSearch from "../common/BaseSearch.vue";
 import UserList from "../UserList.vue";
@@ -10,7 +10,7 @@ import { ref } from "vue";
 
 export default {
   name: "SearchLayer",
-  components: { BaseBackBtn, BaseSearch, UserList },
+  components: { BackButton, BaseSearch, UserList },
   setup() {
     const store = useStore();
     const users = ref([]);
@@ -39,7 +39,7 @@ export default {
 <template>
   <div class="search">
     <div class="search__header">
-      <BaseBackBtn @click="back" />
+      <BackButton @click="back" />
       <div class="search__header-content">
         <h3 class="search__header-title">Search</h3>
         <div class="search__header-more"></div>

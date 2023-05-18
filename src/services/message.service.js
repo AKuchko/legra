@@ -22,6 +22,9 @@ class MessageService {
       headers: { "Content-Type": "multipart/form-data" },
     });
   }
+  forwardMessage({ forward_obj, to }) {
+    client.post("/api/message/forward", { forward_obj, to });
+  }
   editMessage({ chat_id, message_id, message }) {
     client.put("/api/message/edit", { chat_id, message_id, message });
   }
