@@ -1,5 +1,5 @@
 <script>
-import { computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { Icon } from "@iconify/vue";
 import { useStore } from "vuex";
 import MediaViewer from "./MediaViewer.vue";
@@ -17,10 +17,13 @@ export default {
   setup(props) {
     const store = useStore();
     const user_id = store.getters.userInfo.user_id;
+    const seen = ref(props.post.seen);
+    const postTemplate = ref(null);
     const isPostLoaded = computed(() => props.post.media);
-    const commentRoute = computed(() => {
-      return { name: "comments", params: { post_id: `${props.post.post_id}` } };
-    });
+    const commentRoute = computed(() => ({
+      name: "comments",
+      params: { post_id: `${props.post.post_id}` },
+    }));
     const menu = computed(() => {
       if (user_id === props.post.user_id) return PostPrivileges.ownerPriviliges;
       return PostPrivileges.customerPrivileges;
@@ -29,15 +32,43 @@ export default {
       const myLike = props.post.likes.find((like) => like.user_id === user_id);
       return !!myLike;
     });
+
     const addLike = () => {
       postService.likePost({
         post_id: props.post.post_id,
         post_user_id: props.post.user_id,
       });
     };
+    const intersectionCallback = (entries) => {
+      entries.forEach((entry) => {
+        const ratio = entry.intersectionRatio;
+        if ((ratio >= 0.8) & !seen.value & (user_id !== props.post.user_id)) {
+          postService.visit({
+            post_id: props.post.post_id,
+            post_user_id: props.post.user_id,
+          });
+
+          seen.value = true;
+        }
+      });
+    };
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px",
+      threshold: [0.8],
+    };
+    const observer = new IntersectionObserver(
+      intersectionCallback,
+      observerOptions
+    );
+
+    onMounted(() => {
+      observer.observe(document.querySelector(`#post${props.post.post_id}`));
+    });
 
     return {
       menu,
+      postTemplate,
       isPostLoaded,
       commentRoute,
       isLikedByMe,
@@ -48,7 +79,7 @@ export default {
 </script>
 
 <template>
-  <div :id="`post:${post.post_id}`" class="post">
+  <div :id="`post${post.post_id}`" ref="postTemplate" class="post">
     <div class="post__content secondary">
       <div class="post__header">
         <div class="post__owner">

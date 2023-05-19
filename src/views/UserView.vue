@@ -33,24 +33,25 @@ export default {
       user.value[field] = value;
       if (isMyAccount) store.dispatch("updateUserInfo", { field, value });
     };
+    const editPost = ({ post_id, fields_to_edit }) => {
+      const postToUpdate = posts.value.find((post) => post.post_id === post_id);
+      console.log(post_id, postToUpdate, fields_to_edit);
+      for (let field in fields_to_edit) {
+        postToUpdate[field] = fields_to_edit[field];
+      }
+    }
 
     onMounted(() => {
       window.addEventListener("post-delete", deletePost);
       window.addEventListener("openPostCreator", openPostCreator);
       socket.on(`user:edit:${user.value.user_id}`, updateUser);
-      socket.on(`post:like:${user.value.user_id}`, ({ post_id, action, user }) => {
-        const postToUpdate = posts.value.find((post) => post.post_id === post_id);
-        if (action === "unlike") {
-          postToUpdate.likes = postToUpdate.likes.filter(
-            (like) => like.user_id !== user.user_id
-          );
-        } else postToUpdate.likes.push(user);
-      });
+      socket.on(`post:edit:${user.value.user_id}`, editPost);
     });
     onUnmounted(() => {
+      window.removeEventListener("post-delete", deletePost);
       window.removeEventListener("openPostCreator", openPostCreator);
       socket.off(`user:edit:${user.value.user_id}`);
-      socket.off(`post:like:${user.value.user_id}`);
+      socket.off(`post:edit:${user.value.user_id}`);
     })
 
     watch(route, () => {

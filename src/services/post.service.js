@@ -34,6 +34,12 @@ class PostService {
   likePost({ post_id, post_user_id }) {
     return client.post("/api/posts/like", { post_id, post_user_id });
   }
+  visit({ post_id, post_user_id }) {
+    client.post("/api/posts/visit", { post_id, post_user_id });
+  }
+  getNews() {
+    return client.get("/api/posts/news")
+  }
 }
 
 export default new PostService();
