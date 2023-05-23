@@ -1,7 +1,7 @@
 <script>
 /* eslint-disable */
 import userService from '@/services/user.service';
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useStore } from 'vuex';
 export default {
   name: "ProfileActions",
@@ -12,17 +12,25 @@ export default {
   setup(props) {
     const store = useStore();
     const myActions = computed(() => store.getters.userInfo.user_id === props.user_id);
-    const isFollowing = computed(() => {
-      return props.followers ? props.followers.find(follower => follower.user_id === store.getters.userInfo.user_id) : false;
-    })
+    const isFollowing = ref(false);
     const message_link = { name: "chat", params: { user_id: props.user_id }};
     const createFollow = () => ( userService.followUser({ user_id: props.user_id }) );
     const deleteFollow = () => ( userService.unfollowUser({ user_id: props.user_id }) );
     const followAction = () => {
       if (!isFollowing.value) createFollow();
       else deleteFollow();
+      setTimeout(() => console.log(props.followers), 1000);
     }
     const openCreateModal = () => ( window.dispatchEvent(new CustomEvent("openPostCreator")) );
+
+    watch(props, () => {
+      console.log("chaange");
+      isFollowing.value = props.followers ? props.followers.find(follower => follower.user_id === store.getters.userInfo.user_id) : false;
+    })
+
+    onMounted(() => {
+      isFollowing.value = props.followers ? props.followers.find(follower => follower.user_id === store.getters.userInfo.user_id) : false;
+    });
 
     return {
       myActions,

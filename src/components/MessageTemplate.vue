@@ -25,11 +25,7 @@ export default {
     const contextMenuPosition = ref({ x: 0, y: 0 });
     const isMymessage = computed(() => user_id === props.message.from_id);
     const userLink = computed(() => ( { name: "user", params: { user_id: props.message.from_id } } ));
-    const privileges = computed(() => {
-      if (isMymessage.value) return MsgPrivileges.ownerPriviliges;
-      if ((props.userRole === "admin") & !isMymessage.value) return MsgPrivileges.adminPrivileges;
-      else if (props.userRole === "customer") return MsgPrivileges.customerPrivileges;
-    })
+    const privileges = ref([]);
 
     const onContextmenu = (event) => {
       if (!message_ref.value.contains(event.target)) return;
@@ -66,6 +62,7 @@ export default {
         attributeOldValue : false,
         attributeFilter: ['class'], 
       });
+      privileges.value = MsgPrivileges.definePrivileges(props.message, isMymessage.value, props.userRole);
     });
     onUnmounted(() => {
       document.removeEventListener("contextmenu", onContextmenu);
@@ -197,8 +194,11 @@ export default {
   }
 
   .message__body {
-    color: $color-light;
     background: $color-accent;
+    
+    * {
+      color: $color-light !important;
+    }
 
     @media (prefers-color-scheme: dark) {
       background: $color-accent-dark;

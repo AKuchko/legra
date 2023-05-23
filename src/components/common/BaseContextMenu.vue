@@ -17,6 +17,7 @@ export default {
     const menuRef = ref(null);
     const closeMenu = () => (emit("close"));
     const onMenuAction = (action) => {
+      console.log(action);
       window.dispatchEvent(
         new CustomEvent(`${action}`, { detail: { target: props.target } })
       );

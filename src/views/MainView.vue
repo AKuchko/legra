@@ -11,7 +11,7 @@ export default {
     const news = ref({});
 
     onMounted(() => {
-      // socket.on("post:")
+      // socket.on("post:edit:")
       console.log(news.value);
     });
 

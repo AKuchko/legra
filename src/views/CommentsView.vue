@@ -33,20 +33,26 @@ export default {
         const deleteMsgEvent = (e) => {
             const { target } = e.detail 
             messageService.deleteMessage({ chat_id: target.chat_id, message_id: target.message_id });
-        }
+        };
+        const editPost = ({ fields_to_edit }) => {
+            for (let field in fields_to_edit) {
+                post.value[field] = fields_to_edit[field];
+            }
+        };
 
         onMounted(async () => {
             window.addEventListener("delete-message", deleteMsgEvent);
             socket.on(`message:add:${chat_id.value}`, addMessage);
             socket.on(`message:delete:${chat_id.value}`, removeMessage); 
             socket.on(`message:edit:${chat_id.value}`, editMessage);
-            socket.on(`post:like:${post.value.user_id}`, ({ action, user }) => {
-                if (action === "unlike") {
-                post.value.likes = post.value.likes.filter(
-                    (like) => like.user_id !== user.user_id
-                );
-                } else post.value.likes.push(user);
-            });
+            socket.on(`post:edit:${post.value.user_id}`, editPost);
+            // socket.on(`post:like:${post.value.user_id}`, ({ action, user }) => {
+            //     if (action === "unlike") {
+            //     post.value.likes = post.value.likes.filter(
+            //         (like) => like.user_id !== user.user_id
+            //     );
+            //     } else post.value.likes.push(user);
+            // });
         });
         onUnmounted(() => {
             window.removeEventListener("delete-message", deleteMsgEvent);

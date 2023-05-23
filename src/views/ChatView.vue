@@ -6,6 +6,7 @@ import chatService from "@/services/chat.service";
 import socket from "@/socket";
 import { ref, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
+import { b64toBlob } from "@/utils/file.util";
 
 export default {
   name: "ChatView",
@@ -26,8 +27,26 @@ export default {
       }
     };
     const deleteMsgEvent = (e) => {
-      const { target } = e.detail 
+      const { target } = e.detail; 
       messageService.deleteMessage({ chat_id: target.chat_id, message_id: target.message_id });
+    }
+    const copyMessage = (e) => {
+      const { target } = e.detail;
+      navigator.clipboard.writeText(target.message);
+    }
+    const copyImage = async (e) => {
+      const { target } = e.detail;
+      const data = b64toBlob(target.media[0].data);
+
+      try {
+        navigator.clipboard.write([
+          new ClipboardItem({
+            'image/png': data
+          })
+        ]);
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     onMounted(() => {
@@ -37,6 +56,8 @@ export default {
           chat.value.messages.push(message);
 
           window.addEventListener("delete-message", deleteMsgEvent);
+          window.addEventListener("copy-message-text", copyMessage);
+          window.addEventListener("copy-message-image", copyImage);
           socket.on(`message:add:${chat.value.chat_id}`, addMessage);
           socket.on(`message:delete:${chat.value.chat_id}`, removeMessage); 
           socket.on(`message:edit:${chat.value.chat_id}`, editMessage);
@@ -44,6 +65,9 @@ export default {
       }
       else {
         window.addEventListener("delete-message", deleteMsgEvent);
+        window.addEventListener("copy-message-text", copyMessage);
+        window.addEventListener("copy-message-image", copyImage);
+
         socket.on(`message:add:${chat.value.chat_id}`, addMessage);
         socket.on(`message:delete:${chat.value.chat_id}`, removeMessage); 
         socket.on(`message:edit:${chat.value.chat_id}`, editMessage);
@@ -69,11 +93,20 @@ export default {
 </script>
 
 <template>
-  <chat-template
-    :chat_id="chat.chat_id"
-    :messages="chat.messages"
-    :user-role="userRole"
-    :meta="meta"
-    :chat="chat"
-  />
+  <main class="chat">
+    <chat-template
+      :chat_id="chat.chat_id"
+      :messages="chat.messages"
+      :user-role="userRole"
+      :meta="meta"
+      :chat="chat"
+    />
+  </main>
 </template>
+
+<style>
+.chat {
+  width: 100%;
+  height: 100%;
+}
+</style>

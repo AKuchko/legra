@@ -59,7 +59,9 @@ export default {
         </message-list>
       </div>
       <div class="chat__bottom">
-        <message-input-box @send-message="sendMessage" />
+        <div class="chat__bottom-wrapper">
+          <message-input-box @send-message="sendMessage" />
+        </div>
       </div>
     </div>
   </div>
@@ -67,6 +69,7 @@ export default {
 
 <style lang="scss">
 .chat {
+  position: relative;
   width: 100%;
   height: 100%;
 
@@ -80,14 +83,27 @@ export default {
 
   &__body {
     width: 100%;
-    margin-bottom: 0.3rem;
+    padding-bottom: 5rem;
     overflow-y: scroll;
     overflow-x: hidden;
     flex-grow: 1;
   }
 
   &__bottom {
-    width: calc(100% - 25vw);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 1rem 0 0;
+    background: linear-gradient(0deg, $color-light-bg 50%, rgba(48,48,48,0) 100%);
+    z-index: 55;
+
+    @media (prefers-color-scheme: dark) {
+      background: linear-gradient(0deg, $color-dark-bg 50%, rgba(48,48,48,0) 100%);
+    }
+  }
+
+  &__bottom-wrapper {
+    margin: auto;
     max-width: 45rem;
   }
 }

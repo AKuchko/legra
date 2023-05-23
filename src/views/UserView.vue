@@ -30,12 +30,12 @@ export default {
       postService.deletePost({ post_id: post.post_id });
     };
     const updateUser = ({ field, value }) => {
+      console.log(field, value);
       user.value[field] = value;
       if (isMyAccount) store.dispatch("updateUserInfo", { field, value });
     };
     const editPost = ({ post_id, fields_to_edit }) => {
       const postToUpdate = posts.value.find((post) => post.post_id === post_id);
-      console.log(post_id, postToUpdate, fields_to_edit);
       for (let field in fields_to_edit) {
         postToUpdate[field] = fields_to_edit[field];
       }
@@ -57,6 +57,8 @@ export default {
     watch(route, () => {
       const new_user_id = route.params.user_id;
       if (!new_user_id || new_user_id === user_id) return;
+      socket.off(`user:edit:${user.value.user_id}`);
+      socket.on(`user:edit:${new_user_id}`, updateUser);
       user_id = new_user_id;
       setTimeout(async () => {
         await userService.fetchUserInfo({ user_id }).then((r) => (user.value = r.data));
